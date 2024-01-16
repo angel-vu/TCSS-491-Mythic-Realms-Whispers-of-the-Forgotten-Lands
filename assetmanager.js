@@ -40,6 +40,8 @@ class AssetManager {
         }
     };
 
+    //Does this work?
+
     getAsset(path) {
         return this.cache[path];
     };
