@@ -5,6 +5,7 @@ const ASSET_MANAGER = new AssetManager();
 //Loading Link image walking withoutsword
 
 ASSET_MANAGER.queueDownload("./Link_main_character_walking_no_sword.png");
+ASSET_MANAGER.queueDownload("./Link_main_character_attack_1.png");
 ASSET_MANAGER.downloadAll(() => {
 	const canvas = document.getElementById("gameWorld");
 	
