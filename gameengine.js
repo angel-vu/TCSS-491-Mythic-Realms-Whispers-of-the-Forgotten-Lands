@@ -15,18 +15,31 @@ class GameEngine {
         this.wheel = null;
         this.keys = {};
 
+        //maincontrols
+        this.left = false;
+        this.right = false;
+        this.up = false;
+        this.down = false;
+        this.q = false;
+        this.e = false;
+        this.spacebar = false;
+
         // Options and the Details
         this.options = options || {
             debugging: false,
         };
     };
 
+    //called after page has loaded, acts 2nd constructor.
     init(ctx) {
         this.ctx = ctx;
         this.startInput();
         this.timer = new Timer();
     };
 
+    //starts up game loop
+    //define a function game loop, that loops itself through, requestAnimFrame.
+    //where it loops everytime the monitor refreshes.
     start() {
         this.running = true;
         const gameLoop = () => {
@@ -36,7 +49,9 @@ class GameEngine {
         gameLoop();
     };
 
+    //load listeners that we expect from the user.
     startInput() {
+     
         const getXandY = e => ({
             x: e.clientX - this.ctx.canvas.getBoundingClientRect().left,
             y: e.clientY - this.ctx.canvas.getBoundingClientRect().top
@@ -71,9 +86,70 @@ class GameEngine {
             e.preventDefault(); // Prevent Context Menu
             this.rightclick = getXandY(e);
         });
-
-        this.ctx.canvas.addEventListener("keydown", event => this.keys[event.key] = true);
-        this.ctx.canvas.addEventListener("keyup", event => this.keys[event.key] = false);
+        
+        
+        //The this keyword refers to the local function unless that function is attached to that class. Like the constructor will refer to the current class.
+        this.ctx.canvas.addEventListener("keydown", e => {
+            switch (e.code) {
+                case "KeyA":
+                    this.left = true;
+                    console.log("left");
+                    break;
+                case "KeyD":
+                    this.right = true;
+                    console.log("right");
+                    break;
+                case "KeyW":
+                    this.up = true;
+                    console.log("up");
+                    break;
+                case "KeyS":
+                    this.down = true;
+                    console.log("down");
+                    break;
+                case "KeyE":
+                    this.e = true;
+                    console.log("e");
+                    break;
+                case "KeyQ":
+                    this.q = true;
+                    console.log("q");
+                    break;
+                case"Space":
+                    this.spacebar = true;
+                    console.log("space");
+                    break;
+            }
+        }, false);
+        this.ctx.canvas.addEventListener("keyup", 
+        e => {
+            switch (e.code) {
+                case "KeyA":
+                    this.left = false;
+                    break;
+                case "KeyD":
+                    this.right = false;
+                  
+                    break;
+                case "KeyW":
+                    this.up = false;
+                  
+                    break;
+                case "KeyS":
+                    this.down = false;
+                    break;
+                case "KeyE":
+                    this.e = false;
+                   
+                    break;
+                case "KeyQ":
+                    this.q = false;
+                    break;
+                case"Space":
+                    this.spacebar = false;
+                    break;
+            }
+        }, false);
     };
 
     addEntity(entity) {
@@ -90,6 +166,8 @@ class GameEngine {
         }
     };
 
+    //goes through the list of entities and updates each entity, if the entity won't be removed.
+    //removed entities like mushroom from mario.
     update() {
         let entitiesCount = this.entities.length;
 
@@ -103,12 +181,15 @@ class GameEngine {
 
         for (let i = this.entities.length - 1; i >= 0; --i) {
             if (this.entities[i].removeFromWorld) {
+                //method that allows you to insert and delete out of a list
+                //starting from index i of length 1.
                 this.entities.splice(i, 1);
             }
         }
     };
 
     loop() {
+        //the clock timer,how long it's been since the last clock tick.
         this.clockTick = this.timer.tick();
         this.update();
         this.draw();
