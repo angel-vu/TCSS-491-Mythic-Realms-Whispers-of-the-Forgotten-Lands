@@ -13,7 +13,7 @@ class Link{
 
 		   // link's state variables
 		   this.itemsEquipped = 0; // 0 = none, 1 = master sword and shield 
-		   this.state = 0; // 0 = idle, 1 = walking, 2 = running, 3 = damaged, 4 = jumping/falling, 5 = attacking
+		   this.state = 0; // 0 = idle, 1 = walking, 2 = running, 3 = damaged, 4 = jumping/falling, 5 = attacking, 6 = blocking
 		   this.facing = 0; // 0 = right, 1 = left
 		   this.dead = false;
 
@@ -42,8 +42,9 @@ class Link{
         // this.animations[0][2][0] = new Animator(this.spritesheet, 209, 122, 16, 32, 1, 0.33, 14, false, true);
 		// this.animations[0][3][0] = new Animator(this.spritesheet, 209, 122, 16, 32, 1, 0.33, 14, false, true);
 		// this.animations[0][4][0] = new Animator(this.spritesheet, 209, 122, 16, 32, 1, 0.33, 14, false, true);
-		//no animations without attacking without a weapon.
+		//no animations without attacking without a weapon, or blocking
 		// this.animations[0][5][0] = null;
+		// this.animations[0][6][0] = null;
 
 
 		 // no weapons
@@ -53,8 +54,9 @@ class Link{
         // this.animations[0][2][1] = new Animator(this.spritesheet, 209, 122, 16, 32, 1, 0.33, 14, false, true);
 		// this.animations[0][3][1] = new Animator(this.spritesheet, 209, 122, 16, 32, 1, 0.33, 14, false, true);
 		// this.animations[0][4][1] = new Animator(this.spritesheet, 209, 122, 16, 32, 1, 0.33, 14, false, true);
-		//no animations without attacking without a weapon.
+		//no animations without attacking without a weapon, or blocking
 		// this.animations[0][5][1] = null;
+		// this.animations[0][6][1] = null;
 
 		 // mastersword and shield 
         // facing right = 0
@@ -64,6 +66,8 @@ class Link{
 		// this.animations[1][3][0] = new Animator(this.spritesheet, 209, 122, 16, 32, 1, 0.33, 14, false, true);
 		// this.animations[1][4][0] = new Animator(this.spritesheet, 209, 122, 16, 32, 1, 0.33, 14, false, true);
 		// this.animations[1][5][0] = new Animator(this.spritesheet, 209, 122, 16, 32, 1, 0.33, 14, false, true);
+		// this.animations[1][5][0] = new Animator something
+		// this.animations[1][6][0] = new Animator something;
 
 		// mastersword and shield 
         // facing left = 1
@@ -73,6 +77,8 @@ class Link{
 		// this.animations[1][3][1] = new Animator(this.spritesheet, 209, 122, 16, 32, 1, 0.33, 14, false, true);
 		// this.animations[1][4][1] = new Animator(this.spritesheet, 209, 122, 16, 32, 1, 0.33, 14, false, true);
 		// this.animations[1][5][1] = new Animator(this.spritesheet, 209, 122, 16, 32, 1, 0.33, 14, false, true);
+		// this.animations[1][5][1] = new Animator something
+		// this.animations[1][6][1] = new Animator something;
 
 
 
