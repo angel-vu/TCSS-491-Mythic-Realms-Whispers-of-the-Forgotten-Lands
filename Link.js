@@ -2,8 +2,13 @@ class Link{
 
 	constructor(game) {
 		this.game = game;
-		//walking animation 
-		this.walkAnimator = new Animator(ASSET_MANAGER.getAsset("./Link_main_character_walking_no_sword.png"), 6, 0, 26, 56, 6, 0.2, 15, false, true);
+		//right walking animation 
+		this.rightWalkAnimator = new Animator(ASSET_MANAGER.getAsset("./Link_main_character_walking_no_sword.png"), 6, 0, 26, 56, 6, 0.2, 15, false, true,false);
+
+		//left walking animation 
+		this.leftWalkAnimator = new Animator(ASSET_MANAGER.getAsset("./Link_main_character_walking_no_sword.png"), 6, 0, 26, 56, 6, 0.2, 15, false, true,true);
+
+
 
 		//for animation assignment to make link walk across screen
 		this.x = 0;
@@ -13,7 +18,7 @@ class Link{
 
 		   // link's state variables
 		   this.itemsEquipped = 0; // 0 = none, 1 = master sword and shield 
-		   this.state = 0; // 0 = idle, 1 = walking, 2 = running, 3 = damaged, 4 = jumping/falling, 5 = attacking, 6 = blocking
+		   this.state = 0; // 0 = idle, 1 = walking, 2 = running, 3 = damaged, 4 = jumping/falling, 5 = attacking
 		   this.facing = 0; // 0 = right, 1 = left
 		   this.dead = false;
 
@@ -34,7 +39,6 @@ class Link{
                 }
             }
         }
-
         // no weapons
         // facing right = 0
         // this.animations[0][0][0] = new Animator(this.spritesheet, 210, 0, 16, 16, 1, 0.33, 14, false, true);
@@ -96,7 +100,11 @@ class Link{
 	};
 
 	draw(ctx){
-		this.walkAnimator.drawFrame(this.game.clockTick, ctx, this.x, this.y,3);
+		this.rightWalkAnimator.drawFrame(this.game.clockTick, ctx, this.x, this.y, 3);
+	
+		this.leftWalkAnimator.drawFrame(this.game.clockTick, ctx, this.x * -1+ 1024,this.y+200, 3);
+
 	};
 	
+}
 }

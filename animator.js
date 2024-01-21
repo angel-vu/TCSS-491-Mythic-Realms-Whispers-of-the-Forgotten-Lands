@@ -7,9 +7,10 @@ class Animator {
 	// frame paddiing how far apart each frame is from each other on the sprite sheet.
 	// reverse if facing left and starting from the last frame. 
 	// loop if you want that animation to loop.
-    constructor(spritesheet, xStart, yStart, width, height, frameCount, frameDuration, framePadding, reverse, loop) {
+    //flipLeft flip  the currentSprite sheet to face left.
+    constructor(spritesheet, xStart, yStart, width, height, frameCount, frameDuration, framePadding, reverse, loop, flipLeft) {
 		//assigns all the parameters into the object.
-        Object.assign(this, { spritesheet, xStart, yStart, height, width, frameCount, frameDuration, framePadding, reverse, loop });
+        Object.assign(this, { spritesheet, xStart, yStart, height, width, frameCount, frameDuration, framePadding, reverse, loop, flipLeft });
 
         this.elapsedTime = 0;
         this.totalTime = this.frameCount * this.frameDuration;
@@ -36,6 +37,12 @@ class Animator {
         let frame = this.currentFrame();
 		//if we reverse from the sheet, we start from the end.
         if (this.reverse) frame = this.frameCount - frame - 1;
+
+        //if flipLeft is true scale it to the left.
+        if(this.flipLeft){
+            ctx.save();
+            ctx.scale(-1,1);
+        }
        
         ctx.drawImage(this.spritesheet,
 			//the frame we are currently at.
@@ -43,11 +50,12 @@ class Animator {
 			//width and height of the image within the sheet
             this.width, this.height,
 			//where to draw the frame
-            x, y,
+            this.flipLeft ? -x - this.width * scale : x, y,
 			//how big to draw the frames.
             this.width * scale,
             this.height * scale);
 
+        ctx.restore(); // Restore the context to the previous state
         if (PARAMS.DEBUG) {
             ctx.strokeStyle = 'Green';
             ctx.strokeRect(x, y, this.width * scale, this.height * scale);
