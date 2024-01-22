@@ -9,7 +9,10 @@ class Link{
 		this.leftWalkAnimator = new Animator(ASSET_MANAGER.getAsset("./Link_main_character_walking_no_sword.png"), 6, 0, 26, 56, 6, 0.2, 15, false, true,true);
 
 		//Attacking right one animation 
-		this.attackOneRight = new Animator(ASSET_MANAGER.getAsset("./Link_main_character_attack_1.png"), 6, 0, 26, 56, 6, 0.2, 15, false, true,true);
+		this.attackOneRightAnimator= new Animator(ASSET_MANAGER.getAsset("./Link_attack_1.png"), 0, 0, 102, 90, 4, 0.2, 1, false, true, false);
+
+		//Attacking left one animation 
+		this.attackOneLeftAnimator= new Animator(ASSET_MANAGER.getAsset("./Link_attack_1.png"), 0, 0, 102, 90, 4, 0.2, 1, false, true, true);
 
 
 
@@ -106,6 +109,8 @@ class Link{
 		this.rightWalkAnimator.drawFrame(this.game.clockTick, ctx, this.x, this.y, 3);
 	
 		this.leftWalkAnimator.drawFrame(this.game.clockTick, ctx, this.x * -1+ 1024,this.y+200, 3);
+		this.attackOneRightAnimator.drawFrame(this.game.clockTick, ctx, 500, 500, 3);
+		this.attackOneLeftAnimator.drawFrame(this.game.clockTick, ctx,100, 500, 3);
 
 	};
 	

@@ -10,7 +10,7 @@ class Animator {
     //flipLeft flip  the currentSprite sheet to face left.
     constructor(spritesheet, xStart, yStart, width, height, frameCount, frameDuration, framePadding, reverse, loop, flipLeft) {
 		//assigns all the parameters into the object.
-        Object.assign(this, { spritesheet, xStart, yStart, height, width, frameCount, frameDuration, framePadding, reverse, loop, flipLeft });
+        Object.assign(this, { spritesheet, xStart, yStart, width, height, frameCount, frameDuration, framePadding, reverse, loop, flipLeft });
 
         this.elapsedTime = 0;
         this.totalTime = this.frameCount * this.frameDuration;
