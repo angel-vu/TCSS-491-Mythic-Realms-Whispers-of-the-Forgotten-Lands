@@ -36,7 +36,7 @@ class Link{
 
 	//loads animations for link
 	loadAnimations() {
-        for (var i = 0; i < 2; i++) { //master
+        for (var i = 0; i < 2; i++) { //items equipped
             this.animations.push([]);
             for (var j = 0; j < 6; j++) { // 5 states
                 this.animations[i].push([]);
@@ -45,6 +45,7 @@ class Link{
                 }
             }
         }
+
         // no weapons
         // facing right = 0
         // this.animations[0][0][0] = new Animator(this.spritesheet, 210, 0, 16, 16, 1, 0.33, 14, false, true);
