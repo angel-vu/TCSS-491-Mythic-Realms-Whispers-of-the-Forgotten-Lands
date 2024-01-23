@@ -33,6 +33,7 @@ const rgba = (r, g, b, a) => `rgba(${r}, ${g}, ${b}, ${a})`;
 const hsl = (h, s, l) => `hsl(${h}, ${s}%, ${l}%)`;
 
 /** Creates an alias for requestAnimationFrame for backwards compatibility */
+//function that tells us to do an action everytime monitor refreshes.
 window.requestAnimFrame = (() => {
     return window.requestAnimationFrame ||
         window.webkitRequestAnimationFrame ||
@@ -49,6 +50,10 @@ window.requestAnimFrame = (() => {
         });
 })();
 
+// add global parameters here
+const PARAMS = {
+    DEBUG: true,
+};
 /**
  * Returns distance from two points
  * @param {Number} p1, p2 Two objects with x and y coordinates
