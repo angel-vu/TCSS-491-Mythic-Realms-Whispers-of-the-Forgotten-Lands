@@ -119,6 +119,18 @@ class GameEngine {
                     this.spacebar = true;
                     console.log("space");
                     break;
+                case"KeyP":
+                    this.attack = true;
+                    break;
+                case"KeyL":
+                    this.damage = true;
+                    break;    
+                case "KeyK":
+                    that.dead = true;
+                    break;
+                case "KeyO":
+                    that.cheer = true;
+                    break;
             }
         }, false);
         this.ctx.canvas.addEventListener("keyup", 
@@ -147,6 +159,18 @@ class GameEngine {
                     break;
                 case"Space":
                     this.spacebar = false;
+                    break;
+                case"KeyP":
+                    this.attack = false;
+                    break;
+                case"KeyL":
+                    this.damage = false;
+                    break;
+                case "KeyK":
+                    that.dead = false;
+                    break;
+                case "KeyO":
+                    that.cheer = false;
                     break;
             }
         }, false);

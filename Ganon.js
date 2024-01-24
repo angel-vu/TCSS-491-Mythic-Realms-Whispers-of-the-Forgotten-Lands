@@ -4,10 +4,10 @@ class Ganon {
         this.spritesheet = ASSET_MANAGER.getAsset('./boss_sprites/Ganondorf.png');
         //this.game.ganon = this;
 
-        this.x = 0;
+        this.x = 50;
         this.y = 0;
         this.speed = 250;
-        this.state = 0; // 0 = idle, 1 = walking, 2 = attacking
+        this.state = 1; // 0 = idle, 1 = walking, 2 = attacking
         this.facing = 0; // 0 = down, 1 = left, 2 = up, 3 = right
 
         this.animations = [];
