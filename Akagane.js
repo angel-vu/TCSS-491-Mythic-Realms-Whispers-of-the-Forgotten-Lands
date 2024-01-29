@@ -4,7 +4,7 @@ class Akagane {
         this.spritesheet = ASSET_MANAGER.getAsset('./enemies/Akagane.png');
 
         this.x = 0;
-        this.y = 20;
+        this.y = 500;
         this.speed = 250;
         this.state = 0; // 0 = idle, 1 = walking, 2 = attacking
         this.facing = 0; // 0 = right
@@ -33,7 +33,7 @@ class Akagane {
 
     update() {
         if (this.animations[0][0]) {
-            this.x = 2;
+            this.x = 100;
         } else if (this.animations[1][0] || this.x == 0) {
             this.x += this.speed * this.game.clockTick;
             if (this.x > 1024) {
