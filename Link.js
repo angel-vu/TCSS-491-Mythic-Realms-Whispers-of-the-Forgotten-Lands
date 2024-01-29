@@ -177,7 +177,7 @@ class Link{
 
 
         if(this.game.damage) {
-            this.state = 3; 
+            this.state = 1; 
         }
 
     };
