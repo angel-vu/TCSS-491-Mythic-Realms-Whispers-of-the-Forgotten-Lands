@@ -10,7 +10,7 @@ class GameEngine {
         this.entities = [];
 
         // Information on the input
-        this.click = null;
+        this.click = false;
         this.mouse = null;
         this.wheel = null;
         this.keys = {};
@@ -23,6 +23,8 @@ class GameEngine {
         this.q = false;
         this.e = false;
         this.spacebar = false;
+        this.attack = null; // when the user left clicks.
+
 
         // Options and the Details
         this.options = options || {
@@ -51,7 +53,7 @@ class GameEngine {
 
     //load listeners that we expect from the user.
     startInput() {
-     
+        let that = this;
         const getXandY = e => ({
             x: e.clientX - this.ctx.canvas.getBoundingClientRect().left,
             y: e.clientY - this.ctx.canvas.getBoundingClientRect().top
@@ -67,9 +69,46 @@ class GameEngine {
         this.ctx.canvas.addEventListener("click", e => {
             if (this.options.debugging) {
                 console.log("CLICK", getXandY(e));
+                
             }
             this.click = getXandY(e);
         });
+        this.ctx.canvas.addEventListener("mousedown", e => {
+            if (this.options.debugging) {
+                console.log("MOUSE_MOVE", getXandY(e));
+            }
+            this.mouse = getXandY(e);
+            console.log("left click", getXandY(e));
+            that.attack = true;
+        });
+
+
+
+        //release mouse click
+        this.ctx.canvas.addEventListener("mouseup", e => {
+            if (this.options.debugging) {
+                console.log("CLICK", getXandY(e));
+            }
+        
+            this.click = getXandY(e);
+            console.log("CLICK Release", getXandY(e));
+        
+            switch (e.which) {
+                case 1:
+                    //alert('Left Mouse button release.');
+                    that.attack = false;
+                    break;
+                case 2:
+                    //alert('Middle Mouse button release.');
+                    break;
+                case 3:
+                    //alert('Right Mouse button release.');
+                     break;
+        
+                }
+        
+        
+                });
 
         this.ctx.canvas.addEventListener("wheel", e => {
             if (this.options.debugging) {
