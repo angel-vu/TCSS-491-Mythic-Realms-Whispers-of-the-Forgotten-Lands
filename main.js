@@ -24,17 +24,18 @@ ASSET_MANAGER.downloadAll(() => {
 	const ctx = canvas.getContext("2d");
 	ctx.imageSmoothingEnabled = true;
 
-	gameEngine.addEntity(new Ganon(gameEngine));
-	gameEngine.addEntity(new Link(gameEngine));
-	gameEngine.addEntity(new Skeleton(gameEngine));
-    gameEngine.addEntity(new Coin(gameEngine));
-    gameEngine.addEntity(new HealthPotion(gameEngine));
-    gameEngine.addEntity(new InvisiblePotion(gameEngine));
-    gameEngine.addEntity(new PowerPotion(gameEngine));
-    gameEngine.addEntity(new Treasure(gameEngine));
-	gameEngine.addEntity(new Goblin(gameEngine));
-    gameEngine.addEntity(new Banshee(gameEngine));
-    gameEngine.addEntity(new Knight(gameEngine));
+	//gameEngine.addEntity(new Ganon(gameEngine));
+	gameEngine.addEntity(new Akagane(gameEngine));
+	// gameEngine.addEntity(new Link(gameEngine));
+	// gameEngine.addEntity(new Skeleton(gameEngine));
+    // gameEngine.addEntity(new Coin(gameEngine));
+    // gameEngine.addEntity(new HealthPotion(gameEngine));
+    // gameEngine.addEntity(new InvisiblePotion(gameEngine));
+    // gameEngine.addEntity(new PowerPotion(gameEngine));
+    // gameEngine.addEntity(new Treasure(gameEngine));
+	// gameEngine.addEntity(new Goblin(gameEngine));
+    // gameEngine.addEntity(new Banshee(gameEngine));
+    // gameEngine.addEntity(new Knight(gameEngine));
 
 	gameEngine.init(ctx);
 

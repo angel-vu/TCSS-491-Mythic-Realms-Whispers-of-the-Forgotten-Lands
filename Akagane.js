@@ -6,7 +6,7 @@ class Akagane {
         this.x = 0;
         this.y = 20;
         this.speed = 250;
-        this.state = 1; // 0 = idle, 1 = attacking
+        this.state = 0; // 0 = idle, 1 = walking, 2 = attacking
         this.facing = 0; // 0 = right
 
         this.animations = [];
@@ -20,16 +20,35 @@ class Akagane {
                 this.animations[i].push([]);
             }
         }
+
+        // idle animation
+        this.animations[0][0] = new Animator(this.spritesheet, 0, 0, 85, 130, 6, 0.33, 0, false, true, false);
+
+        // walking animation
+        this.animations[1][0] = new Animator(this.spritesheet, 0, 0, 85, 130, 6, 0.33, 0, false, true, false);
+
+        // attacking animation
+        this.animations[2][0] = new Animator(this.spritesheet, 0, 134, 89, 130, 7, 0.33, 0, false, true, false);
     };
 
     update() {
-        this.x += this.speed * this.game.clockTick;
-        if (this.x > 1024) this.x = 0;
+        if (this.animations[0][0]) {
+            this.x = 2;
+        } else if (this.animations[1][0] || this.x == 0) {
+            this.x += this.speed * this.game.clockTick;
+            if (this.x > 1024) {
+                this.x -= this.speed * this.game.clockTick;
+                this.reverse = true;
+                this.flipleft = true;
+            }
+        } else if (this.animations[2][0]) {
+            this.x = 5;
+        }
 
     };
 
     draw(ctx) {
-        this.animator.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+        this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x, this.y, 2);
     };
 
 }
