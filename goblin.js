@@ -4,7 +4,7 @@ class Goblin {
 
         this.game.goblin = this;
 
-        this.x = 0;
+        this.x = 400;
         this.y = 0;
         this.speed = 200;
 

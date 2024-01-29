@@ -4,7 +4,7 @@ class Knight {
 
         this.game.knight = this;
 
-        this.x = 0;
+        this.x = 200;
         this.y = 100;
         this.speed = 200;
 

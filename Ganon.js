@@ -56,7 +56,7 @@ class Ganon {
 
     update() {
       if (this.animations[0][0]) {
-        this.x = 0;
+        this.x = 800;
       } else if (this.animations[1][0]) {
         this.y += this.speed * this.game.clockTick;
         console.log("Y: ", this.y);
