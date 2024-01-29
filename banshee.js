@@ -43,14 +43,14 @@ class Banshee {
         // left (Walk, Idle, Attack)
         this.animations[2][0] = new Animator(this.spritesheet,   0,  15, 52,   65, 16, 0.1, 0, false, true, false);
         this.animations[2][1] = new Animator(this.spritesheet,   0,  15, 52,   65, 16, 0.1, 0, false, true, false);
-        this.animations[2][2] = new Animator(this.spritesheet,   0, 160, 53.2, 80, 10, 0.1, 0, false, true, false);
-        this.animations[2][3] = new Animator(this.spritesheet,   0, 350, 53.2, 80, 1, 0.1, 0, false, true, false);
+        this.animations[2][2] = new Animator(this.spritesheet,   0, 160, 53.2, 70, 10, 0.1, 0, false, true, false);
+        this.animations[2][3] = new Animator(this.spritesheet,   0, 350, 53.2, 60, 1, 0.1, 0, false, true, false);
 
         // right (Walk, Idle, Attack)
         this.animations[3][0] = new Animator(this.spritesheet,  0,  15, 52,   65, 16, 0.1, 0, false, true, true);
         this.animations[3][1] = new Animator(this.spritesheet,  0,  15, 52,   65, 16, 0.1, 0, false, true, true);
-        this.animations[3][2] = new Animator(this.spritesheet,  0, 160, 53.2, 80, 10, 0.1, 0, false, true, true);
-        this.animations[3][3] = new Animator(this.spritesheet,   0, 350, 53.2, 80, 1, 0.1, 0, false, true, true);
+        this.animations[3][2] = new Animator(this.spritesheet,  0, 160, 53.2, 70, 10, 0.1, 0, false, true, true);
+        this.animations[3][3] = new Animator(this.spritesheet,   0, 350, 53.2, 60, 1, 0.1, 0, false, true, true);
     };
 
     update() {
