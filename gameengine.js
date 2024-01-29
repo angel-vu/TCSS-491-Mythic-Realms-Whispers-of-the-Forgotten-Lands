@@ -170,6 +170,9 @@ class GameEngine {
                 case "KeyO":
                     that.cheer = true;
                     break;
+                case "KeyM":
+                    this.run = true;
+                    break;
             }
         }, false);
         this.ctx.canvas.addEventListener("keyup", 
@@ -191,7 +194,6 @@ class GameEngine {
                     break;
                 case "KeyE":
                     this.e = false;
-                   
                     break;
                 case "KeyQ":
                     this.q = false;
@@ -210,6 +212,9 @@ class GameEngine {
                     break;
                 case "KeyO":
                     that.cheer = false;
+                    break;
+                case "KeyM":
+                    this.run = false;
                     break;
             }
         }, false);

@@ -19,6 +19,7 @@ ASSET_MANAGER.queueDownload("./treasure.png");
 ASSET_MANAGER.queueDownload("./goblin.png");
 ASSET_MANAGER.queueDownload("./banshee.png");
 ASSET_MANAGER.queueDownload("./knight.png");
+ASSET_MANAGER.queueDownload("./wizard.png");
 ASSET_MANAGER.downloadAll(() => {
 	const canvas = document.getElementById("gameWorld");
 	
@@ -37,6 +38,7 @@ ASSET_MANAGER.downloadAll(() => {
 	gameEngine.addEntity(new Goblin(gameEngine));
     gameEngine.addEntity(new Banshee(gameEngine));
     gameEngine.addEntity(new Knight(gameEngine));
+	gameEngine.addEntity(new Wizard(gameEngine));
 
 	gameEngine.init(ctx);
 
