@@ -4,7 +4,8 @@ class Link{
 		Object.assign(this, { game, x ,y});
 		this.game.link = this;
 		this.speed = 200;
-
+		
+		this.elapsedTime = 0;
 
 		this.maxHealth = 5;
 		this.currentHealth =5;
@@ -169,10 +170,17 @@ class Link{
 			this.state = 5;
 			
 			//begin attack animation interval. 
-			
+			this.elapsedTime+= this.game.clockTick;
+			//
+			if(this.elapsedTime > this.animations[1][5][0].TotalTime+ (this.game.clockTick *2)){
 			// after attack animation and combo window closes 
+
 			// this.game.attack = false;
 			// this.state = idle; 
+			//this.elapsedTime = 0;
+		}
+		
+			
 		}
 
         else {
