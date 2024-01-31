@@ -78,8 +78,21 @@ class GameEngine {
                 console.log("MOUSE_MOVE", getXandY(e));
             }
             this.mouse = getXandY(e);
+            switch (e.which) {
+                case 1:
+                    //alert('Left Mouse button click.');
+                    that.attack = true;
+                    break;
+                case 2:
+                    //alert('Middle Mouse button release.');
+                    break;
+                case 3:
+                    //alert('Right Mouse button release.');
+                     break;
+        
+                }
             console.log("left click", getXandY(e));
-            that.attack = true;
+          
         });
 
 
