@@ -9,6 +9,7 @@ class Link{
 
 		this.maxHealth = 5;
 		this.currentHealth =5;
+		this.comboCounter = 0;
 		// link's state variables
 		this.itemsEquipped = 1; // 0 = none, 1 = master sword and shield 
 		this.state = 0; // 0 = idle, 1 = walking, 2 = running, 3 = damaged, 4 = jumping/falling, 5 = attack1
@@ -104,7 +105,7 @@ class Link{
 
 		// mastersword and shield 
         // facing left = 1
-        this.animations[1][0][1] = new Animator(ASSET_MANAGER.getAsset("./Link_main_character.png"), 646, 139, 60, 60, 6, 0.2, 0, false, true,false);
+        this.animations[1][0][1] = new Animator(ASSET_MANAGER.getAsset("./Link_main_character.png"), 646, 139, 60, 60, 1, 0.2, 0, false, true,false);
         this.animations[1][1][1] = new Animator(ASSET_MANAGER.getAsset("./Link_main_character.png"), 646, 139, 60, 60, 6, 0.2, 0, false, true,false);
         // this.animations[1][2][1] = new Animator(this.spritesheet, 209, 122, 16, 32, 1, 0.33, 14, false, true);
 		// this.animations[1][3][1] = new Animator(this.spritesheet, 209, 122, 16, 32, 1, 0.33, 14, false, true);
@@ -138,7 +139,7 @@ class Link{
             this.y = 1024;
         }
 
-        this.state = 0;
+        //this.state = 0;
 
         if (this.game.down && !this.game.up) {
             console.log("DOWN");
@@ -164,31 +165,29 @@ class Link{
             this.facing = 0;
             this.state = 1;
             this.x = this.x + this.speed * this.game.clockTick;
-        } else if(this.game.attack){
+        }  else if(!this.game.right && !this.game.left && this.state === 1 ){
+			this.state = 0;
+		} else if(this.game.attack && this.state !== 5 ){
 			console.log("Attack");
 			//this.itemsEquipped = 1;
 			this.state = 5;
 			
 			//begin attack animation interval. 
-			this.elapsedTime+= this.game.clockTick;
+			this.elapsedTime= 0;
+			
 			//
-			if(this.elapsedTime > this.animations[1][5][0].TotalTime+ (this.game.clockTick *2)){
-			// after attack animation and combo window closes 
-
-			// this.game.attack = false;
-			// this.state = idle; 
-			//this.elapsedTime = 0;
+		} else if(this.state === 5 ){
+		this.elapsedTime+= this.game.clockTick;
+			if(this.elapsedTime > this.animations[1][5][0].totalTime){
+			this.state = 0;
+			this.comboCounter++;
+			}
+	
+		} else if (this.state!== 5 && this.comboCounter === 1 && this.game.attack){
+			
 		}
 		
 			
-		}
-
-        else {
-            this.state = 0;
-			//this.itemsEquipped = 0; 
-        }
-
-
         if(this.game.damage) {
             this.state = 1; 
         }

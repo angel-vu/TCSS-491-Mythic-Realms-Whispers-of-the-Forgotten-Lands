@@ -15,6 +15,7 @@ class GameEngine {
         this.wheel = null;
         this.keys = {};
 
+
         //maincontrols
         this.left = false;
         this.right = false;
@@ -82,6 +83,7 @@ class GameEngine {
                 case 1:
                     //alert('Left Mouse button click.');
                     that.attack = true;
+
                     break;
                 case 2:
                     //alert('Middle Mouse button release.');
@@ -109,7 +111,7 @@ class GameEngine {
             switch (e.which) {
                 case 1:
                     //alert('Left Mouse button release.');
-                    that.attack = false;
+                    //that.attack = false;
                     break;
                 case 2:
                     //alert('Middle Mouse button release.');
@@ -274,6 +276,7 @@ class GameEngine {
         this.clockTick = this.timer.tick();
         this.update();
         this.draw();
+        this.attack = null;
     };
 
 };

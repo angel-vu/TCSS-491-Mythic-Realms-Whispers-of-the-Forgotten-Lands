@@ -62,30 +62,13 @@ class Animator {
         }
     };
 
-    //function that returns the total time of the animation.
-    //are getters used with parenthesis? 
-    get TotalTime() {
-        return this.totalTime;
-      }
+
     //fuhnction that advances a tick and tells us current frame, 
     //as animator in the update function of another entity to tell what frame you are on is always the last frame
     //from current frame function used.Should keep in mind that the update function of another entity is called before the animator changes its frame.
     advanceAndGetCurrentFrame(currentTick) {
         // Create a new elapsed time variable for temporary use
         let tempElapsedTime = this.elapsedTime + currentTick;
-
-        if (this.isDone(tempElapsedTime)) {
-            // If the animation is done, handle looping
-            if (this.loop) {
-                tempElapsedTime -= this.totalTime;
-            } else {
-                // Stop at the last frame if not looping
-                tempElapsedTime = this.totalTime;
-            }
-        }
-
-
-
         // Return the current frame based on the temporary elapsed time
         return Math.floor(tempElapsedTime / this.frameDuration);
     };
