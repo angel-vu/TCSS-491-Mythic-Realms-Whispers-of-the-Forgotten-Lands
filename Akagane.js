@@ -6,7 +6,7 @@ class Akagane {
         this.x = 0;
         this.y = 500;
         this.speed = 250;
-        this.state = 0; // 0 = idle, 1 = walking, 2 = attacking
+        this.state = 2; // 0 = idle, 1 = walking, 2 = attacking
         this.facing = 0; // 0 = right
 
         this.animations = [];
@@ -28,13 +28,13 @@ class Akagane {
         this.animations[1][0] = new Animator(this.spritesheet, 0, 0, 85, 130, 6, 0.33, 0, false, true, false);
 
         // attacking animation
-        this.animations[2][0] = new Animator(this.spritesheet, 0, 134, 89, 130, 7, 0.33, 0, false, true, false);
+        this.animations[2][0] = new Animator(this.spritesheet, 0, 134, 85, 130, 7, 1, 14, false, true, false);
     };
 
     update() {
         if (this.animations[0][0]) {
             this.x = 100;
-        } else if (this.animations[1][0] || this.x == 0) {
+        } else if (this.animations[1][0]) {
             this.x += this.speed * this.game.clockTick;
             if (this.x > 1024) {
                 this.x -= this.speed * this.game.clockTick;
