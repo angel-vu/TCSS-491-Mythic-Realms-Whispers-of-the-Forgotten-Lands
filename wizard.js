@@ -4,8 +4,8 @@ class Wizard {
 
         this.game.wizard = this;
 
-        this.x = 0;
-        this.y = 0;
+        this.x = 600;
+        this.y = 100;
         this.speed = 200;
 
         // spritesheet
