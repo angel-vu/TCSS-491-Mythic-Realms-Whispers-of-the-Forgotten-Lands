@@ -8,7 +8,7 @@ class Ganon {
         this.y = y;
         this.speed = 250;
         this.phase = 0; // 0 = first phase (no spear), 1 = second phase (w/ spear), 2 = third phase (bat phase)
-        this.state = 0; // 0 = idle, 1 = walking, 2 = attacking
+        this.state = 1; // 0 = idle, 1 = walking, 2 = attacking
         this.facing = 1; // 0 = down, 1 = left, 2 = up, 3 = right
 
         //this.velocity = { x: this.x, y: this.y };
@@ -28,12 +28,23 @@ class Ganon {
           }
         }
       }
-
-      // phase 0 (no spear) idle
+      // phase 0 (no spear) idle down
       this.animations[0][0][0] = new Animator(this.spritesheet, 27, 66, 75, 46, 4, 0.9, 0, false, true, false);
 
       // phase 0, idle left
       this.animations[0][0][1] = new Animator(this.spritesheet, 24, 225, 55, 50, 1, 0.33, 0, false, true, false);
+
+      // phase 0, idle up
+      this.animations[0][0][2] = new Animator(this.spritesheet, 20, 170, 64, 48, 1, 0.33, 0, false, true, false);
+
+      // phase 0, idle right
+      this.animations[0][0][3] = new Animator(this.spritesheet, 21, 278, 67, 47, 1, 0.33, 0, false, true, false);
+
+      // phase 0, state = 1 walking down
+      this.animations[0][1][0] = new Animator(this.spritesheet, 21, 115, 63, 50, 5, 0.33, 0 , false, true, false);
+
+      // phase 0, walking left
+      this.animations[0][1][1] = new Animator(this.spritesheet, 15, 224, 63, 49, 5, 0.33, 0, false, true, false);
 
       // phase = 1
       // idle animation for state = 0
@@ -71,8 +82,14 @@ class Ganon {
     updateBB() {
       if (this.phase == 0 && this.animations[0][0][0]) {
         this.boundingBox = new BoundingBox(this.x + 10, this.y, 50, 45);
-      } else if (this.phase == 0 && this.animations[0][0][1]) {
-        this.boundingBox = new BoundingBox(10, 0, 20, 10);
+      } else if (this.phase == 0 && (this.animations[0][0][1] || this.animations[0][0][3])) {
+        this.boundingBox = new BoundingBox(this.x, 0, 20, 10);
+      } else if (this.phase == 0 && this.animations[0][0][2]) {
+        this.boundingBox = new BoundingBox(this.x, this.y, 60, 40);
+      } else if (this.phase == 0 && this.animations[0][1][0]) {
+        this.boundingBox = new BoundingBox(this.x, this.y, 60, 54);
+      } else if (this.phase == 0 && (this.animations[0][1][1])) {
+        this.boundingBox = new BoundingBox(this.x, this.y, 53, 48);
       }
       //  else if (this.state == 0 && this.animations[1][0][0]) {
       //   this.boundingBox = new BoundingBox(this.x + 16, this.y + 20, 45, 47);
