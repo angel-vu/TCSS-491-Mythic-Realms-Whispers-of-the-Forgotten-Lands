@@ -4,8 +4,8 @@ class Skeleton {
 
         this.game.skeleton = this;
 
-        this.x = 0;
-        this.y = 0;
+        this.x = 300;
+        this.y = 500;
         this.speed = 200;
 
         // spritesheet
