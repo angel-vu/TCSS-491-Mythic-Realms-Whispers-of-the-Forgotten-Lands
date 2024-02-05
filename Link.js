@@ -321,7 +321,7 @@ class Link {
          if (PARAMS.DEBUG && this.hitBox) {
             
              ctx.strokeStyle = 'Red';
-             ctx.strokeRect(this.hitBox.x, this.hitBox.y, this.hitBox.width, this.hitBox.height);
+             ctx.strokeRect(this.hitBox.x - this.game.camera.x, this.hitBox.y - this.game.camera.y, this.hitBox.width, this.hitBox.height);
          }
 
           //drawing the hurtbox of link
