@@ -302,19 +302,19 @@ class Link {
 	draw(ctx) {
         if(this.state === 5 ){
             if(this.facing === 0){
-                this.animations[this.itemsEquipped][this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x- 85 , this.y+5, 3);
+                this.animations[this.itemsEquipped][this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x- 85-this.game.camera.x, this.y+5 - this.game.camera.y, 3);
             } else if(this.facing === 1){
-                this.animations[this.itemsEquipped][this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x- 45 , this.y+5, 3);
+                this.animations[this.itemsEquipped][this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x- 45-this.game.camera.x , this.y+5 - this.game.camera.y, 3);
             }
 
         } else if(this.state === 6 ){
             if(this.facing === 0){
-                this.animations[this.itemsEquipped][this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x-102, this.y -45, 3);
+                this.animations[this.itemsEquipped][this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x-102-this.game.camera.x, this.y -45 - this.game.camera.y, 3);
             } else if (this.facing === 1 ){
-                this.animations[this.itemsEquipped][this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x-80 , this.y -45, 3);
+                this.animations[this.itemsEquipped][this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x-80-this.game.camera.x , this.y -45 - this.game.camera.y, 3);
             }
         } else {
-            this.animations[this.itemsEquipped][this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x , this.y, 3);
+            this.animations[this.itemsEquipped][this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x -this.game.camera.x, this.y - this.game.camera.y, 3);
         }
     
          //drawing the hitbox of the attack animation
