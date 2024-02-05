@@ -27,8 +27,8 @@ ASSET_MANAGER.downloadAll(() => {
 	const ctx = canvas.getContext("2d");
 	ctx.imageSmoothingEnabled = true;
 
-	gameEngine.addEntity(new Ganon(gameEngine));
-	gameEngine.addEntity(new Akagane(gameEngine));
+	gameEngine.addEntity(new Ganon(gameEngine, 600, 300));
+	gameEngine.addEntity(new Akagane(gameEngine, 0, 500));
 	gameEngine.addEntity(new Link(gameEngine,0,0));
 	gameEngine.addEntity(new Skeleton(gameEngine));
     gameEngine.addEntity(new Coin(gameEngine));
