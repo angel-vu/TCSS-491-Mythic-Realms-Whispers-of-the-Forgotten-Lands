@@ -82,7 +82,7 @@ class GameEngine {
             switch (e.which) {
                 case 1:
                     //alert('Left Mouse button click.');
-                    that.attack = true;
+                    this.attack = true;
 
                     break;
                 case 2:
