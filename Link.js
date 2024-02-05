@@ -330,10 +330,7 @@ class Link {
             ctx.strokeRect(this.hurtBox.x - this.game.camera.x, this.hurtBox.y - this.game.camera.y, this.hurtBox.width, this.hurtBox.height);
         }
 
-		if (PARAMS.DEBUG) {
-            ctx.strokeStyle = "Green";
-            ctx.strokeRect(this.x - this.game.camera.x, this.y - this.game.camera.y, 64, 64);
-            
+		if (PARAMS.DEBUG) { 
             ctx.strokeStyle = "Red";
             ctx.beginPath();
             ctx.arc(this.x - this.game.camera.x, this.y - this.game.camera.y, this.radius, 0, 2 * Math.PI);
