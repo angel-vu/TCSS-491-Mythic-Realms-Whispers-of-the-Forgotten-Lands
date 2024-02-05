@@ -141,8 +141,8 @@ class Link{
 
         // no weapons
         // facing right = 0
-        this.animations[0][0][0] = new Animator(ASSET_MANAGER.getAsset("./Link_main_character.png"), 20, 144, 40, 60, 1, 0.2, 0, false, true,false);
-        this.animations[0][1][0] = new Animator(ASSET_MANAGER.getAsset("./Link_main_character.png"), 20, 144, 40, 60, 6, 0.2, 0, false, true,false);
+        this.animations[0][0][0] = new Animator(ASSET_MANAGER.getAsset("./sprites/Link_main_character.png"), 20, 144, 40, 60, 1, 0.2, 0, false, true,false);
+        this.animations[0][1][0] = new Animator(ASSET_MANAGER.getAsset("./sprites/Link_main_character.png"), 20, 144, 40, 60, 6, 0.2, 0, false, true,false);
         // this.animations[0][2][0] = new Animator(this.spritesheet, 209, 122, 16, 32, 1, 0.33, 14, false, true);
 		// this.animations[0][3][0] = new Animator(this.spritesheet, 209, 122, 16, 32, 1, 0.33, 14, false, true);
 		// this.animations[0][4][0] = new Animator(this.spritesheet, 209, 122, 16, 32, 1, 0.33, 14, false, true);d
@@ -154,8 +154,8 @@ class Link{
 
 		 // no weapons
         // facing left = 1
-        this.animations[0][0][1] = new Animator(ASSET_MANAGER.getAsset("./Link_main_character.png"), 20, 144, 40, 60, 1, 0.2, 0, false, true,true);
-        this.animations[0][1][1] = new Animator(ASSET_MANAGER.getAsset("./Link_main_character.png"), 20, 144, 40, 60, 6, 0.2, 0, false, true,true);
+        this.animations[0][0][1] = new Animator(ASSET_MANAGER.getAsset("./sprites/Link_main_character.png"), 20, 144, 40, 60, 1, 0.2, 0, false, true,true);
+        this.animations[0][1][1] = new Animator(ASSET_MANAGER.getAsset("./sprites/Link_main_character.png"), 20, 144, 40, 60, 6, 0.2, 0, false, true,true);
         // this.animations[0][2][1] = new Animator(this.spritesheet, 209, 122, 16, 32, 1, 0.33, 14, false, true);
 		// this.animations[0][3][1] = new Animator(this.spritesheet, 209, 122, 16, 32, 1, 0.33, 14, false, true);
 		// this.animations[0][4][1] = new Animator(this.spritesheet, 209, 122, 16, 32, 1, 0.33, 14, false, true);
@@ -166,25 +166,25 @@ class Link{
 
 		 // mastersword and shield 
         // facing right = 0
-        this.animations[1][0][0] = new Animator(ASSET_MANAGER.getAsset("./Link_main_character.png"), 297, 139, 51, 60, 1, 0.2, 0, false, true,false);
-        this.animations[1][1][0] = new Animator(ASSET_MANAGER.getAsset("./Link_main_character.png"), 297, 139, 51, 60, 6, 0.2, 0, false, true,false);
+        this.animations[1][0][0] = new Animator(ASSET_MANAGER.getAsset("./sprites/Link_main_character.png"), 297, 139, 51, 60, 1, 0.2, 0, false, true,false);
+        this.animations[1][1][0] = new Animator(ASSET_MANAGER.getAsset("./sprites/Link_main_character.png"), 297, 139, 51, 60, 6, 0.2, 0, false, true,false);
         // this.animations[1][2][0] = new Animator(this.spritesheet, 209, 122, 16, 32, 1, 0.33, 14, false, true);
 		// this.animations[1][3][0] = new Animator(this.spritesheet, 209, 122, 16, 32, 1, 0.33, 14, false, true);
 		// this.animations[1][4][0] = new Animator(this.spritesheet, 209, 122, 16, 32, 1, 0.33, 14, false, true);
 		// this.animations[1][5][0] = new Animator(this.spritesheet, 209, 122, 16, 32, 1, 0.33, 14, false, true);
-		this.animations[1][5][0] = new Animator(ASSET_MANAGER.getAsset("./Link_attack_1.png"), 0, 20, 102, 60, 4, 0.2, 1, false, true, false);
-		this.animations[1][6][0] = new Animator(ASSET_MANAGER.getAsset("./Link_attack_1.png"), 439, 2, 122, 73, 6, 0.2, 0, false, true, false);
+		this.animations[1][5][0] = new Animator(ASSET_MANAGER.getAsset("./sprites/Link_attack_1.png"), 0, 20, 102, 60, 4, 0.2, 1, false, true, false);
+		this.animations[1][6][0] = new Animator(ASSET_MANAGER.getAsset("./sprites/Link_attack_1.png"), 439, 2, 122, 73, 6, 0.2, 0, false, true, false);
 
 		// mastersword and shield 
         // facing left = 1
-        this.animations[1][0][1] = new Animator(ASSET_MANAGER.getAsset("./Link_main_character.png"), 646, 139, 60, 60, 1, 0.2, 0, false, true,false);
-        this.animations[1][1][1] = new Animator(ASSET_MANAGER.getAsset("./Link_main_character.png"), 646, 139, 60, 60, 6, 0.2, 0, false, true,false);
+        this.animations[1][0][1] = new Animator(ASSET_MANAGER.getAsset("./sprites/Link_main_character.png"), 646, 139, 60, 60, 1, 0.2, 0, false, true,false);
+        this.animations[1][1][1] = new Animator(ASSET_MANAGER.getAsset("./sprites/Link_main_character.png"), 646, 139, 60, 60, 6, 0.2, 0, false, true,false);
         // this.animations[1][2][1] = new Animator(this.spritesheet, 209, 122, 16, 32, 1, 0.33, 14, false, true);
 		// this.animations[1][3][1] = new Animator(this.spritesheet, 209, 122, 16, 32, 1, 0.33, 14, false, true);
 		// this.animations[1][4][1] = new Animator(this.spritesheet, 209, 122, 16, 32, 1, 0.33, 14, false, true);
 		// this.animations[1][5][1] = new Animator(this.spritesheet, 209, 122, 16, 32, 1, 0.33, 14, false, true);
-		this.animations[1][5][1] = new Animator(ASSET_MANAGER.getAsset("./Link_attack_1.png"), 0, 20, 102, 60, 4, 0.2, 1, false, true, true);
-		this.animations[1][6][1] = new Animator(ASSET_MANAGER.getAsset("./Link_attack_1.png"), 439, 2, 122, 73, 6, 0.2, 0, false, true, true);
+		this.animations[1][5][1] = new Animator(ASSET_MANAGER.getAsset("./sprites/Link_attack_1.png"), 0, 20, 102, 60, 4, 0.2, 1, false, true, true);
+		this.animations[1][6][1] = new Animator(ASSET_MANAGER.getAsset("./sprites/Link_attack_1.png"), 439, 2, 122, 73, 6, 0.2, 0, false, true, true);
 
 
 

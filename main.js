@@ -8,10 +8,10 @@ ASSET_MANAGER.queueDownload("./enemies/Akagane.png");
 
 //Loading Link image walking withoutsword
 
-ASSET_MANAGER.queueDownload("./Link_main_character_walking_no_sword.png");
-ASSET_MANAGER.queueDownload("./Link_main_character.png");
-ASSET_MANAGER.queueDownload("./Link_attack_1.png");
-ASSET_MANAGER.queueDownload("./Link_walk_mastersword_shield_right.png");
+ASSET_MANAGER.queueDownload("./sprites/Link_main_character_walking_no_sword.png");
+ASSET_MANAGER.queueDownload("./sprites/Link_main_character.png");
+ASSET_MANAGER.queueDownload("./sprites/Link_attack_1.png");
+ASSET_MANAGER.queueDownload("./sprites/Link_walk_mastersword_shield_right.png");
 ASSET_MANAGER.queueDownload("./skeleton.png");
 ASSET_MANAGER.queueDownload("./coins.png");
 ASSET_MANAGER.queueDownload("./potion.png");
