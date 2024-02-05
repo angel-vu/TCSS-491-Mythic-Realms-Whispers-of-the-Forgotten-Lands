@@ -116,7 +116,9 @@ class AssetManager {
             }
         }
     };
-    //
+    //an auto repeat method that adds a listener to an audio file, if it has ended it will repeat.
+    //When you add another listener for the same event, it will create a list of listeners for the same event. Modern browsers will 
+    //make it so that it fires off in the order that you added them to the list.
     autoRepeat(path) {
         var aud = this.cache[path];
         aud.addEventListener("ended", function () {
