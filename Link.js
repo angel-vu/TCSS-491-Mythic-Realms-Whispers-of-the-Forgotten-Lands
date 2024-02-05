@@ -309,12 +309,12 @@ class Link {
 
         } else if(this.state === 6 ){
             if(this.facing === 0){
-                this.animations[this.itemsEquipped][this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x-102-this.game.camera.x, this.y -45 - this.game.camera.y, 3);
+                this.animations[this.itemsEquipped][this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x-102-this.game.camera.x, this.y - 45 - this.game.camera.y, 3);
             } else if (this.facing === 1 ){
-                this.animations[this.itemsEquipped][this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x-80-this.game.camera.x , this.y -45 - this.game.camera.y, 3);
+                this.animations[this.itemsEquipped][this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x-80-this.game.camera.x , this.y - 45 - this.game.camera.y, 3);
             }
         } else {
-            this.animations[this.itemsEquipped][this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x -this.game.camera.x, this.y - this.game.camera.y, 3);
+            this.animations[this.itemsEquipped][this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, 3);
         }
     
          //drawing the hitbox of the attack animation
@@ -327,7 +327,7 @@ class Link {
           //drawing the hurtbox of link
           if (PARAMS.DEBUG && this.hurtBox) {
             ctx.strokeStyle = 'Blue';
-            ctx.strokeRect(this.hurtBox.x, this.hurtBox.y, this.hurtBox.width, this.hurtBox.height);
+            ctx.strokeRect(this.hurtBox.x - this.game.camera.x, this.hurtBox.y - this.game.camera.y, this.hurtBox.width, this.hurtBox.height);
         }
 
 		if (PARAMS.DEBUG) {
