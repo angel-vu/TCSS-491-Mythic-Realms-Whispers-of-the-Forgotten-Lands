@@ -4,6 +4,7 @@ class Link{
 		Object.assign(this, { game, x ,y});
 		this.game.link = this;
 		this.speed = 200;
+		this.radius = 50;
 		
 		this.elapsedTime = 0;
 
@@ -77,7 +78,7 @@ class Link{
 			//making hitbox spawn at the end of the last hitbox before this frame.
 			// 215 by x coordinate + the other x before this.
 			this.hitBox = new BoundingBox(this.x-85, this.y, 215, 60 *3);
-		 	console.log("Hitbox created on 2nd frame");
+		 	// console.log("Hitbox created on 2nd frame");
 		
 		 //attack2 state
 		 //have to be done within the if statement as it would cause error and not go away in time.
@@ -164,52 +165,47 @@ class Link{
 
 
 	update() {
-		console.log(this.comboCounter);
+		// console.log(this.comboCounter);
 		this.updateLastHurtBox();
 		this.updateLastHitBox();
 		this.updateHitBox();
 		this.updateHurtBox();
 	
-		
-        if (this.x > 1024) {
-            this.x = -130;
-        }
+        // if (this.x > 1024) {
+        //     this.x = -130;
+        // }
 
-        if (this.x < -130) {
-            this.x = 1024;
-        }
+        // if (this.x < -130) {
+        //     this.x = 1024;
+        // }
 
-        if (this.y > 1024) {
-            this.y = -130;
-        }
+        // if (this.y > 1024) {
+        //     this.y = -130;
+        // }
 
-        if (this.y < -130) {
-            this.y = 1024;
-        }
+        // if (this.y < -130) {
+        //     this.y = 1024;
+        // }
 
         //this.state = 0;
 		//bug where if you moved during the attack animations, the animations times never reset back to 0.
         if (this.game.down && !this.game.up && this.comboCounter === 0) {
-            console.log("DOWN");
             this.state = 1;
             this.y = this.y + this.speed * this.game.clockTick;
         }
 
         else if (this.game.up && !this.game.down && this.comboCounter === 0) {
-            console.log("UP");
             this.state = 1;
             this.y = this.y - this.speed * this.game.clockTick;
         }
 
         else if (this.game.left && !this.game.right && this.comboCounter === 0) {
-            console.log("LEFT");
             this.facing = 1;
             this.state = 1;
             this.x = this.x - this.speed * this.game.clockTick;
         }
 
         else if (this.game.right && !this.game.left && this.comboCounter === 0) {
-            console.log("RIGHT");
             this.facing = 0;
             this.state = 1;
             this.x = this.x + this.speed * this.game.clockTick;
@@ -276,15 +272,15 @@ class Link{
 
 	draw(ctx) {
 		if(this.state === 5 ){
-			this.animations[this.itemsEquipped][this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x- 85 , this.y, 3);
+			this.animations[this.itemsEquipped][this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - 85 - this.game.camera.x, this.y - this.game.camera.y, 3);
 		} else if(this.state === 6 ){
 			if(this.facing === 0){
-				this.animations[this.itemsEquipped][this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x-20 , this.y -52, 3);
+				this.animations[this.itemsEquipped][this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - 20 - this.game.camera.x, this.y - 52 - this.game.camera.y, 3);
 			} else if (this.facing === 1 ){
-				this.animations[this.itemsEquipped][this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x-40 , this.y -52, 3);
+				this.animations[this.itemsEquipped][this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - 40 - this.game.camera.x, this.y - 52 - this.game.camera.y, 3);
 			}
 		} else {
-			this.animations[this.itemsEquipped][this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x , this.y, 3);
+			this.animations[this.itemsEquipped][this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, 3);
 		}
 	
 	
@@ -292,14 +288,32 @@ class Link{
 		 if (PARAMS.DEBUG && this.hitBox) {
 			
 		 	ctx.strokeStyle = 'Red';
-		 	ctx.strokeRect(this.hitBox.x, this.hitBox.y, this.hitBox.width, this.hitBox.height);
+		 	ctx.strokeRect(this.hitBox.x - this.game.camera.x, this.hitBox.y - this.game.camera.y, this.hitBox.width, this.hitBox.height);
 		 }
 
 		  //drawing the hurtbox of link
 		  if (PARAMS.DEBUG && this.hurtBox) {
 			ctx.strokeStyle = 'Blue';
-			ctx.strokeRect(this.hurtBox.x, this.hurtBox.y, this.hurtBox.width, this.hurtBox.height);
+			ctx.strokeRect(this.hurtBox.x - this.game.camera.x, this.hurtBox.y - this.game.camera.y, this.hurtBox.width, this.hurtBox.height);
 		}
+
+		if (PARAMS.DEBUG) {
+            ctx.strokeStyle = "Green";
+            ctx.strokeRect(this.x - this.game.camera.x, this.y - this.game.camera.y, 64, 64);
+            
+            ctx.strokeStyle = "Red";
+            ctx.beginPath();
+            ctx.arc(this.x - this.game.camera.x, this.y - this.game.camera.y, this.radius, 0, 2 * Math.PI);
+            ctx.closePath();
+            ctx.stroke();
+
+            ctx.setLineDash([5, 15]);
+            ctx.beginPath();
+            ctx.arc(this.x - this.game.camera.x, this.y - this.game.camera.y, this.visualRadius, 0, 2 * Math.PI);
+            ctx.closePath();
+            ctx.stroke();
+            ctx.setLineDash([]);
+        }
 	};
 	
 }
