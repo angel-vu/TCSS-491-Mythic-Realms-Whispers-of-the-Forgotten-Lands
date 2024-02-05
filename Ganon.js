@@ -7,9 +7,9 @@ class Ganon {
         this.x = x;
         this.y = y;
         this.speed = 250;
-        this.phase = 0; // 0 = first phase (no spear), 1 = second phase (w/ spear), 2 = third phase (bat phase)
+        this.phase = 0; // 0 = first phase (no spear), 1 = second phase (w/ spear), 2 = third phase (bat phase if we want)
         this.state = 1; // 0 = idle, 1 = walking, 2 = attacking
-        this.facing = 1; // 0 = down, 1 = left, 2 = up, 3 = right
+        this.facing = 3; // 0 = down, 1 = left, 2 = up, 3 = right
 
         //this.velocity = { x: this.x, y: this.y };
 
@@ -19,7 +19,7 @@ class Ganon {
     };
 
     loadAnimations() {
-      for (let i = 0; i < 3; i++) { // three phases
+      for (let i = 0; i < 2; i++) { // two phases (maybe three)
         this.animations.push([]);
         for (let j = 0; j < 3; j++) { // three states
           this.animations[i].push([]);
@@ -45,6 +45,15 @@ class Ganon {
 
       // phase 0, walking left
       this.animations[0][1][1] = new Animator(this.spritesheet, 15, 224, 63, 49, 5, 0.33, 0, false, true, false);
+
+      // phase 0, walking up
+      this.animations[0][1][2] = new Animator(this.spritesheet, 23, 170, 62, 51, 5, 0.33, 0, false, true, false);
+
+      //phase 0, walking right
+      this.animations[0][1][3] = new Animator(this.spritesheet, 23, 272, 61, 54, 5, 0.33, 0, false, true, false);
+
+      // phase 0, state = 2 attack, facing down
+      this.animations[0][2][0] = new Animator(this.spritesheet, 16, 555, 68, 69, 5, 0.33, 0, false, true, false);
 
       // phase = 1
       // idle animation for state = 0
@@ -75,6 +84,8 @@ class Ganon {
       // attack down (only direction - spear throw)
       this.animations[1][2][0] = new Animator(this.spritesheet, 710, 11, 92, 77, 4, 0.20, 0, false, true, false);
 
+      // phase = 2, 
+
       this.deadAnim = new Animator(this.spritesheet, 17, 689, 77, 44, 4, 0.33, 0, false, false, false);
 
     };
@@ -86,20 +97,21 @@ class Ganon {
         this.boundingBox = new BoundingBox(this.x, 0, 20, 10);
       } else if (this.phase == 0 && this.animations[0][0][2]) {
         this.boundingBox = new BoundingBox(this.x, this.y, 60, 40);
-      } else if (this.phase == 0 && this.animations[0][1][0]) {
+      } else if (this.phase == 0 && (this.animations[0][1][0] || this.animations[0][1][2])) {
         this.boundingBox = new BoundingBox(this.x, this.y, 60, 54);
-      } else if (this.phase == 0 && (this.animations[0][1][1])) {
-        this.boundingBox = new BoundingBox(this.x, this.y, 53, 48);
+      } else if (this.phase == 0 && (this.animations[0][1][1] || this.animations[0][1][3])) {
+        this.boundingBox = new BoundingBox(this.x, this.y, 50, 49);
+      } else if (this.phase == 0 && this.animations[0][2][0]) {
+        this.boundingBox = new BoundingBox(this.x, this.y, 65, 67);
+      } else if (this.phase == 1 && this.animations[1][0][0]) {
+        this.boundingBox = new BoundingBox(this.x + 16, this.y + 20, 45, 47);
+      } else if (this.phase == 1 && this.animations[1][0][1]) {
+        this.boundingBox = new BoundingBox(this.x, this.y + 30, 50, 15);
+      } else if (this.phase == 1 && this.animations[1][0][2]) {
+        this.boundingBox = new BoundingBox(this.x, this.y, 10, 10);
+      } else if (this.phase == 1 && this.animations[1][1][0]) {
+        this.boundingBox = new BoundingBox(this.x + 12, this.y + 20, 53, 47);
       }
-      //  else if (this.state == 0 && this.animations[1][0][0]) {
-      //   this.boundingBox = new BoundingBox(this.x + 16, this.y + 20, 45, 47);
-      // } else if (this.state == 0 && this.animations[1][0][1]) {
-      //   this.boundingBox = new BoundingBox(this.x, this.y + 30, 50, 15);
-      // } else if (this.state == 0 && this.animations[1][0][2]) {
-      //   this.boundingBox = new BoundingBox(this.x, this.y, 10, 10);
-      // } else if (this.state == 1 && this.animations[1][1][0]) {
-      //   this.boundingBox = new BoundingBox(this.x + 12, this.y + 20, 53, 47);
-      // }
     };
 
     update() {
@@ -128,7 +140,6 @@ class Ganon {
         }
       }
       this.updateBB();
-
     };
 
     draw(ctx) {
