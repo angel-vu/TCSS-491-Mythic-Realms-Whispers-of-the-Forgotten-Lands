@@ -10,6 +10,9 @@ class Link{
 		this.maxHealth = 5;
 		this.currentHealth =5;
 		this.comboCounter = 0;
+		this.comboWindowTime = 0;
+		this.enterComboWindow = false;
+		this.maxComboCounter = 2;
 		// link's state variables
 		this.itemsEquipped = 1; // 0 = none, 1 = master sword and shield 
 		this.state = 0; // 0 = idle, 1 = walking, 2 = running, 3 = damaged, 4 = jumping/falling, 5 = attack1 6= attack2
@@ -33,10 +36,22 @@ class Link{
 
 		//Based off the size of Link's walking animation frame size.
 		// * 3 since we draw Link Scaled up by 3 to drawFrame in animator class.
-		if(this.facing ===0){
+		if(this. state < 4 && this.facing ===0){
 			this.hurtBox = new BoundingBox(this.x, this.y, 26 * 3, 58 * 3);
-		} else if(this.facing === 1 ){
+		} else if(this. state <4 && this.facing === 1 ){
 			this.hurtBox = new BoundingBox(this.x+90, this.y, 29 * 3, 58 * 3);
+		} else if( this.state >= 4  ){
+			if(this.animations[1][5][0].advanceAndGetCurrentFrame(this.game.clockTick) === 0){
+				this.hurtBox = new BoundingBox(this.x, this.y, 33 * 3, 58 * 3);
+			} else if(this.animations[1][5][0].advanceAndGetCurrentFrame(this.game.clockTick) === 1){
+				this.hurtBox = new BoundingBox(this.x, this.y, 42 * 3, 58 * 3);
+			} else if(this.animations[1][5][0].advanceAndGetCurrentFrame(this.game.clockTick) === 2){
+				this.hurtBox = new BoundingBox(this.x, this.y, 33 * 3, 58 * 3);
+			}else if(this.animations[1][5][0].advanceAndGetCurrentFrame(this.game.clockTick) === 3){
+				this.hurtBox = new BoundingBox(this.x, this.y, 30 * 3, 58 * 3);
+			}
+
+
 		}
         
         
@@ -47,19 +62,26 @@ class Link{
 	updateLastHurtBox() {
         this.lastHurtBox = this.hurtBox;
     };
+	//function that updates the last hitbox before our current one.
+	updateLastHitBox(){
+		this.lastHitBox = this.hitBox;
+	}
 
 	//function that updates the current hitbox for when link is in an attack state
 	updateHitBox() {
 
 		//if he is in an attack1 state and during the frame that link swings.
-		if(this.state === 5 && this.animations[1][this.state][this.facing].advanceAndGetCurrentFrame(this.game.clockTick) ===2){
-			this.hitBox = new BoundingBox(this.x, this.y, 102 *3, 60 *3);
-			
-		 console.log("Hitbox created on 2nd frame");
+		if(this.animations[1][5][0].advanceAndGetCurrentFrame(this.game.clockTick) === 1){
+			this.hitBox = new BoundingBox(this.x + 130, this.y, 31 *3, 60 *3);
+		}else if(this.animations[1][5][0].advanceAndGetCurrentFrame(this.game.clockTick) === 2){
+			//making hitbox spawn at the end of the last hitbox before this frame.
+			// 215 by x coordinate + the other x before this.
+			this.hitBox = new BoundingBox(this.x-85, this.y, 215, 60 *3);
+		 	console.log("Hitbox created on 2nd frame");
 		
 		 //attack2 state
 		 //have to be done within the if statement as it would cause error and not go away in time.
-		}else if( this.animations[1][6][0].advanceAndGetCurrentFrame(this.game.clockTick) ===2 ){
+		}else if( this.animations[1][6][0].advanceAndGetCurrentFrame(this.game.clockTick) === 2 ){
 			this.hitBox = new BoundingBox(this.x, this.y - 52, 115 *3, 30 *3);
 		
 
@@ -142,8 +164,12 @@ class Link{
 
 
 	update() {
+		console.log(this.comboCounter);
+		this.updateLastHurtBox();
+		this.updateLastHitBox();
 		this.updateHitBox();
 		this.updateHurtBox();
+	
 		
         if (this.x > 1024) {
             this.x = -130;
@@ -162,27 +188,27 @@ class Link{
         }
 
         //this.state = 0;
-
-        if (this.game.down && !this.game.up) {
+		//bug where if you moved during the attack animations, the animations times never reset back to 0.
+        if (this.game.down && !this.game.up && this.comboCounter === 0) {
             console.log("DOWN");
             this.state = 1;
             this.y = this.y + this.speed * this.game.clockTick;
         }
 
-        else if (this.game.up && !this.game.down) {
+        else if (this.game.up && !this.game.down && this.comboCounter === 0) {
             console.log("UP");
             this.state = 1;
             this.y = this.y - this.speed * this.game.clockTick;
         }
 
-        else if (this.game.left && !this.game.right) {
+        else if (this.game.left && !this.game.right && this.comboCounter === 0) {
             console.log("LEFT");
             this.facing = 1;
             this.state = 1;
             this.x = this.x - this.speed * this.game.clockTick;
         }
 
-        else if (this.game.right && !this.game.left) {
+        else if (this.game.right && !this.game.left && this.comboCounter === 0) {
             console.log("RIGHT");
             this.facing = 0;
             this.state = 1;
@@ -193,21 +219,52 @@ class Link{
 		} else if(this.game.attack && this.state < 3  ){
 			console.log("Attack");
 			this.elapsedTime= 0;
+			
+			
 			//this.itemsEquipped = 1;
 			if(this.comboCounter === 0){
 				this.state = 5;
+				this.comboCounter++;
 			} else if(this.comboCounter === 1 ){ //begin attack animation interval. 
 				this.state = 6;
+				this.comboCounter++;
+			} else if(this.comboCounter ===this.maxComboCounter ){
+				this.comboCounter = 0;
 			}
+			
+			
 			
 		//creating  time windows for our combo system. 
 		} else if(this.state > 4 ){  // after attacking at least once.
-		this.elapsedTime+= this.game.clockTick;
+			this.elapsedTime+= this.game.clockTick;
+			
+			//does is done lag a little behind like in the same way that current frame does? 
 			//when the elapsed time is greater than the animation state, go back to idle, and allow to continue combo
-			if(this.elapsedTime > this.animations[1][this.state][this.facing].totalTime){
-			this.state = 0;
-			this.comboCounter++;
+			//After animation is done leaves a little bit of the first frame after the last frame is done.
+			if(this.animations[1][this.state][this.facing].isDone() || this.elapsedTime >= this.animations[1][this.state][this.facing].totalTime ){
+				this.elapsedTime = 0;
+				this.state = 0;
+				this.enterComboWindow = true;
+				
+				
 			} 
+		}
+		if(this.enterComboWindow){
+			
+			if(!this.game.attack && this.state <4){
+			this.comboWindowTime+= this.game.clockTick;
+			} else if (this.game.attack && this.state > 4) {
+				this.enterComboWindow = false;
+				this.comboWindowTime = 0;
+			}
+			//When combo window is too long, reset comboCounter to 0 and elapsed time back to 0.
+			if(this.comboWindowTime > this.game.clockTick *100){
+				this.comboCounter = 0;
+				this.comboWindowTime = 0;
+				this.state = 0;
+				this.enterComboWindow = false;
+				this.elapsedTime = 0;
+			}
 		} 
 		
 			
@@ -218,7 +275,9 @@ class Link{
     };
 
 	draw(ctx) {
-		if(this.state === 6 ){
+		if(this.state === 5 ){
+			this.animations[this.itemsEquipped][this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x- 85 , this.y, 3);
+		} else if(this.state === 6 ){
 			if(this.facing === 0){
 				this.animations[this.itemsEquipped][this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x-20 , this.y -52, 3);
 			} else if (this.facing === 1 ){
@@ -231,6 +290,7 @@ class Link{
 	
 		 //drawing the hitbox of the attack animation
 		 if (PARAMS.DEBUG && this.hitBox) {
+			
 		 	ctx.strokeStyle = 'Red';
 		 	ctx.strokeRect(this.hitBox.x, this.hitBox.y, this.hitBox.width, this.hitBox.height);
 		 }
