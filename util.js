@@ -32,6 +32,23 @@ const rgba = (r, g, b, a) => `rgba(${r}, ${g}, ${b}, ${a})`;
  */
 const hsl = (h, s, l) => `hsl(${h}, ${s}%, ${l}%)`;
 
+function distance(A, B) {
+    return Math.sqrt((B.x - A.x) * (B.x - A.x) + (B.y - A.y)*(B.y - A.y));
+};
+
+function collide(A, B) {
+    return (distance(A, B) < A.radius + B.radius);
+};
+
+function canSee(A, B) { // if A can see B
+    return (distance(A, B) < A.visualRadius + B.radius);
+}
+
+function getFacing(velocity) {
+    // Use the sign of velocity.x to determine facing direction (negative for left, positive for right)
+    return velocity.x < 0 ? 0 : 1;
+}
+
 /** Creates an alias for requestAnimationFrame for backwards compatibility */
 //function that tells us to do an action everytime monitor refreshes.
 window.requestAnimFrame = (() => {

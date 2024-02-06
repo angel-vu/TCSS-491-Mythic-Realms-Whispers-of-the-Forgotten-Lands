@@ -61,6 +61,18 @@ class Animator {
             ctx.strokeRect(x, y, this.width * scale, this.height * scale);
         }
     };
+
+
+    //fuhnction that advances a tick and tells us current frame, 
+    //as animator in the update function of another entity to tell what frame you are on is always the last frame
+    //from current frame function used.Should keep in mind that the update function of another entity is called before the animator changes its frame.
+    advanceAndGetCurrentFrame(currentTick) {
+        // Create a new elapsed time variable for temporary use
+        let tempElapsedTime = this.elapsedTime + currentTick;
+        // Return the current frame based on the temporary elapsed time
+        return Math.floor(tempElapsedTime / this.frameDuration);
+    };
+
     //Difference between elapsed and total time is how we are going to determine what frame we are on.
     //Floor method gives 0 based indexing.
     currentFrame() {
