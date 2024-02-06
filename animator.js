@@ -26,7 +26,7 @@ class Animator {
         if (this.isDone()) {
             //looping animation
             if (this.loop) {
-                this.elapsedTime -= this.totalTime;
+                this.elapsedTime = 0;
                 //this should never call draw frame on animation that is done
                 // produce error.
             } else {
@@ -63,7 +63,7 @@ class Animator {
     };
 
 
-    //fuhnction that advances a tick and tells us current frame, 
+    //function that advances a tick and tells us current frame, 
     //as animator in the update function of another entity to tell what frame you are on is always the last frame
     //from current frame function used.Should keep in mind that the update function of another entity is called before the animator changes its frame.
     advanceAndGetCurrentFrame(currentTick) {
@@ -72,6 +72,12 @@ class Animator {
         // Return the current frame based on the temporary elapsed time
         return Math.floor(tempElapsedTime / this.frameDuration);
     };
+
+    //function that advances a tick and tells us if the animation is done within the update method before it is drawn
+    isDoneOutsideOfAnimator(currentTick){
+        let tempElapsedTime = this.elapsedTime + currentTick;
+        return(tempElapsedTime >= this.totalTime);
+    }
 
     //Difference between elapsed and total time is how we are going to determine what frame we are on.
     //Floor method gives 0 based indexing.
