@@ -6,7 +6,7 @@ class Link {
 		this.speed = 200;
 		this.radius = 50;
 		
-		this.elapsedTime = 0;
+
 
 		this.maxHealth = 5;
 		this.currentHealth =5;
@@ -241,7 +241,7 @@ class Link {
 			//enter only for the states before being damaged.
 		} else if(this.game.attack && this.state < 3 ){
 			console.log("Attack");
-			this.elapsedTime= 0;
+		
 			
 			
 			//this.itemsEquipped = 1;
@@ -262,9 +262,7 @@ class Link {
 			
 		//creating  time windows for our combo system. 
 		} else if(this.state > 4 ){  // after attacking at least once.
-			this.elapsedTime+= this.game.clockTick;
 			
-			//does is done lag a little behind like in the same way that current frame does? 
 			//when the elapsed time is greater than the animation state, go back to idle, and allow to continue combo
 			//After animation is done leaves a little bit of the first frame after the last frame is done.
 			if(this.animations[1][this.state][this.facing].isDoneOutsideOfAnimator(this.game.clockTick)){
@@ -286,7 +284,6 @@ class Link {
 				this.comboWindowTime = 0;
 				this.state = 0;
 				this.enterComboWindow = false;
-				this.elapsedTime = 0;
 			}
 		} 
 		

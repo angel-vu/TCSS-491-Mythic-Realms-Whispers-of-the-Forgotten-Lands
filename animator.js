@@ -26,6 +26,7 @@ class Animator {
         if (this.isDone()) {
             //looping animation
             if (this.loop) {
+                //changed elapsed time to just reset itself at 0.
                 this.elapsedTime = 0;
                 //this should never call draw frame on animation that is done
                 // produce error.
