@@ -15,7 +15,7 @@ class Link {
 		this.enterComboWindow = false;
 		this.maxComboCounter = 2;
 		// link's state variables
-		this.itemsEquipped = 1; // 0 = none, 1 = master sword and shield 
+		this.itemsEquipped = 0; // 0 = none, 1 = master sword and shield 
 		this.state = 0; // 0 = idle, 1 = walking, 2 = running, 3 = damaged, 4 = jumping/falling, 5 = attack1 6= attack2
 		this.facing = 0; // 0 = right, 1 = left
 		this.dead = false;
@@ -238,8 +238,8 @@ class Link {
             this.x = this.x + this.speed * this.game.clockTick;
         }  else if(!this.game.right && !this.game.left && this.state === 1 ){
 			this.state = 0;
-			//enter only for the states before being damaged.
-		} else if(this.game.attack && this.state < 3 ){
+			//enter only for the states before being damaged, only if you have sword and shield equipped.
+		} else if(this.game.attack && this.state < 3 && this.itemsEquipped === 1 ){
 			console.log("Attack");
 		
 			
@@ -318,7 +318,10 @@ class Link {
             } else if (this.facing === 1 ){
                 this.animations[this.itemsEquipped][this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x-155 -this.game.camera.x , this.y - 45 - this.game.camera.y, 3);
             }
-        } else {
+
+        } else if(this.itemsEquipped === 0 && this.state <= 1 ){
+			this.animations[this.itemsEquipped][this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x- 20 - this.game.camera.x, this.y - this.game.camera.y+ 10, 3);
+		}else{
             this.animations[this.itemsEquipped][this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, 3);
         }
     
@@ -332,7 +335,8 @@ class Link {
           //drawing the hurtbox of link
           if (PARAMS.DEBUG && this.hurtBox) {
             ctx.strokeStyle = 'Blue';
-            ctx.strokeRect(this.hurtBox.x - this.game.camera.x, this.hurtBox.y - this.game.camera.y, this.hurtBox.width, this.hurtBox.height);
+			// ctx.strokeRect(this.hurtBox.x - this.game.camera.x, this.hurtBox.y - this.game.camera.y, this.hurtBox.width, this.hurtBox.height);
+            ctx.strokeRect(this.hurtBox.x- this.game.camera.x, this.hurtBox.y - this.game.camera.y, this.hurtBox.width, this.hurtBox.height);
         }
 
 		if (PARAMS.DEBUG) {
