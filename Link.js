@@ -295,83 +295,26 @@ class Link {
 		const WALK_ACC =  133.59375;
 		const RUN_ACC = 200.390625;
 
-		// //if link is running
-		// if(this.game.run){
-		// 	this.state = 2;
-		// }
 		
-		// //bug where if you moved during the attack animations, the animations times never reset back to 0.
-		// //  if (this.game.down && !this.game.up && this.comboCounter === 0) {
-        // if (this.game.down && !this.game.up && this.comboCounter === 0) {
-        //     //this.state = 1;
-        //     this.y = this.y + this.speed * this.game.clockTick;
-        // }
-	
-        // else if (this.game.up && !this.game.down && this.comboCounter === 0) {
-        //     //this.state = 1;
-        //     this.y = this.y - this.speed * this.game.clockTick;
-        // }
 
-        // else if (this.game.left && !this.game.right && this.comboCounter === 0) {
-        //     this.facing = 1;
-        //     //this.state = 1;
-        //     this.x = this.x - this.speed * this.game.clockTick;
-        // }
-
-        // else if (this.game.right && !this.game.left && this.comboCounter === 0) {
-        //     this.facing = 0;
-        //     //this.state = 1;
-        //     this.x = this.x + this.speed * this.game.clockTick;
-        // }  else if(!this.game.right && !this.game.left && this.state === 1 ){
-		// 	this.state = 0;
-		// 	//enter only for the states before being damaged, only if you have sword and shield equipped.
-		// } 
 		//movement physics
 
 		//walking, idle or running. 
 		if(this.state <= 2 ){
 			
-			if((Math.abs(this.velocity.x) < MIN_WALK_VEL || Math.abs(this.velocity.y) < MIN_WALK_VEL )&& this.comboCounter === 0){ // slower than a walk // starting, stopping or turning around and not in a attack state
-				this.velocity.x = 0;
-				this.velocity.y =0;
-				this.state = 0;
-				//instaneous acceleration.
-				if(this.game.left) {
-					this.velocity.x -= MIN_WALK_VEL;
-				}
-				if(this.game.right){
-					this.velocity.x += MIN_WALK_VEL;
-				}
+			//((Math.abs(this.velocity.x) < MIN_WALK_VEL || Math.abs(this.velocity.y) < MIN_WALK_VEL )&& this.comboCounter === 0)
+			if( Math.abs(this.velocity.y) < MIN_WALK_VEL){
+				
+				this.velocity.y = 0;
 				if(this.game.up){
 					this.velocity.y -=  MIN_WALK_VEL;
 				}
 				if(this.game.down){
 					this.velocity.y +=  MIN_WALK_VEL;
+				}
 
-				}
-			} else if((Math.abs(this.velocity.x) >= MIN_WALK_VEL || Math.abs(this.velocity.y) >= MIN_WALK_VEL ) && this.comboCounter === 0) { //faster  than a walk // starting, stopping or turning around and not in a attack state;
-				if(this.facing === 0) {
-					if(this.game.right && !this.game.left){
-						if(this.game.run){
-							this.state = 2;
-							this.velocity.x += RUN_ACC *this.game.clockTick;
-						} else if(!this.game.run){
-							this.state = 1;
-							this.velocity.x += WALK_ACC * this.game.clockTick;
-						}
-					} 
-				} else if(this.facing === 1){
-					if(this.game.right && !this.game.left){
-						if(this.game.run){
-							this.state = 2;
-							this.velocity.x -= RUN_ACC *this.game.clockTick;
-						} else if(!this.game.run){
-							this.state = 1;
-							this.velocity.x -= WALK_ACC *this.game.clockTick;
-						}
-					} 
-				}
-				//velocity and acceleration when we are moving up and down.
+			}else if(Math.abs(this.velocity.y) >= MIN_WALK_VEL){
+				 //velocity and acceleration when we are moving up and down.
 				 if(this.game.up && !this.game.down) {
 					if(this.game.run){
 						this.state = 2;
@@ -384,11 +327,65 @@ class Link {
 					if(this.game.run){
 						this.state = 2;
 						this.velocity.y += RUN_ACC * this.game.clockTick;
-					} else if(!this.game.run){
+					} else if(!this.game.run) {
 						this.state = 1;
 						this.velocity.y += WALK_ACC *this.game.clockTick;
 					}
 				}
+			}
+			if(Math.abs(this.velocity.x) < MIN_WALK_VEL ){ // slower than a walk // starting, stopping or turning around and not in a attack state
+				this.velocity.x = 0;
+				//this.state = 0;
+				//instaneous acceleration.
+				if(this.game.left && !this.game.right) {
+					this.facing =1;
+					this.velocity.x -= MIN_WALK_VEL;
+				}
+				if(this.game.right && !this.game.left){
+					this.facing = 0;
+					this.velocity.x += MIN_WALK_VEL;
+				}
+	
+
+				//((Math.abs(this.velocity.x) >= MIN_WALK_VEL || Math.abs(this.velocity.y) >= MIN_WALK_VEL ) && this.comboCounter === 0)
+			} else if(Math.abs(this.velocity.x) >= MIN_WALK_VEL  ) { //faster  than a walk // starting, stopping or turning around and not in a attack state;
+				if(this.facing === 0) {
+					if(this.game.right && !this.game.left){
+						if(this.game.run){
+							this.state = 2;
+							this.velocity.x += RUN_ACC *this.game.clockTick;
+						} else if(!this.game.run){
+							this.state = 1;
+							this.velocity.x += WALK_ACC * this.game.clockTick;
+						}
+						//when we are facing left and in the middle of walking or running we switch hit right
+					 }else if(this.game.left && !this.game.right ){
+					 	this.facing = 1;
+					 } 
+				} else if(this.facing === 1){
+					if(this.game.left && !this.game.right){
+						if(this.game.run){
+							this.state = 2;
+							this.velocity.x -= RUN_ACC *this.game.clockTick;
+						} else if(!this.game.run){
+							this.state = 1;
+							this.velocity.x -= WALK_ACC *this.game.clockTick;
+						}
+						//when we are facing left and in the middle of walking or running we switch hit right
+					 } 	else if(this.game.right && !this.game.left ){
+					 	this.facing = 0;
+						
+					}
+				}
+		
+	
+				
+			}
+			//if the user is not moving at all set the velocity to 0
+			if(!this.game.down && !this.game.up && !this.game.left&& !this.game.right ){
+				this.velocity.x = 0;
+				this.velocity.y = 0;
+				this.state = 0;
 			}
 	
 		}
@@ -446,10 +443,18 @@ class Link {
         if(this.game.damage) {
             this.state = 1; 
         }
+		 // max speed calculation
+	
+		if (this.velocity.y >= MAX_RUN_VEL) this.velocity.y = MAX_RUN_VEL;
+		if (this.velocity.y <= -MAX_RUN_VEL) this.velocity.y = -MAX_RUN_VEL;
+		if (this.velocity.y >= MAX_WALK_VEL && !this.game.run) this.velocity.y = MAX_WALK_VEL;
+		if (this.velocity.y <= -MAX_WALK_VEL && !this.game.run) this.velocity.y = -MAX_WALK_VEL;
 
-		// update direction
-		if (this.velocity.x < 0) this.facing = 1;
-		if (this.velocity.x > 0) this.facing = 0;
+		if (this.velocity.x >= MAX_RUN_VEL) this.velocity.x = MAX_RUN_VEL;
+		if (this.velocity.x <= -MAX_RUN_VEL) this.velocity.x = -MAX_RUN_VEL;
+		if (this.velocity.x >= MAX_WALK_VEL && !this.game.run) this.velocity.x = MAX_WALK_VEL;
+		if (this.velocity.x <= -MAX_WALK_VEL && !this.game.run) this.velocity.x = -MAX_WALK_VEL;
+		
 		this.x += this.velocity.x * this.game.clockTick;
 		this.y += this.velocity.y * this.game.clockTick;
 		this.updateLastHurtBox();
