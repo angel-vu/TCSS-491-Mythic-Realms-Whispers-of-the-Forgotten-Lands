@@ -21,16 +21,12 @@ class Link {
 		this.facing = 0; // 0 = right, 1 = left
 		this.dead = false;
 		this.animations = [];
+		//links animations
 		this.loadAnimations();
 		//bounding box where if it collides with another entity's hitbox we will receive damage.
 		this.updateHurtBox();
 
 		//bounding box where if it collides with abother entity's hurtbox they will receive damage.
-		
-
-		//links animations
-		
-		
 		this.updateHitBox();
 	};
 
@@ -142,23 +138,27 @@ class Link {
 				this.hurtBox = new BoundingBox(this.x, this.y + 5, 33 * 3, 58 * 3);
 			}else if(this.state ===5 && this.animations[1][5][0].advanceAndGetCurrentFrame(this.game.clockTick) === 3){
 				this.hurtBox = new BoundingBox(this.x, this.y + 5, 30 * 3, 58 * 3);
-			} 
-			if(this.animations[1][6][0].advanceAndGetCurrentFrame(this.game.clockTick) >= 3){
+			} else if(this.state === 6 &&this.animations[1][6][0].advanceAndGetCurrentFrame(this.game.clockTick) >= 3){
 				this.hurtBox = new BoundingBox(this.x, this.y + 5, 45 * 3, 58 * 3);
+			} else{
+				//default hitbox that fits the weaponless idle animation.
+				this.hurtBox = new BoundingBox(this.x, this.y, 26 * 3, 58 * 3);
 			}
 
 		} else if(this.state >= 4 && this.facing === 1 ) {
-			if(this.animations[1][5][1].advanceAndGetCurrentFrame(this.game.clockTick) === 0){
+			if(this.state ===5 && this.animations[1][5][1].advanceAndGetCurrentFrame(this.game.clockTick) === 0){
 				this.hurtBox = new BoundingBox(this.x, this.y+5, 33 * 3, 58 * 3);
-			}else if(this.animations[1][5][1].advanceAndGetCurrentFrame(this.game.clockTick) === 1){
+			}else if(this.state ===5 && this.animations[1][5][1].advanceAndGetCurrentFrame(this.game.clockTick) === 1){
 				this.hurtBox = new BoundingBox(this.x -25, this.y+5, 42 * 3, 58 * 3);
-			} else if(this.animations[1][5][1].advanceAndGetCurrentFrame(this.game.clockTick) === 2){
+			} else if(this.state ===5 &&this.animations[1][5][1].advanceAndGetCurrentFrame(this.game.clockTick) === 2){
 				this.hurtBox = new BoundingBox(this.x, this.y+5, 34 * 3, 58 * 3);
-			} else if(this.animations[1][5][1].advanceAndGetCurrentFrame(this.game.clockTick) === 3){
+			} else if(this.state ===5 &&this.animations[1][5][1].advanceAndGetCurrentFrame(this.game.clockTick) === 3){
 				this.hurtBox = new BoundingBox(this.x + 10, this.y+5, 34 * 3, 58 * 3);
-			} 
-			if(this.animations[1][6][1].advanceAndGetCurrentFrame(this.game.clockTick) >= 3){
+			} else if(this.state === 6 &&this.animations[1][6][1].advanceAndGetCurrentFrame(this.game.clockTick) >= 3){
 				 this.hurtBox = new BoundingBox(this.x -15, this.y+5, 39 * 3, 58 * 3);
+			} else{
+				//default hitbox that fits the weaponless idle animation.
+				this.hurtBox = new BoundingBox(this.x, this.y, 26 * 3, 58 * 3);
 			}
 			
 		}
@@ -265,7 +265,7 @@ class Link {
 		// this.animations[1][4][0] = new Animator(this.spritesheet, 209, 122, 16, 32, 1, 0.33, 14, false, true);
 		// this.animations[1][5][0] = new Animator(this.spritesheet, 209, 122, 16, 32, 1, 0.33, 14, false, true);
 		this.animations[1][5][0] = new Animator(ASSET_MANAGER.getAsset("./sprites/Link_attack_1.png"), 0, 20, 102, 60, 4, 0.18, 1, false, true, false);
-		this.animations[1][6][0] = new Animator(ASSET_MANAGER.getAsset("./sprites/Link_attack_1.png"), 439, 2, 122, 73, 6, 0.18, 0, false, true, false);
+		this.animations[1][6][0] = new Animator(ASSET_MANAGER.getAsset("./sprites/Link_attack_1.png"), 439, 2, 122, 73, 6, 0.15, 0, false, true, false);
 
 		// mastersword and shield 
         // facing left = 1
@@ -300,7 +300,7 @@ class Link {
 		//movement physics
 
 		//walking, idle or running. 
-		if(this.state <= 2 ){
+		if(this.state <= 2  ){
 			
 			//((Math.abs(this.velocity.x) < MIN_WALK_VEL || Math.abs(this.velocity.y) < MIN_WALK_VEL )&& this.comboCounter === 0)
 			if( Math.abs(this.velocity.y) < MIN_WALK_VEL){
@@ -315,7 +315,7 @@ class Link {
 
 			}else if(Math.abs(this.velocity.y) >= MIN_WALK_VEL){
 				 //velocity and acceleration when we are moving up and down.
-				 if(this.game.up && !this.game.down) {
+				 if(this.game.up && !this.game.down ) {
 					if(this.game.run){
 						this.state = 2;
 						this.velocity.y -= RUN_ACC * this.game.clockTick;
@@ -333,7 +333,7 @@ class Link {
 					}
 				}
 			}
-			if(Math.abs(this.velocity.x) < MIN_WALK_VEL ){ // slower than a walk // starting, stopping or turning around and not in a attack state
+			if(Math.abs(this.velocity.x) < MIN_WALK_VEL){ // slower than a walk // starting, stopping or turning around and not in a attack state
 				this.velocity.x = 0;
 				//this.state = 0;
 				//instaneous acceleration.
@@ -414,7 +414,7 @@ class Link {
 			
 		//creating  time windows for our combo system. 
 		} else if(this.state > 4 ){  // after attacking at least once.
-			
+
 			//when the elapsed time is greater than the animation state, go back to idle, and allow to continue combo
 			//After animation is done leaves a little bit of the first frame after the last frame is done.
 			if(this.animations[1][this.state][this.facing].isDoneOutsideOfAnimator(this.game.clockTick)){
@@ -434,7 +434,7 @@ class Link {
 			if(this.comboWindowTime > 0.5){
 				this.comboCounter = 0;
 				this.comboWindowTime = 0;
-				this.state = 0;
+				//this.state = 0;
 				this.enterComboWindow = false;
 			}
 		} 
@@ -455,6 +455,7 @@ class Link {
 		if (this.velocity.x >= MAX_WALK_VEL && !this.game.run) this.velocity.x = MAX_WALK_VEL;
 		if (this.velocity.x <= -MAX_WALK_VEL && !this.game.run) this.velocity.x = -MAX_WALK_VEL;
 		
+
 		this.x += this.velocity.x * this.game.clockTick;
 		this.y += this.velocity.y * this.game.clockTick;
 		this.updateLastHurtBox();
