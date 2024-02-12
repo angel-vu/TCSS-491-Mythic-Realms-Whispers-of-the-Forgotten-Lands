@@ -438,6 +438,28 @@ class Link {
 				this.enterComboWindow = false;
 			}
 		} 
+
+
+		//collision logic 
+		let that = this;
+
+		this.game.entities.forEach(function (entity){
+				//if link attacks collide with another entities hitbox.
+			if(that.hitBox && entity.hurtBox){
+				if(entity instanceof Banshee || entity instanceof Ganon || entity instanceof Akagane|| entity instanceof Goblin|| entity instanceof Knight|| entity instanceof Skeleton || entity instanceof Wizard ){
+
+					// Sword dealing 1 point of damage.
+					entity.currentHealth -= 1;
+				}
+			} 
+			//Boundary checking for when link walks into a wall.
+			//colliding with the
+			//  if(entity instanceof wall ){
+				//if(that.hurtBox.){
+
+				//}
+			//}
+		});
 		
 			
         if(this.game.damage) {
