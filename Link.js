@@ -3,7 +3,8 @@ class Link {
 	constructor(game,x, y) {
 		Object.assign(this, { game, x ,y});
 		this.game.link = this;
-		this.speed = 200;
+
+		this.velocity = { x: 0, y: 0 };
 		this.radius = 50;
 		
 
@@ -19,16 +20,13 @@ class Link {
 		this.state = 0; // 0 = idle, 1 = walking, 2 = running, 3 = damaged, 4 = jumping/falling, 5 = attack1 6= attack2
 		this.facing = 0; // 0 = right, 1 = left
 		this.dead = false;
-	
+		this.animations = [];
+		//links animations
+		this.loadAnimations();
 		//bounding box where if it collides with another entity's hitbox we will receive damage.
 		this.updateHurtBox();
 
 		//bounding box where if it collides with abother entity's hurtbox they will receive damage.
-		
-
-		//links animations
-		this.animations = [];
-		this.loadAnimations();
 		this.updateHitBox();
 	};
 
@@ -37,10 +35,100 @@ class Link {
 
 		//Based off the size of Link's walking animation frame size.
 		// * 3 since we draw Link Scaled up by 3 to drawFrame in animator class.
-		if(this.state < 4 && this.facing ===0){
-			this.hurtBox = new BoundingBox(this.x, this.y, 26 * 3, 58 * 3);
+
+		// if(this.itemsEquipped === 0){
+		// 	if( this.state < 4){
+
+		// 	}
+			
+		// } else if( this.itemsEquipped === 1){
+			
+
+		// }
+
+		if(this.state < 4 && this.facing === 0) {
+			if(this.state === 2){
+				if(this.animations[0][2][0].advanceAndGetCurrentFrame(this.game.clockTick) === 0){
+					this.hurtBox = new BoundingBox(this.x, this.y+20 , 50 * 3, 50 * 3);
+				} else if(this.animations[0][2][0].advanceAndGetCurrentFrame(this.game.clockTick) === 1){
+					this.hurtBox = new BoundingBox(this.x +20, this.y+20 , 45 * 3, 50 * 3);
+				}else if(this.animations[0][2][0].advanceAndGetCurrentFrame(this.game.clockTick) === 2){
+					this.hurtBox = new BoundingBox(this.x +25, this.y+20 , 38 * 3, 50 * 3);
+				}else if(this.animations[0][2][0].advanceAndGetCurrentFrame(this.game.clockTick) === 3){
+					this.hurtBox = new BoundingBox(this.x +10, this.y+20 , 39 * 3, 50 * 3);
+				}else if(this.animations[0][2][0].advanceAndGetCurrentFrame(this.game.clockTick) === 4){
+					this.hurtBox = new BoundingBox(this.x, this.y+20 , 50 * 3, 50 * 3);
+				}else if(this.animations[0][2][0].advanceAndGetCurrentFrame(this.game.clockTick) === 5){
+					this.hurtBox = new BoundingBox(this.x +20, this.y+20 , 45* 3, 50 * 3);
+				}else if(this.animations[0][2][0].advanceAndGetCurrentFrame(this.game.clockTick) === 6){
+					this.hurtBox = new BoundingBox(this.x +25, this.y+20 , 38* 3, 50 * 3);
+				}else if(this.animations[0][2][0].advanceAndGetCurrentFrame(this.game.clockTick) === 7){
+					this.hurtBox = new BoundingBox(this.x +10, this.y+20 , 38* 3, 50 * 3);
+				}
+				if(this.animations[1][2][0].advanceAndGetCurrentFrame(this.game.clockTick) === 0){
+					this.hurtBox = new BoundingBox(this.x, this.y+20 , 51 * 3, 50 * 3);
+				} else if(this.animations[1][2][0].advanceAndGetCurrentFrame(this.game.clockTick) === 1){
+					this.hurtBox = new BoundingBox(this.x + 15, this.y+20 , 48 * 3, 50 * 3);
+				}else if(this.animations[1][2][0].advanceAndGetCurrentFrame(this.game.clockTick) === 2){
+					this.hurtBox = new BoundingBox(this.x +35, this.y+20 , 38 * 3, 50 * 3);
+				} else if(this.animations[1][2][0].advanceAndGetCurrentFrame(this.game.clockTick) === 3){
+					this.hurtBox = new BoundingBox(this.x +30, this.y+20 , 39 * 3, 50 * 3);
+				} else if(this.animations[1][2][0].advanceAndGetCurrentFrame(this.game.clockTick) === 4){
+					this.hurtBox = new BoundingBox(this.x +10, this.y+20 , 51 * 3, 50 * 3);
+				}  else if(this.animations[1][2][0].advanceAndGetCurrentFrame(this.game.clockTick) === 5){
+					this.hurtBox = new BoundingBox(this.x +20, this.y+20 , 46 * 3, 50 * 3);
+				} else if(this.animations[1][2][0].advanceAndGetCurrentFrame(this.game.clockTick) === 6){
+					this.hurtBox = new BoundingBox(this.x +40, this.y+20 , 38 * 3, 50 * 3);
+				} else if(this.animations[1][2][0].advanceAndGetCurrentFrame(this.game.clockTick) === 7){
+					this.hurtBox = new BoundingBox(this.x +35, this.y+20 , 38 * 3, 50 * 3);
+				}
+				
+			} else{
+				//default hitbox that fits the weaponless idle animation.
+				this.hurtBox = new BoundingBox(this.x, this.y, 26 * 3, 58 * 3);
+			}
+			
 		} else if(this.state < 4 && this.facing === 1 ){
-			this.hurtBox = new BoundingBox(this.x, this.y, 26 * 3, 58 * 3);
+			if(this.state === 2){
+				if(this.animations[0][2][1].advanceAndGetCurrentFrame(this.game.clockTick) === 0){
+					this.hurtBox = new BoundingBox(this.x, this.y+20 , 50 * 3, 50 * 3);
+				} else if(this.animations[0][2][1].advanceAndGetCurrentFrame(this.game.clockTick) === 1){
+					this.hurtBox = new BoundingBox(this.x +20, this.y+20 , 45 * 3, 50 * 3);
+				}else if(this.animations[0][2][1].advanceAndGetCurrentFrame(this.game.clockTick) === 2){
+					this.hurtBox = new BoundingBox(this.x +25, this.y+20 , 38 * 3, 50 * 3);
+				}else if(this.animations[0][2][1].advanceAndGetCurrentFrame(this.game.clockTick) === 3){
+					this.hurtBox = new BoundingBox(this.x +10, this.y+20 , 39 * 3, 50 * 3);
+				}else if(this.animations[0][2][1].advanceAndGetCurrentFrame(this.game.clockTick) === 4){
+					this.hurtBox = new BoundingBox(this.x, this.y+20 , 50 * 3, 50 * 3);
+				}else if(this.animations[0][2][1].advanceAndGetCurrentFrame(this.game.clockTick) === 5){
+					this.hurtBox = new BoundingBox(this.x +20, this.y+20 , 45* 3, 50 * 3);
+				}else if(this.animations[0][2][1].advanceAndGetCurrentFrame(this.game.clockTick) === 6){
+					this.hurtBox = new BoundingBox(this.x +25, this.y+20 , 38* 3, 50 * 3);
+				}else if(this.animations[0][2][1].advanceAndGetCurrentFrame(this.game.clockTick) === 7){
+					this.hurtBox = new BoundingBox(this.x +10, this.y+20 , 38* 3, 50 * 3);
+				}
+				if(this.animations[1][2][1].advanceAndGetCurrentFrame(this.game.clockTick) === 0){
+					this.hurtBox = new BoundingBox(this.x, this.y+20 , 51 * 3, 50 * 3);
+				} else if(this.animations[1][2][1].advanceAndGetCurrentFrame(this.game.clockTick) === 1){
+					this.hurtBox = new BoundingBox(this.x + 15, this.y+20 , 48 * 3, 50 * 3);
+				}else if(this.animations[1][2][1].advanceAndGetCurrentFrame(this.game.clockTick) === 2){
+					this.hurtBox = new BoundingBox(this.x +35, this.y+20 , 38 * 3, 50 * 3);
+				} else if(this.animations[1][2][1].advanceAndGetCurrentFrame(this.game.clockTick) === 3){
+					this.hurtBox = new BoundingBox(this.x +20, this.y+20 , 39 * 3, 50 * 3);
+				} else if(this.animations[1][2][1].advanceAndGetCurrentFrame(this.game.clockTick) === 4){
+					this.hurtBox = new BoundingBox(this.x -1, this.y+20 , 51 * 3, 50 * 3);
+				}  else if(this.animations[1][2][1].advanceAndGetCurrentFrame(this.game.clockTick) === 5){
+					this.hurtBox = new BoundingBox(this.x +20, this.y+20 , 45 * 3, 50 * 3);
+				} else if(this.animations[1][2][1].advanceAndGetCurrentFrame(this.game.clockTick) === 6){
+					this.hurtBox = new BoundingBox(this.x +25, this.y+20 , 33 * 3, 50 * 3);
+				} else if(this.animations[1][2][1].advanceAndGetCurrentFrame(this.game.clockTick) === 7){
+					this.hurtBox = new BoundingBox(this.x +15, this.y+20 , 38 * 3, 50 * 3);
+				}
+			} else{
+				//default hitbox that fits the weaponless idle animation.
+				this.hurtBox = new BoundingBox(this.x, this.y, 26 * 3, 58 * 3);
+			}
+			
 		} else if( this.state >= 4 && this.facing === 0){
 			if(this.state ===5 && this.animations[1][5][0].advanceAndGetCurrentFrame(this.game.clockTick) === 0){
 				this.hurtBox = new BoundingBox(this.x, this.y + 5, 33 * 3, 58 * 3);
@@ -50,23 +138,27 @@ class Link {
 				this.hurtBox = new BoundingBox(this.x, this.y + 5, 33 * 3, 58 * 3);
 			}else if(this.state ===5 && this.animations[1][5][0].advanceAndGetCurrentFrame(this.game.clockTick) === 3){
 				this.hurtBox = new BoundingBox(this.x, this.y + 5, 30 * 3, 58 * 3);
-			} 
-			if(this.animations[1][6][0].advanceAndGetCurrentFrame(this.game.clockTick) >= 3){
+			} else if(this.state === 6 &&this.animations[1][6][0].advanceAndGetCurrentFrame(this.game.clockTick) >= 3){
 				this.hurtBox = new BoundingBox(this.x, this.y + 5, 45 * 3, 58 * 3);
+			} else{
+				//default hitbox that fits the weaponless idle animation.
+				this.hurtBox = new BoundingBox(this.x, this.y, 26 * 3, 58 * 3);
 			}
 
 		} else if(this.state >= 4 && this.facing === 1 ) {
-			if(this.animations[1][5][1].advanceAndGetCurrentFrame(this.game.clockTick) === 0){
+			if(this.state ===5 && this.animations[1][5][1].advanceAndGetCurrentFrame(this.game.clockTick) === 0){
 				this.hurtBox = new BoundingBox(this.x, this.y+5, 33 * 3, 58 * 3);
-			}else if(this.animations[1][5][1].advanceAndGetCurrentFrame(this.game.clockTick) === 1){
+			}else if(this.state ===5 && this.animations[1][5][1].advanceAndGetCurrentFrame(this.game.clockTick) === 1){
 				this.hurtBox = new BoundingBox(this.x -25, this.y+5, 42 * 3, 58 * 3);
-			} else if(this.animations[1][5][1].advanceAndGetCurrentFrame(this.game.clockTick) === 2){
+			} else if(this.state ===5 &&this.animations[1][5][1].advanceAndGetCurrentFrame(this.game.clockTick) === 2){
 				this.hurtBox = new BoundingBox(this.x, this.y+5, 34 * 3, 58 * 3);
-			} else if(this.animations[1][5][1].advanceAndGetCurrentFrame(this.game.clockTick) === 3){
+			} else if(this.state ===5 &&this.animations[1][5][1].advanceAndGetCurrentFrame(this.game.clockTick) === 3){
 				this.hurtBox = new BoundingBox(this.x + 10, this.y+5, 34 * 3, 58 * 3);
-			} 
-			if(this.animations[1][6][1].advanceAndGetCurrentFrame(this.game.clockTick) >= 3){
+			} else if(this.state === 6 &&this.animations[1][6][1].advanceAndGetCurrentFrame(this.game.clockTick) >= 3){
 				 this.hurtBox = new BoundingBox(this.x -15, this.y+5, 39 * 3, 58 * 3);
+			} else{
+				//default hitbox that fits the weaponless idle animation.
+				this.hurtBox = new BoundingBox(this.x, this.y, 26 * 3, 58 * 3);
 			}
 			
 		}
@@ -143,7 +235,7 @@ class Link {
         // facing right = 0
         this.animations[0][0][0] = new Animator(ASSET_MANAGER.getAsset("./sprites/Link_main_character.png"), 20, 144, 40, 60, 1, 0.2, 0, false, true,false);
         this.animations[0][1][0] = new Animator(ASSET_MANAGER.getAsset("./sprites/Link_main_character.png"), 20, 144, 40, 60, 6, 0.2, 0, false, true,false);
-        // this.animations[0][2][0] = new Animator(this.spritesheet, 209, 122, 16, 32, 1, 0.33, 14, false, true);
+    	this.animations[0][2][0] = new Animator(ASSET_MANAGER.getAsset("./sprites/Link_main_character.png"), 28, 335, 52, 50, 8, 0.15, 0, false, true,false);
 		// this.animations[0][3][0] = new Animator(this.spritesheet, 209, 122, 16, 32, 1, 0.33, 14, false, true);
 		// this.animations[0][4][0] = new Animator(this.spritesheet, 209, 122, 16, 32, 1, 0.33, 14, false, true);d
 		//no animations without attacking without a weapon, or blocking
@@ -156,7 +248,7 @@ class Link {
         // facing left = 1
         this.animations[0][0][1] = new Animator(ASSET_MANAGER.getAsset("./sprites/Link_main_character.png"), 20, 144, 40, 60, 1, 0.2, 0, false, true,true);
         this.animations[0][1][1] = new Animator(ASSET_MANAGER.getAsset("./sprites/Link_main_character.png"), 20, 144, 40, 60, 6, 0.2, 0, false, true,true);
-        // this.animations[0][2][1] = new Animator(this.spritesheet, 209, 122, 16, 32, 1, 0.33, 14, false, true);
+        this.animations[0][2][1] = new Animator(ASSET_MANAGER.getAsset("./sprites/Link_main_character.png"), 503, 335, 52, 50, 8, 0.15, 0, false, true,false);
 		// this.animations[0][3][1] = new Animator(this.spritesheet, 209, 122, 16, 32, 1, 0.33, 14, false, true);
 		// this.animations[0][4][1] = new Animator(this.spritesheet, 209, 122, 16, 32, 1, 0.33, 14, false, true);
 		//no animations without attacking without a weapon, or blocking
@@ -168,18 +260,18 @@ class Link {
         // facing right = 0
         this.animations[1][0][0] = new Animator(ASSET_MANAGER.getAsset("./sprites/Link_main_character.png"), 297, 139, 51, 60, 1, 0.2, 0, false, true,false);
         this.animations[1][1][0] = new Animator(ASSET_MANAGER.getAsset("./sprites/Link_main_character.png"), 297, 139, 51, 60, 6, 0.2, 0, false, true,false);
-        // this.animations[1][2][0] = new Animator(this.spritesheet, 209, 122, 16, 32, 1, 0.33, 14, false, true);
+        this.animations[1][2][0] = new Animator(ASSET_MANAGER.getAsset("./sprites/Link_main_character.png"), 28, 403, 55, 50, 8, 0.15, 0, false, true,false);
 		// this.animations[1][3][0] = new Animator(this.spritesheet, 209, 122, 16, 32, 1, 0.33, 14, false, true);
 		// this.animations[1][4][0] = new Animator(this.spritesheet, 209, 122, 16, 32, 1, 0.33, 14, false, true);
 		// this.animations[1][5][0] = new Animator(this.spritesheet, 209, 122, 16, 32, 1, 0.33, 14, false, true);
-		this.animations[1][5][0] = new Animator(ASSET_MANAGER.getAsset("./sprites/Link_attack_1.png"), 0, 20, 102, 60, 4, 0.2, 1, false, true, false);
-		this.animations[1][6][0] = new Animator(ASSET_MANAGER.getAsset("./sprites/Link_attack_1.png"), 439, 2, 122, 73, 6, 0.2, 0, false, true, false);
+		this.animations[1][5][0] = new Animator(ASSET_MANAGER.getAsset("./sprites/Link_attack_1.png"), 0, 20, 102, 60, 4, 0.18, 1, false, true, false);
+		this.animations[1][6][0] = new Animator(ASSET_MANAGER.getAsset("./sprites/Link_attack_1.png"), 439, 2, 122, 73, 6, 0.15, 0, false, true, false);
 
 		// mastersword and shield 
         // facing left = 1
         this.animations[1][0][1] = new Animator(ASSET_MANAGER.getAsset("./sprites/Link_main_character.png"), 646, 139, 60, 60, 1, 0.2, 0, false, true,false);
         this.animations[1][1][1] = new Animator(ASSET_MANAGER.getAsset("./sprites/Link_main_character.png"), 646, 139, 60, 60, 6, 0.2, 0, false, true,false);
-        // this.animations[1][2][1] = new Animator(this.spritesheet, 209, 122, 16, 32, 1, 0.33, 14, false, true);
+        this.animations[1][2][1] = new Animator(ASSET_MANAGER.getAsset("./sprites/Link_main_character.png"), 502, 403, 54, 50, 8, 0.15, 0, false, true,false);
 		// this.animations[1][3][1] = new Animator(this.spritesheet, 209, 122, 16, 32, 1, 0.33, 14, false, true);
 		// this.animations[1][4][1] = new Animator(this.spritesheet, 209, 122, 16, 32, 1, 0.33, 14, false, true);
 		// this.animations[1][5][1] = new Animator(this.spritesheet, 209, 122, 16, 32, 1, 0.33, 14, false, true);
@@ -194,52 +286,112 @@ class Link {
 
 
 	update() {
-		// console.log(this.comboCounter);
+
+		//Constants to use for movement physcs for Mario.
+		const MIN_WALK_VEL = 4.453125;
+		const MAX_WALK_VEL = 93.75;
+		const MAX_RUN_VEL = 153.75;
+
+		const WALK_ACC =  133.59375;
+		const RUN_ACC = 200.390625;
+
+		
+
+		//movement physics
+
+		//walking, idle or running. 
+		if(this.state <= 2  ){
+			
+			//((Math.abs(this.velocity.x) < MIN_WALK_VEL || Math.abs(this.velocity.y) < MIN_WALK_VEL )&& this.comboCounter === 0)
+			if( Math.abs(this.velocity.y) < MIN_WALK_VEL){
+				
+				this.velocity.y = 0;
+				if(this.game.up){
+					this.velocity.y -=  MIN_WALK_VEL;
+				}
+				if(this.game.down){
+					this.velocity.y +=  MIN_WALK_VEL;
+				}
+
+			}else if(Math.abs(this.velocity.y) >= MIN_WALK_VEL){
+				 //velocity and acceleration when we are moving up and down.
+				 if(this.game.up && !this.game.down ) {
+					if(this.game.run){
+						this.state = 2;
+						this.velocity.y -= RUN_ACC * this.game.clockTick;
+					} else if(!this.game.run){
+						this.state = 1;
+						this.velocity.y -= WALK_ACC * this.game.clockTick;
+					}
+				} else if (this.game.down && !this.game.up) {
+					if(this.game.run){
+						this.state = 2;
+						this.velocity.y += RUN_ACC * this.game.clockTick;
+					} else if(!this.game.run) {
+						this.state = 1;
+						this.velocity.y += WALK_ACC *this.game.clockTick;
+					}
+				}
+			}
+			if(Math.abs(this.velocity.x) < MIN_WALK_VEL){ // slower than a walk // starting, stopping or turning around and not in a attack state
+				this.velocity.x = 0;
+				//this.state = 0;
+				//instaneous acceleration.
+				if(this.game.left && !this.game.right) {
+					this.facing =1;
+					this.velocity.x -= MIN_WALK_VEL;
+				}
+				if(this.game.right && !this.game.left){
+					this.facing = 0;
+					this.velocity.x += MIN_WALK_VEL;
+				}
 	
+
+				//((Math.abs(this.velocity.x) >= MIN_WALK_VEL || Math.abs(this.velocity.y) >= MIN_WALK_VEL ) && this.comboCounter === 0)
+			} else if(Math.abs(this.velocity.x) >= MIN_WALK_VEL  ) { //faster  than a walk // starting, stopping or turning around and not in a attack state;
+				if(this.facing === 0) {
+					if(this.game.right && !this.game.left){
+						if(this.game.run){
+							this.state = 2;
+							this.velocity.x += RUN_ACC *this.game.clockTick;
+						} else if(!this.game.run){
+							this.state = 1;
+							this.velocity.x += WALK_ACC * this.game.clockTick;
+						}
+						//when we are facing left and in the middle of walking or running we switch hit right
+					 }else if(this.game.left && !this.game.right ){
+					 	this.facing = 1;
+					 } 
+				} else if(this.facing === 1){
+					if(this.game.left && !this.game.right){
+						if(this.game.run){
+							this.state = 2;
+							this.velocity.x -= RUN_ACC *this.game.clockTick;
+						} else if(!this.game.run){
+							this.state = 1;
+							this.velocity.x -= WALK_ACC *this.game.clockTick;
+						}
+						//when we are facing left and in the middle of walking or running we switch hit right
+					 } 	else if(this.game.right && !this.game.left ){
+					 	this.facing = 0;
+						
+					}
+				}
+		
 	
-        // if (this.x > 1024) {
-        //     this.x = -130;
-        // }
-
-        // if (this.x < -130) {
-        //     this.x = 1024;
-        // }
-
-        // if (this.y > 1024) {
-        //     this.y = -130;
-        // }
-
-        // if (this.y < -130) {
-        //     this.y = 1024;
-        // }
-
-        //this.state = 0;
-		//bug where if you moved during the attack animations, the animations times never reset back to 0.
-		//  if (this.game.down && !this.game.up && this.comboCounter === 0) {
-        if (this.game.down && !this.game.up && this.comboCounter === 0) {
-            this.state = 1;
-            this.y = this.y + this.speed * this.game.clockTick;
-        }
+				
+			}
+			//if the user is not moving at all set the velocity to 0
+			if(!this.game.down && !this.game.up && !this.game.left&& !this.game.right ){
+				this.velocity.x = 0;
+				this.velocity.y = 0;
+				this.state = 0;
+			}
 	
-        else if (this.game.up && !this.game.down && this.comboCounter === 0) {
-            this.state = 1;
-            this.y = this.y - this.speed * this.game.clockTick;
-        }
+		}
 
-        else if (this.game.left && !this.game.right && this.comboCounter === 0) {
-            this.facing = 1;
-            this.state = 1;
-            this.x = this.x - this.speed * this.game.clockTick;
-        }
-
-        else if (this.game.right && !this.game.left && this.comboCounter === 0) {
-            this.facing = 0;
-            this.state = 1;
-            this.x = this.x + this.speed * this.game.clockTick;
-        }  else if(!this.game.right && !this.game.left && this.state === 1 ){
-			this.state = 0;
-			//enter only for the states before being damaged.
-		} else if(this.game.attack && this.state < 3 ){
+		//Attack Physics. 
+		if(this.game.attack && this.state < 3 && this.itemsEquipped === 1 ){
 			console.log("Attack");
 		
 			
@@ -262,7 +414,7 @@ class Link {
 			
 		//creating  time windows for our combo system. 
 		} else if(this.state > 4 ){  // after attacking at least once.
-			
+
 			//when the elapsed time is greater than the animation state, go back to idle, and allow to continue combo
 			//After animation is done leaves a little bit of the first frame after the last frame is done.
 			if(this.animations[1][this.state][this.facing].isDoneOutsideOfAnimator(this.game.clockTick)){
@@ -282,15 +434,52 @@ class Link {
 			if(this.comboWindowTime > 0.5){
 				this.comboCounter = 0;
 				this.comboWindowTime = 0;
-				this.state = 0;
+				//this.state = 0;
 				this.enterComboWindow = false;
 			}
 		} 
+
+
+		//collision logic 
+		let that = this;
+
+		this.game.entities.forEach(function (entity){
+				//if link attacks collide with another entities hitbox.
+			if(that.hitBox && entity.hurtBox){
+				if(entity instanceof Banshee || entity instanceof Ganon || entity instanceof Akagane|| entity instanceof Goblin|| entity instanceof Knight|| entity instanceof Skeleton || entity instanceof Wizard ){
+
+					// Sword dealing 1 point of damage.
+					entity.currentHealth -= 1;
+				}
+			} 
+			//Boundary checking for when link walks into a wall.
+			//colliding with the
+			//  if(entity instanceof wall ){
+				//if(that.hurtBox.){
+
+				//}
+			//}
+		});
 		
 			
         if(this.game.damage) {
             this.state = 1; 
         }
+		 // max speed calculation
+	
+		if (this.velocity.y >= MAX_RUN_VEL) this.velocity.y = MAX_RUN_VEL;
+		if (this.velocity.y <= -MAX_RUN_VEL) this.velocity.y = -MAX_RUN_VEL;
+		if (this.velocity.y >= MAX_WALK_VEL && !this.game.run) this.velocity.y = MAX_WALK_VEL;
+		if (this.velocity.y <= -MAX_WALK_VEL && !this.game.run) this.velocity.y = -MAX_WALK_VEL;
+
+		if (this.velocity.x >= MAX_RUN_VEL) this.velocity.x = MAX_RUN_VEL;
+		if (this.velocity.x <= -MAX_RUN_VEL) this.velocity.x = -MAX_RUN_VEL;
+		if (this.velocity.x >= MAX_WALK_VEL && !this.game.run) this.velocity.x = MAX_WALK_VEL;
+		if (this.velocity.x <= -MAX_WALK_VEL && !this.game.run) this.velocity.x = -MAX_WALK_VEL;
+		
+
+		this.x += this.velocity.x * this.game.clockTick;
+		this.y += this.velocity.y * this.game.clockTick;
 		this.updateLastHurtBox();
 		this.updateLastHitBox();
 		this.updateHitBox();
@@ -299,12 +488,27 @@ class Link {
     };
 
 	draw(ctx) {
+		// if(this.itemsEquipped === 1){
+		// 	if(this.facing === 0){
+		// 		if(this.state <= 1){
+		// 			this.animations[this.itemsEquipped][this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, 3);
+		// 		}else if(this.state === 2){
+		// 			this.animations[this.itemsEquipped][this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y + 20  - this.game.camera.y, 3);
+		// 		}
+		// 	} else if(this.facing === 1){
+
+		// 	}
+		// } else if (this.itemsEquipped === 0) {
+
+		// }
 		if(this.itemsEquipped === 1 && this.state <= 1){
 			if(this.facing === 0){
 				this.animations[this.itemsEquipped][this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, 3);
 			} else if(this.facing === 1){
 				this.animations[this.itemsEquipped][this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x -90 - this.game.camera.x, this.y - this.game.camera.y, 3);
 			}
+		} else if(this.itemsEquipped === 1 && this.state === 2){
+			this.animations[this.itemsEquipped][this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y + 20  - this.game.camera.y, 3);
 		}else if(this.itemsEquipped === 1 && this.state === 5 ){
             if(this.facing === 0){
                 this.animations[this.itemsEquipped][this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x- 85-this.game.camera.x, this.y+5 - this.game.camera.y, 3);
@@ -318,8 +522,13 @@ class Link {
             } else if (this.facing === 1 ){
                 this.animations[this.itemsEquipped][this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x-155 -this.game.camera.x , this.y - 45 - this.game.camera.y, 3);
             }
-        } else {
-            this.animations[this.itemsEquipped][this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, 3);
+
+        }else if(this.itemsEquipped === 0 && this.state <= 1 ){
+			this.animations[this.itemsEquipped][this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x- 20 - this.game.camera.x, this.y - this.game.camera.y+ 10, 3);
+		}else if(this.itemsEquipped === 0 && this.state === 2) {
+			this.animations[this.itemsEquipped][this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y + 20, 3);
+		}else{
+            this.animations[this.itemsEquipped][this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y  - this.game.camera.y, 3);
         }
     
          //drawing the hitbox of the attack animation
@@ -332,7 +541,8 @@ class Link {
           //drawing the hurtbox of link
           if (PARAMS.DEBUG && this.hurtBox) {
             ctx.strokeStyle = 'Blue';
-            ctx.strokeRect(this.hurtBox.x - this.game.camera.x, this.hurtBox.y - this.game.camera.y, this.hurtBox.width, this.hurtBox.height);
+			// ctx.strokeRect(this.hurtBox.x - this.game.camera.x, this.hurtBox.y - this.game.camera.y, this.hurtBox.width, this.hurtBox.height);
+            ctx.strokeRect(this.hurtBox.x- this.game.camera.x, this.hurtBox.y - this.game.camera.y, this.hurtBox.width, this.hurtBox.height);
         }
 
 		if (PARAMS.DEBUG) {
