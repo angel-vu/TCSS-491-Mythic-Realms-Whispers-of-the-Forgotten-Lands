@@ -101,7 +101,7 @@ class Banshee {
             }
         }
 
-        if (this.state !== 1) {
+        if (this.state !== 2) {
             dist = distance(this, this.target);
             this.velocity = { x: (this.target.x - this.x) / dist * this.maxSpeed, y: (this.target.y - this.y) / dist * this.maxSpeed };
             this.x += this.velocity.x * this.game.clockTick;
@@ -113,7 +113,7 @@ class Banshee {
         } else {
             this.facing = 2;
         }
-
+        
     };
 
     draw(ctx) { 
