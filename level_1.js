@@ -286,7 +286,7 @@ const level = {
         {
          "columns":16,
          "firstgid":1,
-         "image":"..\/..\/..\/Downloads\/Pixel Art Top Down - Basic-2\/Texture\/TX Tileset Grass.png",
+         "image":"./sprites/grass.png",
          "imageheight":256,
          "imagewidth":256,
          "margin":0,
@@ -299,7 +299,7 @@ const level = {
         {
          "columns":32,
          "firstgid":257,
-         "image":"..\/..\/..\/Downloads\/Pixel Art Top Down - Basic-2\/Texture\/TX Tileset Wall.png",
+         "image":"./sprites/wall.png",
          "imageheight":512,
          "imagewidth":512,
          "margin":0,
@@ -312,7 +312,7 @@ const level = {
         {
          "columns":32,
          "firstgid":1281,
-         "image":"..\/..\/..\/Downloads\/Pixel Art Top Down - Basic-2\/Texture\/TX Props.png",
+         "image":"./sprites/props.png",
          "imageheight":512,
          "imagewidth":512,
          "margin":0,
@@ -325,7 +325,7 @@ const level = {
         {
          "columns":32,
          "firstgid":2305,
-         "image":"..\/..\/..\/Downloads\/Pixel Art Top Down - Basic-2\/Texture\/TX Struct.png",
+         "image":"./sprites/stairs.png",
          "imageheight":512,
          "imagewidth":512,
          "margin":0,
@@ -338,7 +338,7 @@ const level = {
         {
          "columns":32,
          "firstgid":3329,
-         "image":"..\/..\/..\/Downloads\/Pixel Art Top Down - Basic-2\/Texture\/TX Plant.png",
+         "image":"./sprites/trees.png",
          "imageheight":512,
          "imagewidth":512,
          "margin":0,
