@@ -9,7 +9,7 @@ class Goblin {
         this.speed = 200;
 
         // spritesheet
-        this.spritesheet = ASSET_MANAGER.getAsset("./goblin.png");
+        this.spritesheet = ASSET_MANAGER.getAsset("./enemies/goblin.png");
 
         // goblins state variables
         this.facing = 3; //  2 = left, 3 = right 
