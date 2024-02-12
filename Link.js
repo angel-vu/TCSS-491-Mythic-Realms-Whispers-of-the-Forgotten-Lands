@@ -33,13 +33,13 @@ class Link {
 		this.updateMoveBox();
 
 		//a bounding sphere to attract enemy entities toward us.
-		this.updatePathingCircle();
+		//this.updatePathingCircle();
 	};
 
 
 	//a bounding sphere to attract enemy entities toward us.
 	updatePathingCircle(){
-		this.pathingCircle = new BoundingCircle(this.hurtBox.width/2, this.hurtBox.height/2,20, 0);
+		this.pathingCircle = new BoundingCircle(this.hurtBox.x+ this.hurtBox.width/2,this.hurtBox.y+ this.hurtBox.height/2,20, 0);
 	}
 	//the boundingbox to keep him within bounds of the map
 
@@ -205,8 +205,6 @@ class Link {
 			}
 			
 		}
-        
-    
     };
 
 	//function that updates the last hurtbox before our current one.
@@ -606,12 +604,12 @@ class Link {
             ctx.closePath();
             ctx.stroke();
 
-            ctx.setLineDash([5, 15]);
-            ctx.beginPath();
-            ctx.arc(this.pathingCircle.x- this.game.camera.x, this.pathingCircle.y - this.game.camera.y, this.pathingCircle.radius, 0, 2 * Math.PI);
-            ctx.closePath();
-            ctx.stroke();
-            ctx.setLineDash([]);
+            // ctx.setLineDash([5, 15]);
+            // ctx.beginPath();
+            // ctx.arc(this.pathingCircle.x- this.game.camera.x, this.pathingCircle.y - this.game.camera.y, this.pathingCircle.radius, 0, 2 * Math.PI);
+            // ctx.closePath();
+            // ctx.stroke();
+            // ctx.setLineDash([]);
         }
 	};
 	
