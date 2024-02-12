@@ -1,4 +1,5 @@
-const levelOne = { "compressionlevel":-1,
+const levelOne = { 
+// "compressionlevel":-1,
 //  "height":80,
 //  "infinite":false,
  "layers":[
