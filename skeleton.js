@@ -17,7 +17,7 @@ class Skeleton {
         // this.speed = 200;
 
         // spritesheet
-        this.spritesheet = ASSET_MANAGER.getAsset("./skeleton.png");
+        this.spritesheet = ASSET_MANAGER.getAsset("./enemies/skeleton.png");
 
         this.facing = 0; // 0 = right, 1 = left
         this.state = 0; // 0 = walking, 1 = idle, 2 = attack, 3 = damaged, 4 = dead, 5 = cheering

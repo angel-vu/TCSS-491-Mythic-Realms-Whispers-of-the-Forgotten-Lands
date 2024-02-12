@@ -17,7 +17,7 @@ class Wizard {
         // this.speed = 200;
 
         // spritesheet
-        this.spritesheet = ASSET_MANAGER.getAsset("./wizard.png");
+        this.spritesheet = ASSET_MANAGER.getAsset("./enemies/wizard.png");
 
         this.facing = 0; // 0 = down, 1 = up, 2 = left, 3 = right 
         this.state = 0; // 0 = walking, 1 = idle, 2 = running, 3 = attack, 4 = damaged, 5 = dead

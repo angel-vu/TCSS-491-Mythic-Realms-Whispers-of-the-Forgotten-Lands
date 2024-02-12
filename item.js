@@ -7,7 +7,7 @@ class Coin {
         this.x = Math.random() * 1024; // randoom initial x position
         this.y = Math.random() * 768; // random initial y position
 
-        this.spritesheet = ASSET_MANAGER.getAsset("./coins.png")
+        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/coins.png")
         this.animation = new Animator(this.spritesheet, 0, 0, 195, 195, 6, 1, 0, false, true);
     };
 
@@ -34,7 +34,7 @@ class HealthPotion {
         this.x = Math.random() * 1024; // randoom initial x position
         this.y = Math.random() * 768; // random initial y position
 
-        this.spritesheet = ASSET_MANAGER.getAsset("./potions.png")
+        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/potions.png")
         this.animation = new Animator(this.spritesheet, 20, 620, 240, 260, 4, 1, 0, false, true);
     };
 
@@ -87,7 +87,7 @@ class PowerPotion {
         this.x = Math.random() * 1024; // randoom initial x position
         this.y = Math.random() * 768; // random initial y position
 
-        this.spritesheet = ASSET_MANAGER.getAsset("./potion.png")
+        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/potion.png")
         this.animation = new Animator(this.spritesheet, 20, 65, 238, 700, 4, 1, 0, false, true);
     };
 
@@ -114,7 +114,7 @@ class InvisiblePotion {
         this.x = Math.random() * 1024; // random initial x position
         this.y = Math.random() * 768; // random initial y position
 
-        this.spritesheet = ASSET_MANAGER.getAsset("./potions.png")
+        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/potions.png")
         this.animation = new Animator(this.spritesheet, 0, 45, 250, 290, 4, 1, 0, false, true);
     };
 
@@ -141,7 +141,7 @@ class Treasure {
         this.x = Math.random() * 1024; // random initial x position
         this.y = Math.random() * 768; // random initial y position
 
-        this.spritesheet = ASSET_MANAGER.getAsset("./treasure.png")
+        this.spritesheet = ASSET_MANAGER.getAsset(".sprites/treasure.png")
         this.animation = new Animator(this.spritesheet, 15, 0, 110, 125, 10, 1, 0, false, true);
     };
 

@@ -9,7 +9,7 @@ class Knight {
         this.speed = 200;
 
         // spritesheet
-        this.spritesheet = ASSET_MANAGER.getAsset("./knight.png");
+        this.spritesheet = ASSET_MANAGER.getAsset("./enemies/knight.png");
 
         // knight state variables
         this.facing = 0; // 0 = down, 1 = up, 2 = left, 3 = right 

@@ -18,7 +18,7 @@ class Banshee {
         this.y = 350;
 
         // spritesheet
-        this.spritesheet = ASSET_MANAGER.getAsset("./banshee.png");
+        this.spritesheet = ASSET_MANAGER.getAsset("./enemies/banshee.png");
 
         // banshee state variables
         this.facing = 3; // 0 = down, 1 = up, 2 = left, 3 = right 

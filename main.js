@@ -2,25 +2,21 @@ const gameEngine = new GameEngine();
 
 const ASSET_MANAGER = new AssetManager();
 
-ASSET_MANAGER.queueDownload("./boss_sprites/Ganondorf.png");
-ASSET_MANAGER.queueDownload("./enemies/Akagane.png");
-
-
-//Loading Link image walking withoutsword
-
 ASSET_MANAGER.queueDownload("./sprites/Link_main_character_walking_no_sword.png");
 ASSET_MANAGER.queueDownload("./sprites/Link_main_character.png");
 ASSET_MANAGER.queueDownload("./sprites/Link_attack_1.png");
 ASSET_MANAGER.queueDownload("./sprites/Link_walk_mastersword_shield_right.png");
-ASSET_MANAGER.queueDownload("./skeleton.png");
-ASSET_MANAGER.queueDownload("./coins.png");
-ASSET_MANAGER.queueDownload("./potion.png");
-ASSET_MANAGER.queueDownload("./potions.png");
-ASSET_MANAGER.queueDownload("./treasure.png");
-ASSET_MANAGER.queueDownload("./goblin.png");
-ASSET_MANAGER.queueDownload("./banshee.png");
-ASSET_MANAGER.queueDownload("./knight.png");
-ASSET_MANAGER.queueDownload("./wizard.png");
+ASSET_MANAGER.queueDownload("./sprites/coins.png");
+ASSET_MANAGER.queueDownload("./sprites/potion.png");
+ASSET_MANAGER.queueDownload("./sprites/potions.png");
+ASSET_MANAGER.queueDownload("./sprites/treasure.png");
+ASSET_MANAGER.queueDownload("./enemies/skeleton.png");
+ASSET_MANAGER.queueDownload("./enemies/Akagane.png");
+ASSET_MANAGER.queueDownload("./enemies/goblin.png");
+ASSET_MANAGER.queueDownload("./enemies/banshee.png");
+ASSET_MANAGER.queueDownload("./enemies/knight.png");
+ASSET_MANAGER.queueDownload("./enemies/wizard.png");
+ASSET_MANAGER.queueDownload("./boss_sprites/Ganondorf.png");
 ASSET_MANAGER.downloadAll(() => {
 	const canvas = document.getElementById("gameWorld");
 	
