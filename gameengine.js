@@ -143,6 +143,7 @@ class GameEngine {
         
         
         //The this keyword refers to the local function unless that function is attached to that class. Like the constructor will refer to the current class.
+        //https://www.toptal.com/developers/keycode
         this.ctx.canvas.addEventListener("keydown", e => {
             switch (e.code) {
                 case "KeyA":
@@ -185,8 +186,9 @@ class GameEngine {
                 case "KeyO":
                     that.cheer = true;
                     break;
-                case "KeyM":
+                case "ShiftLeft":
                     this.run = true;
+                    console.log("pressing shift");
                     break;
             }
         }, false);
@@ -230,6 +232,10 @@ class GameEngine {
                     break;
                 case "KeyM":
                     this.run = false;
+                    break;
+                case "ShiftLeft":
+                    this.run = false;
+                    console.log("let go of shift");
                     break;
             }
         }, false);
