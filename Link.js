@@ -28,8 +28,45 @@ class Link {
 
 		//bounding box where if it collides with abother entity's hurtbox they will receive damage.
 		this.updateHitBox();
+
+		//bounding box where to keep within bounds of the map.
+		this.updateMoveBox();
+
+		//a bounding sphere to attract enemy entities toward us.
+		//this.updatePathingCircle();
 	};
 
+
+	//a bounding sphere to attract enemy entities toward us.
+	updatePathingCircle(){
+		this.pathingCircle = new BoundingCircle(this.hurtBox.x+ this.hurtBox.width/2,this.hurtBox.y+ this.hurtBox.height/2,20, 0);
+	}
+	//the boundingbox to keep him within bounds of the map
+
+	//Try to keep it around his feet to allow overlap.
+	updateMoveBox(){
+		if(this.itemsEquipped === 0 ){
+			if(this.state <= 1 ){
+				this.moveBox = new BoundingBox(this.x, this.y+ (48* 3), 26 * 3, 10 * 3);
+			}else if(this.state === 2){
+				this.moveBox = new BoundingBox(this.x, this.y+ (42* 3), 52 * 3, 15 * 3);
+
+			}
+		} else if(this.itemsEquipped === 1){
+			if(this.state <= 1 ){
+				this.moveBox = new BoundingBox(this.x, this.y+ (48* 3), 26 * 3, 10 * 3);
+			}else if(this.state === 2){
+				this.moveBox = new BoundingBox(this.x, this.y+ (42* 3), 55 * 3, 15 * 3);
+
+			} else if(this.state === 5){
+				this.moveBox = new BoundingBox(this.x, this.y+ (48* 3), 30 * 3, 10 * 3);
+			} else if(this.state === 6){
+				this.moveBox = new BoundingBox(this.x, this.y+ (48* 3), 32* 3, 10 * 3);
+			}
+		}
+	}
+
+	
 	//function that updates the hurtbox of link
 	updateHurtBox() {
 
@@ -48,6 +85,7 @@ class Link {
 
 		if(this.state < 4 && this.facing === 0) {
 			if(this.state === 2){
+				if(this.itemsEquipped === 0){
 				if(this.animations[0][2][0].advanceAndGetCurrentFrame(this.game.clockTick) === 0){
 					this.hurtBox = new BoundingBox(this.x, this.y+20 , 50 * 3, 50 * 3);
 				} else if(this.animations[0][2][0].advanceAndGetCurrentFrame(this.game.clockTick) === 1){
@@ -65,6 +103,7 @@ class Link {
 				}else if(this.animations[0][2][0].advanceAndGetCurrentFrame(this.game.clockTick) === 7){
 					this.hurtBox = new BoundingBox(this.x +10, this.y+20 , 38* 3, 50 * 3);
 				}
+			} else if( this.itemsEquipped === 1){
 				if(this.animations[1][2][0].advanceAndGetCurrentFrame(this.game.clockTick) === 0){
 					this.hurtBox = new BoundingBox(this.x, this.y+20 , 51 * 3, 50 * 3);
 				} else if(this.animations[1][2][0].advanceAndGetCurrentFrame(this.game.clockTick) === 1){
@@ -82,6 +121,7 @@ class Link {
 				} else if(this.animations[1][2][0].advanceAndGetCurrentFrame(this.game.clockTick) === 7){
 					this.hurtBox = new BoundingBox(this.x +35, this.y+20 , 38 * 3, 50 * 3);
 				}
+			}
 				
 			} else{
 				//default hitbox that fits the weaponless idle animation.
@@ -90,6 +130,7 @@ class Link {
 			
 		} else if(this.state < 4 && this.facing === 1 ){
 			if(this.state === 2){
+				if(this.itemsEquipped === 0){
 				if(this.animations[0][2][1].advanceAndGetCurrentFrame(this.game.clockTick) === 0){
 					this.hurtBox = new BoundingBox(this.x, this.y+20 , 50 * 3, 50 * 3);
 				} else if(this.animations[0][2][1].advanceAndGetCurrentFrame(this.game.clockTick) === 1){
@@ -107,6 +148,7 @@ class Link {
 				}else if(this.animations[0][2][1].advanceAndGetCurrentFrame(this.game.clockTick) === 7){
 					this.hurtBox = new BoundingBox(this.x +10, this.y+20 , 38* 3, 50 * 3);
 				}
+			} else if(this.itemsEquipped === 1){
 				if(this.animations[1][2][1].advanceAndGetCurrentFrame(this.game.clockTick) === 0){
 					this.hurtBox = new BoundingBox(this.x, this.y+20 , 51 * 3, 50 * 3);
 				} else if(this.animations[1][2][1].advanceAndGetCurrentFrame(this.game.clockTick) === 1){
@@ -124,6 +166,7 @@ class Link {
 				} else if(this.animations[1][2][1].advanceAndGetCurrentFrame(this.game.clockTick) === 7){
 					this.hurtBox = new BoundingBox(this.x +15, this.y+20 , 38 * 3, 50 * 3);
 				}
+			}
 			} else{
 				//default hitbox that fits the weaponless idle animation.
 				this.hurtBox = new BoundingBox(this.x, this.y, 26 * 3, 58 * 3);
@@ -162,8 +205,6 @@ class Link {
 			}
 			
 		}
-        
-    
     };
 
 	//function that updates the last hurtbox before our current one.
@@ -173,6 +214,10 @@ class Link {
 	//function that updates the last hitbox before our current one.
 	updateLastHitBox(){
 		this.lastHitBox = this.hitBox;
+	}
+	//function that updates the last movebox before our current one.
+	updateLastHitBox(){
+		this.lastMoveBox = this.moveBox;
 	}
 
 	//function that updates the current hitbox for when link is in an attack state
@@ -396,7 +441,6 @@ class Link {
 		
 			
 			
-			//this.itemsEquipped = 1;
 			if(this.comboCounter === 0){
 				this.state = 5;
 				//Line needed here in the case where I interupt my attack animation and I try to enter the attack animation again afterwards.
@@ -482,8 +526,11 @@ class Link {
 		this.y += this.velocity.y * this.game.clockTick;
 		this.updateLastHurtBox();
 		this.updateLastHitBox();
+		this.updateMoveBox();
 		this.updateHitBox();
 		this.updateHurtBox();
+		this.updateMoveBox();
+		this.updatePathingCircle();
 
     };
 
@@ -544,21 +591,25 @@ class Link {
 			// ctx.strokeRect(this.hurtBox.x - this.game.camera.x, this.hurtBox.y - this.game.camera.y, this.hurtBox.width, this.hurtBox.height);
             ctx.strokeRect(this.hurtBox.x- this.game.camera.x, this.hurtBox.y - this.game.camera.y, this.hurtBox.width, this.hurtBox.height);
         }
+		if(PARAMS.DEBUG && this.moveBox){
+			ctx.strokeStyle = 'Pink';
+			ctx.strokeRect(this.moveBox.x- this.game.camera.x, this.moveBox.y - this.game.camera.y, this.moveBox.width, this.moveBox.height);
+		}
 
-		if (PARAMS.DEBUG) {
+		if (PARAMS.DEBUG && this.pathingCircle) {
  
             ctx.strokeStyle = "Red";
             ctx.beginPath();
-            ctx.arc(this.x - this.game.camera.x, this.y - this.game.camera.y, this.radius, 0, 2 * Math.PI);
+            ctx.arc(this.pathingCircle.x- this.game.camera.x, this.pathingCircle.y - this.game.camera.y, this.pathingCircle.radius, 0, 2 * Math.PI);
             ctx.closePath();
             ctx.stroke();
 
-            ctx.setLineDash([5, 15]);
-            ctx.beginPath();
-            ctx.arc(this.x - this.game.camera.x, this.y - this.game.camera.y, this.visualRadius, 0, 2 * Math.PI);
-            ctx.closePath();
-            ctx.stroke();
-            ctx.setLineDash([]);
+            // ctx.setLineDash([5, 15]);
+            // ctx.beginPath();
+            // ctx.arc(this.pathingCircle.x- this.game.camera.x, this.pathingCircle.y - this.game.camera.y, this.pathingCircle.radius, 0, 2 * Math.PI);
+            // ctx.closePath();
+            // ctx.stroke();
+            // ctx.setLineDash([]);
         }
 	};
 	
