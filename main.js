@@ -17,8 +17,12 @@ ASSET_MANAGER.queueDownload("./enemies/banshee.png");
 ASSET_MANAGER.queueDownload("./enemies/knight.png");
 ASSET_MANAGER.queueDownload("./enemies/wizard.png");
 ASSET_MANAGER.queueDownload("./boss_sprites/Ganondorf.png");
+ASSET_MANAGER.queueDownload("./sprites/grass.png");
 ASSET_MANAGER.downloadAll(() => {
 	const canvas = document.getElementById("gameWorld");
+
+	const ground = new Ground(gameEngine, 0, 0, levelOne);
+	gameEngine.addEntity(ground);
 	
 	const ctx = canvas.getContext("2d");
 	ctx.imageSmoothingEnabled = true;
