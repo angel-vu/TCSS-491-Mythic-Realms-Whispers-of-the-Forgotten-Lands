@@ -216,7 +216,7 @@ class Link {
 		this.lastHitBox = this.hitBox;
 	}
 	//function that updates the last movebox before our current one.
-	updateLastHitBox(){
+	updateLastMoveBox(){
 		this.lastMoveBox = this.moveBox;
 	}
 
@@ -526,7 +526,7 @@ class Link {
 		this.y += this.velocity.y * this.game.clockTick;
 		this.updateLastHurtBox();
 		this.updateLastHitBox();
-		this.updateMoveBox();
+		this.updateLastMoveBox();
 		this.updateHitBox();
 		this.updateHurtBox();
 		this.updateMoveBox();
