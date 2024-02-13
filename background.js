@@ -4,10 +4,12 @@ class Ground {
 
         // Load the grass tile image from the tileset
         this.spritesheet = ASSET_MANAGER.getAsset(levelOne.tilesetImage);
+
+
     };
 
     update() {
-        // Add update logic if needed
+        
     };
 
     draw(ctx) {
@@ -23,8 +25,21 @@ class Ground {
                 const drawX = this.x + col * tileSize; // Calculate x position to draw
                 const drawY = this.y + row * tileSize; // Calculate y position to draw
 
-                ctx.drawImage(this.spritesheet, 0, 0, tileSize, tileSize, drawX, drawY, tileSize, tileSize);
+                ctx.drawImage(this.spritesheet, 0, 0, tileSize, tileSize, drawX - this.game.camera.x, drawY - this.game.camera.y , tileSize, tileSize);
             }
         }
-    };
+    };  
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

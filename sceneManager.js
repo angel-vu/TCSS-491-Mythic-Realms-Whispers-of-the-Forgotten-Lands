@@ -11,11 +11,16 @@ class SceneManager {
         this.credits = false;
         this.level = null;
 
+        this.link = new Link(this.game, 0, 0);
+        this.game.addEntity(this.link);
+        
         this.ground = new Ground(this.game, 0, 0, levelOne);
         this.game.addEntity(this.ground);
 
-        this.link = new Link(this.game, 0, 0);
-        this.game.addEntity(this.link);
+        // this.wall = new Wall(this.game, 0, 0, levelOne);
+        // this.game.addEntity(this.wall);
+
+        
     };
 
     clearEntities() {
@@ -37,6 +42,6 @@ class SceneManager {
     };
 
     draw(ctx) {
-        
+          
     };
 };

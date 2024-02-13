@@ -18,12 +18,10 @@ ASSET_MANAGER.queueDownload("./enemies/knight.png");
 ASSET_MANAGER.queueDownload("./enemies/wizard.png");
 ASSET_MANAGER.queueDownload("./boss_sprites/Ganondorf.png");
 ASSET_MANAGER.queueDownload("./sprites/grass.png");
+ASSET_MANAGER.queueDownload("./sprites/wall.png");
 ASSET_MANAGER.downloadAll(() => {
 	const canvas = document.getElementById("gameWorld");
 
-	const ground = new Ground(gameEngine, 0, 0, levelOne);
-	gameEngine.addEntity(ground);
-	
 	const ctx = canvas.getContext("2d");
 	ctx.imageSmoothingEnabled = true;
 
@@ -44,7 +42,7 @@ ASSET_MANAGER.downloadAll(() => {
 
 	//gameEngine.addEntity(new Ganon(gameEngine, 300, 800, [{ x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: 0, y: 0 }]));
 	// gameEngine.addEntity(new Akagane(gameEngine));
-	//gameEngine.addEntity(new Link(gameEngine,0,0));
+	// gameEngine.addEntity(new Link(gameEngine,0,0));
 	// gameEngine.addEntity(new Skeleton(gameEngine));
     // gameEngine.addEntity(new Coin(gameEngine));
     // gameEngine.addEntity(new HealthPotion(gameEngine));
@@ -52,12 +50,12 @@ ASSET_MANAGER.downloadAll(() => {
     // gameEngine.addEntity(new PowerPotion(gameEngine));
     // gameEngine.addEntity(new Treasure(gameEngine));
 	// gameEngine.addEntity(new Goblin(gameEngine));
-    //gameEngine.addEntity(new Banshee(gameEngine, 1000, 800, [{ x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: 0, y: 0 }]));
+    gameEngine.addEntity(new Banshee(gameEngine, 1000, 800, [{ x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: 0, y: 0 }]));
     // gameEngine.addEntity(new Knight(gameEngine));
 
 	// gameEngine.addEntity(new Ganon(gameEngine, 0, 0));
 	// gameEngine.addEntity(new Akagane(gameEngine));
-	//gameEngine.addEntity(new Skeleton(gameEngine, 1000, 800, [{ x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: 0, y: 0 }]));
+	gameEngine.addEntity(new Skeleton(gameEngine, 1000, 800, [{ x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: 0, y: 0 }]));
     // 	gameEngine.addEntity(new Coin(gameEngine));
     // 	gameEngine.addEntity(new HealthPotion(gameEngine));
     // 	gameEngine.addEntity(new InvisiblePotion(gameEngine));
@@ -65,7 +63,7 @@ ASSET_MANAGER.downloadAll(() => {
     // 	gameEngine.addEntity(new Treasure(gameEngine));
 	// gameEngine.addEntity(new Goblin(gameEngine));
     // 	gameEngine.addEntity(new Banshee(gameEngine));
-    // 	gameEngine.addEntity(new Knight(gameEngine));
+    	// gameEngine.addEntity(new Knight(gameEngine));
 
 	// gameEngine.addEntity(new Wizard(gameEngine));
 
@@ -74,8 +72,10 @@ ASSET_MANAGER.downloadAll(() => {
 
 	PARAMS.CANVAS_WIDTH = canvas.clientWidth
 	PARAMS.CANVAS_HEIGHT = canvas.clientHeight;
-	
+
 	gameEngine.addEntity(new SceneManager(gameEngine));
+	
+	
 
 	gameEngine.start();
 });
