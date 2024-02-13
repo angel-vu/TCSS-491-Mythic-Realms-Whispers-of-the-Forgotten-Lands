@@ -1,3 +1,11 @@
+// globalThis.level = new loadBackground(
+//   this.game,
+//   this.x - this.game.camera.x,
+//   this.y - this.game.camera.y,
+//   levelOne
+// );
+// const map = this.level.formMap();
+
 class Grass {
   // This is the layer that Link can walk on
   constructor(game, x, y, levelOne) {
@@ -13,7 +21,7 @@ class Grass {
     this.map = this.level.formMap();
     this.tileWidth = 16; // Width of each tile
     this.tileHeight = 16; // Height of each tile
-    this.scale = 3;
+    this.scale = 1;
   }
 
   update() {
@@ -44,6 +52,53 @@ class Grass {
       }
     }
   };
+}
+
+class Concrete {
+  constructor(game, x, y, levelOne) {
+    Object.assign(this, {game, x, y, levelOne});
+    this.spritesheet = ASSET_MANAGER.getAsset("./sprites/grass.png");
+    this.level = new loadBackground(
+      this.game,
+      this.x - this.game.camera.x,
+      this.y - this.game.camera.y,
+      this.levelOne
+    );
+    this.map = this.level.formMap();
+    this.tileWidth = 16; // Width of each tile
+    this.tileHeight = 16; // Height of each tile
+    this.scale = 1;
+  };
+
+  update() {
+    // Update logic goes here if needed
+  }
+
+  draw(ctx) {
+    // Loop through each row and column in the map
+    for (let i = 0; i < this.map.length; i++) {// y's rows
+      for (let j = 0; j < this.map[i].length; j++) { // x's columns
+        const drawX = this.x + j * this.tileWidth * this.scale; // column
+        const drawY = this.y + i * this.tileWidth * this.scale; // row
+        // If the current cell contains grass (value is 1), draw the grass tile
+        if (this.map[i][j] > 125 && this.map[i][j] < 248) {
+          ctx.drawImage(
+            this.spritesheet,
+            80,
+            208,
+            this.tileWidth,
+            this.tileHeight,
+            drawX - this.game.camera.x - this.game.camera.midpointX,
+            drawY - this.game.camera.y - this.game.camera.midpointY,
+            this.tileWidth * this.scale,
+            this.tileHeight * this.scale
+          );
+          // Adjust the destination x and y coordinates based on tile width and height
+        }
+      }
+    }
+  };
+
 }
 
 class loadBackground {

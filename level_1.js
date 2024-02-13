@@ -1,4 +1,4 @@
-const levelOne = { 
+globalThis.levelOne = { 
 // "compressionlevel":-1,
 //  "height":80,
 //  "infinite":false,
