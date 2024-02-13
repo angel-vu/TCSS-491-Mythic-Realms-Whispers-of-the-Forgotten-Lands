@@ -10,6 +10,7 @@ ASSET_MANAGER.queueDownload("./sprites/coins.png");
 ASSET_MANAGER.queueDownload("./sprites/potion.png");
 ASSET_MANAGER.queueDownload("./sprites/potions.png");
 ASSET_MANAGER.queueDownload("./sprites/treasure.png");
+ASSET_MANAGER.queueDownload("./sprites/grass.png");
 ASSET_MANAGER.queueDownload("./enemies/skeleton.png");
 ASSET_MANAGER.queueDownload("./enemies/Akagane.png");
 ASSET_MANAGER.queueDownload("./enemies/goblin.png");
@@ -40,7 +41,7 @@ ASSET_MANAGER.downloadAll(() => {
 
 	gameEngine.addEntity(new Ganon(gameEngine, 300, 800, [{ x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: 0, y: 0 }]));
 	// gameEngine.addEntity(new Akagane(gameEngine));
-	gameEngine.addEntity(new Link(gameEngine,0,0));
+	//gameEngine.addEntity(new Link(gameEngine,0,0));
 	// gameEngine.addEntity(new Skeleton(gameEngine));
     // gameEngine.addEntity(new Coin(gameEngine));
     // gameEngine.addEntity(new HealthPotion(gameEngine));
@@ -53,7 +54,7 @@ ASSET_MANAGER.downloadAll(() => {
 
 	// gameEngine.addEntity(new Ganon(gameEngine, 0, 0));
 	// gameEngine.addEntity(new Akagane(gameEngine));
-	gameEngine.addEntity(new Link(gameEngine,0,0));
+	//gameEngine.addEntity(new Link(gameEngine,0,0));
 	gameEngine.addEntity(new Skeleton(gameEngine, 1000, 800, [{ x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: 0, y: 0 }]));
     // 	gameEngine.addEntity(new Coin(gameEngine));
     // 	gameEngine.addEntity(new HealthPotion(gameEngine));
@@ -66,13 +67,13 @@ ASSET_MANAGER.downloadAll(() => {
 
 	// gameEngine.addEntity(new Wizard(gameEngine));
 
+	gameEngine.addEntity(new SceneManager(gameEngine));
+
 
 	gameEngine.init(ctx);
 
 	PARAMS.CANVAS_WIDTH = canvas.clientWidth
 	PARAMS.CANVAS_HEIGHT = canvas.clientHeight;
-	
-	gameEngine.addEntity(new SceneManager(gameEngine));
 
 	gameEngine.start();
 });

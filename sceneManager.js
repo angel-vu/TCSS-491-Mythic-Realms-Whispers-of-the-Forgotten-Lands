@@ -11,8 +11,15 @@ class SceneManager {
         this.credits = false;
         this.level = null;
 
+        // the -100 offsets Link to be in the middle shawty
+        this.midpointX = PARAMS.CANVAS_WIDTH / 2 - 100;
+        this.midpointY = PARAMS.CANVAS_HEIGHT / 2 - 100;
+        
         this.link = new Link(this.game, 0, 0);
         this.game.addEntity(this.link);
+
+        this.game.addEntity(new Grass(this.game, 0, 0, levelOne));
+
     };
 
     clearEntities() {
@@ -22,18 +29,25 @@ class SceneManager {
     };
 
     update() {
-        let midpointX = PARAMS.CANVAS_WIDTH / 2 - 100;
-        let midpointY = PARAMS.CANVAS_HEIGHT / 2 - 100;
+        this.midpointX = PARAMS.CANVAS_WIDTH / 2;
+        this.midpointY = PARAMS.CANVAS_HEIGHT / 2;
 
         this.x = 0;
         this.y = 0;
         
         // Update the camera position based on the character's position and the midpoint
-        this.x = this.link.x - midpointX;
-        this.y = this.link.y - midpointY;
+        this.x = this.link.x - this.midpointX;
+        this.y = this.link.y - this.midpointY;
     };
 
     draw(ctx) {
-        
+        //this.drawEntities(ctx);
     };
-};
+
+    // drawEntities(ctx) {
+    //     // Loop through all entities and draw them
+    //     this.game.entities.forEach(function (entity) {
+    //         entity.draw(ctx);
+    //     });
+    // }
+}
