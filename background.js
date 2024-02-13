@@ -1,4 +1,5 @@
 class Grass {
+  // This is the layer that Link can walk on
   constructor(game, x, y, levelOne) {
     Object.assign(this, { game, x, y, levelOne });
 
