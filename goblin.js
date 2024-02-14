@@ -1,12 +1,17 @@
 class Goblin {
-    constructor(game) {
-        Object.assign(this, { game });
+    constructor(game, x, y, path) {
+        Object.assign(this, { game, x, y, path });
 
         this.game.goblin = this;
 
-        this.x = 400;
-        this.y = 0;
-        this.speed = 200;
+        this.initialPoint = { x, y };
+
+        this.radius = 20;
+        this.visualRadius = 100;
+
+        this.currentHealth = 100;
+        this.maxHealth = 100;
+        this.dead = false;
 
         // spritesheet
         this.spritesheet = ASSET_MANAGER.getAsset("./enemies/goblin.png");
@@ -15,10 +20,87 @@ class Goblin {
         this.facing = 3; //  2 = left, 3 = right 
         this.state = 0; // 0 = walking, 1 = idle, 2 = swing
 
-        // goblin's animations
+        this.targetID = 0;
+        if (this.path && this.path[this.targetID]) this.target = this.path[this.targetID];
+
+        var dist = distance(this, this.target);
+        this.maxSpeed = 75; // pixels per second
+     
+        this.velocity = { x: (this.target.x - this.x) / dist * this.maxSpeed, y: (this.target.y - this.y) / dist * this.maxSpeed };
+
+        // banshee's animations
+        this.updateBB();
+        this.updateHurtBox();
+        this.updateHitBox();
+        this.updatePathingCircle();
         this.animations = [];
         this.loadAnimations();
+        this.elapsedTime = 0;
     };
+
+    // Bounding sphere for enemy vision
+	updatePathingCircle(){
+		this.pathingCircle = new BoundingCircle(this.hurtBox.x + this.hurtBox.width/2, this.hurtBox.y + this.hurtBox.height/2, 20, 200);
+	}
+
+    updateBB() {
+        if (this.state === 0) {
+            this.BB = new BoundingBox(this.x, this.y, 50 * this.scale, 60 * this.scale);
+        } else if (this.state === 1) {
+            this.BB = new BoundingBox(this.x, this.y, 50 * this.scale, 60 * this.scale);
+        } else if (this.state === 2) {
+            this.BB = new BoundingBox(this.x, this.y, 50 * this.scale, 60 * this.scale);
+        } else {
+            this.BB = new BoundingBox(this.x, this.y, 50 * this.scale, 60 * this.scale);
+        }
+    };
+
+    updateHitBox() {
+        if(this.state !== 2) {
+            this.hitBox = new BoundingBox(this.x, this.y, 0, 0);
+        } else { // attack state
+            if(this.facing === 3) { // right
+                this.hitBox = new BoundingBox(this.x, this.y, 10 + 50, 50);
+            } else { // left
+                this.hitBox = new BoundingBox(this.x, this.y, 10, 50);
+            }
+        }
+    }
+
+    updateHurtBox() {
+        if(this.facing === 3) { // right
+            if(this.state === 0) { // walking
+                this.hurtBox = new BoundingBox(this.x, this.y, 50, 65);
+            } else if (this.state === 1) {
+                this.hurtBox = new BoundingBox(this.x, this.y, 50, 75);
+            } else {
+                this.hurtBox = new BoundingBox(this.x, this.y, 50, 75);
+            }
+        } else { // left
+            if(this.state === 0) { // walking
+                this.hurtBox = new BoundingBox(this.x, this.y, 50, 65);
+            } else if (this.state === 1) {
+                this.hurtBox = new BoundingBox(this.x, this.y, 50, 75);
+            } else {
+                this.hurtBox = new BoundingBox(this.x, this.y, 50, 75);
+            }
+        }
+    }
+
+    // Tracks last bounding box 
+    updateLastBB() {
+        this.lastBB = this.BB;
+    };
+
+    // Trakcs last hurt box 
+	updateLastHurtBox() {
+        this.lastHurtBox = this.hurtBox;
+    };
+
+	// Tracks last hit box
+	updateLastHitBox(){
+		this.lastHitBox = this.hitBox;
+	}
 
     loadAnimations() {
         for (var i = 0; i < 5; i++) { // 4 directions
@@ -58,65 +140,127 @@ class Goblin {
     };
 
     update() {
-        if (this.x > 1024) {
-            this.x = -130;
+        this.elapsedTime += this.game.clockTick;
+        var dist = distance(this, this.target);
+
+        if (dist < 5) {
+            if (this.targetID < this.path.length - 1 && this.target === this.path[this.targetID]) {
+                this.targetID++;
+            }
+            this.target = this.path[this.targetID];
         }
 
-        if (this.x < -130) {
-            this.x = 1024;
+        for (var i = 0; i < this.game.entities.length; i++) {
+            var ent = this.game.entities[i];
+            if (ent instanceof Link && canSee(this, ent)) {
+                console.log("ENEMY SPOTTEd");
+                this.target = ent;
+            } 
+            if (ent instanceof Link && collide(this, ent)) {
+                console.log("ENEMy COLLIDE")
+                if (this.state === 0 || this.state === 1) {
+                    console.log("ATTACK")
+                    this.state = 2;
+                    this.elapsedTime = 0;
+                } else if (this.elapsedTime > 1) {
+                    console.log("ATTACK LANDED!");
+                    ent.currentHealth -= 1;
+                    this.elapsedTime = 0;
+                } 
+            }
+            if (ent instanceof Link && this.state === 2 && !collide(this, ent)) {
+                this.state = 0;
+            }
         }
 
-        if (this.y > 1024) {
-            this.y = -130;
+        if (this.state !== 2) {
+            dist = distance(this, this.target);
+            this.velocity = { x: (this.target.x - this.x) / dist * this.maxSpeed, y: (this.target.y - this.y) / dist * this.maxSpeed };
+            this.x += this.velocity.x * this.game.clockTick;
+            this.y += this.velocity.y * this.game.clockTick;
+
+            if(this.velocity.x > 0) {
+                this.facing = 3;
+            } else {
+                this.facing = 2;
+            }
+        } else {
+            dist = distance(this, this.target);
+            if (this.game.camera.link.x - 1 >= this.x){
+                this.facing = 3;
+            } else {
+                this.facing = 2;
+            }
         }
 
-        if (this.y < -130) {
-            this.y = 1024;
-        }
-
-        this.state = 1; 
-
-        if (this.game.down && !this.game.up) {
-            console.log("DOWN");
-            this.state = 0;
-            this.y = this.y + this.speed * this.game.clockTick;
-        }
-
-        else if (this.game.up && !this.game.down) {
-            console.log("UP");
-            this.state = 0;
-            this.y = this.y - this.speed * this.game.clockTick;
-        }
-
-        else if (this.game.left && !this.game.right) {
-            console.log("LEFT");
-            this.facing = 2;
-            this.state = 0;
-            this.x = this.x - this.speed * this.game.clockTick;
-        }
-
-        else if (this.game.right && !this.game.left) {
-            console.log("RIGHT");
-            this.facing = 3;
-            this.state = 0;
-            this.x = this.x + this.speed * this.game.clockTick;
-        }
-
-        else {
-            this.state = 1;
-        }
-
-        if(this.game.attack) {
-            this.state = 2; 
-        }
-
-        if(this.game.damage) {
-            this.state = 3; 
-        }
-
+        
+        
+        this.updateLastBB();
+        this.updateBB();
+        this.updateLastHurtBox();
+        this.updateHurtBox();
+        this.updateLastHitBox();
+        this.updateHitBox();
+        this.updatePathingCircle();
     };
 
-    draw(ctx) {
-            this.animations[this.facing][this.state].drawFrame(this.game.clockTick, ctx, this.x , this.y, 2);
-        }    
+    draw(ctx) {         
+        this.animations[this.facing][this.state].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, 2);
+        // this.healthbar.draw(ctx);
+    
+        if (PARAMS.DEBUG) {
+            // Pathing 
+            // ctx.strokeStyle = "Black";
+            // ctx.beginPath();
+            // ctx.moveTo(this.initialPoint.x, this.initialPoint.y);
+            // for (var i = 0; i < this.path.length; i++) {
+            //     ctx.lineTo(this.path[i].x, this.path[i].y);
+            // };
+            // ctx.stroke();
+    
+            // Hit Box (Attack)          
+            ctx.strokeStyle = 'Red';
+            ctx.strokeRect(this.hitBox.x - this.game.camera.x, this.hitBox.y - this.game.camera.y, this.hitBox.width, this.hitBox.height);
+    
+            // Hurt Box (Damage Taken)
+            ctx.strokeStyle = 'Blue';
+            ctx.strokeRect(this.hurtBox.x - this.game.camera.x, this.hurtBox.y - this.game.camera.y, this.hurtBox.width, this.hurtBox.height);
+    
+            console.log(this.pathingCircle.x);
+            console.log(this.pathingCircle.y);
+            // // Soon to be Circles
+            ctx.strokeStyle = "Black";
+            ctx.beginPath();
+            ctx.arc(this.pathingCircle.x - this.game.camera.x, this.pathingCircle.y - this.game.camera.y, this.pathingCircle.radius, 0, 2 * Math.PI);
+            ctx.closePath();
+            ctx.stroke();
+            
+            ctx.strokeStyle = "Blue";
+            ctx.setLineDash([5, 15]);
+            ctx.beginPath();
+            ctx.arc(this.pathingCircle.x - this.game.camera.x, this.pathingCircle.y - this.game.camera.y, this.pathingCircle.radius, 0, 2 * Math.PI);
+            ctx.closePath();
+            ctx.stroke();
+            ctx.setLineDash([]);
+    
+            // Inner Circle 
+            // ctx.strokeStyle = "Yellow";
+            // ctx.beginPath();
+            // ctx.arc(this.x - this.game.camera.x, this.y - this.game.camera.y, this.radius, 0, 2 * Math.PI);
+            // ctx.closePath();
+            // ctx.stroke();
+    
+            // // Vision Circle
+            // ctx.setLineDash([5, 15]);
+            // ctx.beginPath();
+            // ctx.arc(this.x - this.game.camera.x, this.y - this.game.camera.y, this.visualRadius, 0, 2 * Math.PI);
+            // ctx.closePath();
+            // ctx.stroke();
+            // ctx.setLineDash([]);
+    
+            // Bounding Box
+            // ctx.strokeStyle = 'Red';
+            // ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y - this.game.camera.y, this.BB.width, this.BB.height);
+        }
+    }
 }
