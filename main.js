@@ -6,6 +6,7 @@ ASSET_MANAGER.queueDownload("./sprites/Link_main_character_walking_no_sword.png"
 ASSET_MANAGER.queueDownload("./sprites/Link_main_character.png");
 ASSET_MANAGER.queueDownload("./sprites/Link_attack_1.png");
 ASSET_MANAGER.queueDownload("./sprites/Link_walk_mastersword_shield_right.png");
+ASSET_MANAGER.queueDownload("./sprites/projectile.png");
 ASSET_MANAGER.queueDownload("./sprites/coins.png");
 ASSET_MANAGER.queueDownload("./sprites/potion.png");
 ASSET_MANAGER.queueDownload("./sprites/potions.png");
@@ -34,7 +35,7 @@ ASSET_MANAGER.downloadAll(() => {
     // gameEngine.addEntity(new PowerPotion(gameEngine));
     // gameEngine.addEntity(new Treasure(gameEngine));
 	// gameEngine.addEntity(new Goblin(gameEngine));
-    gameEngine.addEntity(new Banshee(gameEngine, 1000, 800, [{ x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: 0, y: 0 }]));
+    // gameEngine.addEntity(new Banshee(gameEngine, 1000, 800, [{ x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: 0, y: 0 }]));
     // gameEngine.addEntity(new Knight(gameEngine));
 	gameEngine.addEntity(new Wizard(gameEngine, 1000, 800, [{ x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: 0, y: 0 }]));
 
@@ -54,12 +55,10 @@ ASSET_MANAGER.downloadAll(() => {
 
 	// gameEngine.addEntity(new Ganon(gameEngine, 0, 0));
 	// gameEngine.addEntity(new Akagane(gameEngine));
-	gameEngine.addEntity(new Link(gameEngine,0,0));
+	// gameEngine.addEntity(new Link(gameEngine,0,0));
 	gameEngine.addEntity(new Skeleton(gameEngine, 1000, 800, [{ x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: 0, y: 0 }]));
     
-
 	gameEngine.addEntity(new SceneManager(gameEngine));
-
 
 	gameEngine.init(ctx);
 
