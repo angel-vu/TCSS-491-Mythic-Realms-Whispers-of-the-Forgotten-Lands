@@ -21,7 +21,7 @@ class Grass {
     this.map = this.level.formMap();
     this.tileWidth = 16; // Width of each tile
     this.tileHeight = 16; // Height of each tile
-    this.scale = 1;
+    this.scale = 3;
   }
 
   update() {
@@ -30,8 +30,10 @@ class Grass {
 
   draw(ctx) {
     // Loop through each row and column in the map
-    for (let i = 0; i < this.map.length; i++) {// y's rows
-      for (let j = 0; j < this.map[i].length; j++) { // x's columns
+    for (let i = 0; i < this.map.length; i++) {
+      // y's rows
+      for (let j = 0; j < this.map[i].length; j++) {
+        // x's columns
         const drawX = this.x + j * this.tileWidth * this.scale; // column
         const drawY = this.y + i * this.tileWidth * this.scale; // row
         // If the current cell contains grass (value is 1), draw the grass tile
@@ -51,13 +53,14 @@ class Grass {
         }
       }
     }
-  };
+  }
 }
 
 class Concrete {
   constructor(game, x, y, levelOne) {
-    Object.assign(this, {game, x, y, levelOne});
+    Object.assign(this, { game, x, y, levelOne });
     this.spritesheet = ASSET_MANAGER.getAsset("./sprites/grass.png");
+
     this.level = new loadBackground(
       this.game,
       this.x - this.game.camera.x,
@@ -65,27 +68,47 @@ class Concrete {
       this.levelOne
     );
     this.map = this.level.formMap();
+    this.concreteFiller = [
+      { x: 80, y: 208 },
+      { x: 32, y: 192 },
+      { x: 224, y: 144 },
+    ];
+    this.randomStone = this.getRandomTuple();
+
     this.tileWidth = 16; // Width of each tile
     this.tileHeight = 16; // Height of each tile
-    this.scale = 1;
-  };
+    this.scale = 3;
+  }
 
   update() {
     // Update logic goes here if needed
   }
 
+  getRandomTuple() {
+    // Generate a random index within the range of the array's length
+    const randomIndex = Math.floor(Math.random() * this.concreteFiller.length);
+
+    // Retrieve the object at the random index
+    const randomObject = this.concreteFiller[randomIndex];
+
+    // Return the x and y values from the random object as a tuple
+    return { x: randomObject.x, y: randomObject.y };
+  }
+
   draw(ctx) {
     // Loop through each row and column in the map
-    for (let i = 0; i < this.map.length; i++) {// y's rows
-      for (let j = 0; j < this.map[i].length; j++) { // x's columns
+    for (let i = 0; i < this.map.length; i++) {
+      // y's rows
+      for (let j = 0; j < this.map[i].length; j++) {
+        // x's columns
         const drawX = this.x + j * this.tileWidth * this.scale; // column
         const drawY = this.y + i * this.tileWidth * this.scale; // row
         // If the current cell contains grass (value is 1), draw the grass tile
         if (this.map[i][j] > 125 && this.map[i][j] < 248) {
           ctx.drawImage(
             this.spritesheet,
-            80,
-            208,
+            this.randomStone.x,
+            this.randomStone.y,
             this.tileWidth,
             this.tileHeight,
             drawX - this.game.camera.x - this.game.camera.midpointX,
@@ -97,8 +120,7 @@ class Concrete {
         }
       }
     }
-  };
-
+  }
 }
 
 class loadBackground {
@@ -145,9 +167,11 @@ class loadBackground {
     let twoDArray = [];
 
     // Populate the 2D array from the 1D array
-    for (let i = 0; i < numRows; i++) { // y
+    for (let i = 0; i < numRows; i++) {
+      // y
       let row = [];
-      for (let j = 0; j < numCols; j++) {//x
+      for (let j = 0; j < numCols; j++) {
+        //x
         // Calculate the index in the 1D array corresponding to the current row and column
         let index = i * numCols + j;
 
