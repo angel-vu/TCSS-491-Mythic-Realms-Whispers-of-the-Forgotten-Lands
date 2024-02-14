@@ -27,6 +27,9 @@ class SceneManager {
         this.concrete = new Concrete(this.game, 0, 0, levelOne);
         this.game.addEntity(this.concrete);
 
+        this.stairs = new Stairs(this.game, 0, 0, levelOne);
+        this.game.addEntity(this.stairs);
+
         // this.wall = new Wall(this.game, 0, 0, levelOne);
         // this.game.addEntity(this.wall);
 
