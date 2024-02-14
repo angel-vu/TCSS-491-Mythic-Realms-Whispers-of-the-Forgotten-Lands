@@ -7,7 +7,7 @@ class Goblin {
         this.initialPoint = { x, y };
 
         this.radius = 20;
-        this.visualRadius = 40;
+        this.visualRadius = 100;
 
         this.currentHealth = 100;
         this.maxHealth = 100;
@@ -31,7 +31,7 @@ class Goblin {
         // banshee's animations
         this.updateBB();
         this.updateHurtBox();
-        // this.updateHitBox();
+        this.updateHitBox();
         this.updatePathingCircle();
         this.animations = [];
         this.loadAnimations();
@@ -40,7 +40,7 @@ class Goblin {
 
     // Bounding sphere for enemy vision
 	updatePathingCircle(){
-		this.pathingCircle = new BoundingCircle(this.hurtBox.x + this.hurtBox.width/2, this.hurtBox.y + this.hurtBox.height/2, 20, 100);
+		this.pathingCircle = new BoundingCircle(this.hurtBox.x + this.hurtBox.width/2, this.hurtBox.y + this.hurtBox.height/2, 20, 200);
 	}
 
     updateBB() {
@@ -56,7 +56,15 @@ class Goblin {
     };
 
     updateHitBox() {
-        this.hurtBox = new BoundingBox(this.x, this.y, 100, 100);
+        if(this.state !== 2) {
+            this.hitBox = new BoundingBox(this.x, this.y, 0, 0);
+        } else { // attack state
+            if(this.facing === 3) { // right
+                this.hitBox = new BoundingBox(this.x, this.y, 10 + 50, 50);
+            } else { // left
+                this.hitBox = new BoundingBox(this.x, this.y, 10, 50);
+            }
+        }
     }
 
     updateHurtBox() {
@@ -132,7 +140,6 @@ class Goblin {
     };
 
     update() {
-        console.log("STATE " + this.state);
         this.elapsedTime += this.game.clockTick;
         var dist = distance(this, this.target);
 
@@ -145,11 +152,14 @@ class Goblin {
 
         for (var i = 0; i < this.game.entities.length; i++) {
             var ent = this.game.entities[i];
-            if (ent instanceof Link && canSee(this.pathingCircle, ent.pathingCircle)) {
+            if (ent instanceof Link && canSee(this, ent)) {
+                console.log("ENEMY SPOTTEd");
                 this.target = ent;
             } 
-            if (ent instanceof Link && collide(this.pathingCircle, ent.pathingCircle)) {
+            if (ent instanceof Link && collide(this, ent)) {
+                console.log("ENEMy COLLIDE")
                 if (this.state === 0 || this.state === 1) {
+                    console.log("ATTACK")
                     this.state = 2;
                     this.elapsedTime = 0;
                 } else if (this.elapsedTime > 1) {
@@ -158,7 +168,7 @@ class Goblin {
                     this.elapsedTime = 0;
                 } 
             }
-            if (ent instanceof Link && this.state === 2 && !collide(this.pathingCircle, ent.pathingCircle)) {
+            if (ent instanceof Link && this.state === 2 && !collide(this, ent)) {
                 this.state = 0;
             }
         }
@@ -169,24 +179,28 @@ class Goblin {
             this.x += this.velocity.x * this.game.clockTick;
             this.y += this.velocity.y * this.game.clockTick;
 
-            // if (this.velocity.x > 0){
-            //     this.facing = 3;
-            // } else {
-            //     this.facing = 2;
-            // }
+            if(this.velocity.x > 0) {
+                this.facing = 3;
+            } else {
+                this.facing = 2;
+            }
         } else {
-            // Goblin Direction always faces Link
-            if (this.game.camera.link.x > this.x){
+            dist = distance(this, this.target);
+            if (this.game.camera.link.x - 1 >= this.x){
                 this.facing = 3;
             } else {
                 this.facing = 2;
             }
         }
+
+        
         
         this.updateLastBB();
         this.updateBB();
         this.updateLastHurtBox();
         this.updateHurtBox();
+        this.updateLastHitBox();
+        this.updateHitBox();
         this.updatePathingCircle();
     };
 
@@ -205,8 +219,8 @@ class Goblin {
             // ctx.stroke();
     
             // Hit Box (Attack)          
-            // ctx.strokeStyle = 'Red';
-            // ctx.strokeRect(this.hitBox.x - this.game.camera.x, this.hitBox.y - this.game.camera.y, this.hitBox.width, this.hitBox.height);
+            ctx.strokeStyle = 'Red';
+            ctx.strokeRect(this.hitBox.x - this.game.camera.x, this.hitBox.y - this.game.camera.y, this.hitBox.width, this.hitBox.height);
     
             // Hurt Box (Damage Taken)
             ctx.strokeStyle = 'Blue';

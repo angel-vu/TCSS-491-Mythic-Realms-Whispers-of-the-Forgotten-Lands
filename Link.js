@@ -5,10 +5,8 @@ class Link {
 		this.game.link = this;
 
 		this.velocity = { x: 0, y: 0 };
-		this.radius = 50;
-		
-
-
+		this.radius = 20;
+	
 		this.maxHealth = 5;
 		this.currentHealth =5;
 		this.comboCounter = 0;
@@ -33,13 +31,13 @@ class Link {
 		this.updateMoveBox();
 
 		//a bounding sphere to attract enemy entities toward us.
-		//this.updatePathingCircle();
+		this.updatePathingCircle();
 	};
 
 
 	//a bounding sphere to attract enemy entities toward us.
 	updatePathingCircle(){
-		this.pathingCircle = new BoundingCircle(this.hurtBox.x+ this.hurtBox.width/2,this.hurtBox.y+ this.hurtBox.height/2,20, 0);
+		this.pathingCircle = new BoundingCircle(this.hurtBox.x+ this.hurtBox.width/2,this.hurtBox.y+ this.hurtBox.height/2, 20, 0);
 	}
 	//the boundingbox to keep him within bounds of the map
 

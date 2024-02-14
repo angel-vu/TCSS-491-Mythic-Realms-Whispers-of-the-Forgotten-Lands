@@ -18,10 +18,9 @@ class SceneManager {
         this.link = new Link(this.game, 0, 0);
         this.game.addEntity(this.link);
 
-
         this.banshee = new Banshee(this.game, 1000, 800, [{ x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: 0, y: 0 }]);
         this.game.addEntity(this.banshee);
-        
+
         this.ground = new Grass(this.game, 0, 0, levelOne);
         this.game.addEntity(this.ground);
 
