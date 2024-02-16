@@ -21,7 +21,7 @@ class Grass {
     this.map = this.level.formMap("Grass");
     this.tileWidth = 16; // Width of each tile
     this.tileHeight = 16; // Height of each tile
-    this.scale = 1;
+    this.scale = 3;
   }
 
   update() {
@@ -77,7 +77,7 @@ class Concrete {
 
     this.tileWidth = 16; // Width of each tile
     this.tileHeight = 16; // Height of each tile
-    this.scale = 1;
+    this.scale = 3;
   }
 
   update() {
@@ -136,7 +136,7 @@ class Stairs {
     this.map = this.level.formMap("Grass");
     this.tileWidth = 16; // Width of each tile
     this.tileHeight = 16; // Height of each tile
-    this.scale = 1;
+    this.scale = 3;
   }
 
   update() {
@@ -226,7 +226,7 @@ class Stairs {
 
 class LevelOneWalls {
   constructor(game, x, y, levelOne) {
-    Object.assign(this, { game, x, y, levelOne });
+    Object.assign(this, {game, x, y, levelOne});
     this.spritesheet = ASSET_MANAGER.getAsset("./sprites/wall.png");
     this.level = new loadBackground(
       this.game,
@@ -237,14 +237,133 @@ class LevelOneWalls {
     this.map = this.level.formMap("Collision");
     this.tileWidth = 16; // Width of each tile
     this.tileHeight = 16; // Height of each tile
-    this.scale = 1;
-  }
+    this.scale = 3;
+  };
 
   update() {
     // Update logic goes here if needed
   }
 
   draw(ctx) {
+    // Define tile mappings
+    const tileMappings = {
+
+      // right side down corners
+      328: { sourceX: 112, sourceY: 32 },
+      360: { sourceX: 112, sourceY: 48 },
+      392: { sourceX: 112, sourceY: 64 },
+      424: { sourceX: 112, sourceY: 80 },
+      456: { sourceX: 112, sourceY: 96 },
+
+      // left side corners
+      330: { sourceX: 144, sourceY: 32 },
+      331: { sourceX: 160, sourceY: 32 },
+      332: { sourceX: 176, sourceY: 32 },
+      333: { sourceX: 192, sourceY: 32 },
+      334: { sourceX: 208, sourceY: 32 },
+      335: { sourceX: 80, sourceY: 96 },
+      336: { sourceX: 96, sourceY: 96 },
+
+      // wall pieces
+      363: {sourceX: 160, sourceY: 48 },
+      364: {sourceX: 176, sourceY: 48 },
+      365: {sourceX: 192, sourceY: 48 },
+      366: {sourceX: 202, sourceY: 48 },
+      
+      395: {sourceX: 160, sourceY: 64 },
+      396: {sourceX: 176, sourceY: 64 },
+      397: {sourceX: 192, sourceY: 64 },
+      398: {sourceX: 202, sourceY: 64 },
+
+      427: {sourceX: 160, sourceY: 80 },
+      428: {sourceX: 176, sourceY: 80 },
+      429: {sourceX: 192, sourceY: 80 },
+      430: {sourceX: 202, sourceY: 80 },
+
+      323: { sourceX: 32, sourceY: 32 },
+      324: { sourceX: 48, sourceY: 32 },
+      325: { sourceX: 48, sourceY: 32 },
+      326: { sourceX: 48, sourceY: 32 },
+      327: { sourceX: 48, sourceY: 32 },
+      337: { sourceX: 256, sourceY: 32 }, 
+      355: { sourceX: 32, sourceY: 48 },
+      387: { sourceX: 32, sourceY: 48 }, 
+      401: { sourceX: 256, sourceY: 48 },
+      419: { sourceX: 32, sourceY: 48 }, 
+      451: { sourceX: 32, sourceY: 96 }, 
+      452: { sourceX: 48, sourceY: 96 },   
+      453: { sourceX: 64, sourceY: 96 },
+      454: { sourceX: 80, sourceY: 96 }, 
+      455: { sourceX: 96, sourceY: 96 },  
+      483: { sourceX: 32, sourceY: 112 },
+      484: { sourceX: 48, sourceY: 112 }, 
+      485: { sourceX: 64, sourceY: 112 },  
+      486: { sourceX: 80, sourceY: 112 },
+      487: { sourceX: 96, sourceY: 112 },
+    
+
+      515: { sourceX: 32, sourceY: 128 },
+      516: { sourceX: 48, sourceY: 128 },
+      517: { sourceX: 64, sourceY: 128 },
+      518: { sourceX: 80, sourceY: 128 },
+      519: { sourceX: 96, sourceY: 128 },
+      522: { sourceX: 144, sourceY: 128 },
+      529: { sourceX: 256, sourceY: 128 },
+      547: { sourceX: 32, sourceY: 144 },
+      548: { sourceX: 48, sourceY: 144 },
+      549: { sourceX: 64, sourceY: 144 },
+      550: { sourceX: 80, sourceY: 144 },
+      551: { sourceX: 96, sourceY: 144 },
+
+      488: {sourceX: 112, sourceY: 112},
+      520: {sourceX: 112, sourceY: 128},
+      552: {sourceX: 112, sourceY: 144},
+  
+      643: { sourceX: 46, sourceY: 96 },
+      644: { sourceX: 64, sourceY: 96 },
+      645: { sourceX: 80, sourceY: 96 },
+      646: { sourceX: 96, sourceY: 96 },
+      647: { sourceX: 96, sourceY: 96 },
+      648: { sourceX: 64, sourceY: 96 },
+      649: { sourceX: 80, sourceY: 96 },
+
+      681: { sourceX: 64, sourceY: 112 },
+      682: { sourceX: 80, sourceY: 112 },
+      713: { sourceX: 64, sourceY: 128 },
+      714: { sourceX: 80, sourceY: 128 },
+      745: { sourceX: 64, sourceY: 144 },
+      746: { sourceX: 80, sourceY: 144 },
+
+      675: { sourceX: 48, sourceY: 112 },
+      676: { sourceX: 64, sourceY: 112 },
+      677: { sourceX: 80, sourceY: 112 },
+      678: { sourceX: 96, sourceY: 112 },
+
+      707: { sourceX: 48, sourceY: 128 },
+      708: { sourceX: 64, sourceY: 128 },
+      709: { sourceX: 80, sourceY: 128 },
+      710: { sourceX: 96, sourceY: 128 },
+
+      739: { sourceX: 48, sourceY: 144 },
+      740: { sourceX: 64, sourceY: 144 },
+      741: { sourceX: 80, sourceY: 144 },
+      742: { sourceX: 96, sourceY: 144 },
+      
+      // windows
+      653: { sourceX: 192, sourceY: 192 },
+      654: { sourceX: 208, sourceY: 192 },
+      650: { sourceX: 64, sourceY: 96 },
+      679: { sourceX: 192, sourceY: 208 },
+      680: { sourceX: 208, sourceY: 208 },
+
+      711: { sourceX: 192, sourceY: 224 },
+      712: { sourceX: 208, sourceY: 224 },
+
+      743: { sourceX: 192, sourceY: 240 },
+      744: { sourceX: 208, sourceY: 240 },    
+  
+    };
+
     // Loop through each row and column in the map
     for (let i = 0; i < this.map.length; i++) {
       // y's rows
@@ -252,12 +371,14 @@ class LevelOneWalls {
         // x's columns
         const drawX = this.x + j * this.tileWidth * this.scale; // column
         const drawY = this.y + i * this.tileWidth * this.scale; // row
-        // If the current cell contains grass (value is 1), draw the grass tile
-        if (this.map[i][j] > 322 && this.map[i][j] < 326) {
+        const tileNumber = this.map[i][j];
+        // Check if the tile number exists in tileMappings
+        if (tileMappings.hasOwnProperty(tileNumber)) {
+          const { sourceX, sourceY } = tileMappings[tileNumber];
           ctx.drawImage(
             this.spritesheet,
-            64,
-            32,
+            sourceX,
+            sourceY,
             this.tileWidth,
             this.tileHeight,
             drawX - this.game.camera.x - this.game.camera.midpointX,
@@ -271,7 +392,7 @@ class LevelOneWalls {
   }
 }
 
-class levelOneProps {
+class LevelOneProps {
   constructor(game, x, y, levelOne) {
     Object.assign(this, { game, x, y, levelOne });
     this.spritesheet = ASSET_MANAGER.getAsset("./sprites/props.png");
@@ -285,7 +406,7 @@ class levelOneProps {
     this.map = this.level.formMap("Props");
     this.tileWidth = 16; // Width of each tile
     this.tileHeight = 16; // Height of each tile
-    this.scale = 1;
+    this.scale = 3;
   }
 
   update() {
@@ -294,19 +415,39 @@ class levelOneProps {
 
   draw(ctx) {
     const tileMappings = {
+      // this set of 6 numbers is the 3x2 box
       1451: { sourceX: 160, sourceY: 80 },
       1452: { sourceX: 176, sourceY: 80 },
       1483: { sourceX: 160, sourceY: 96},
       1484: { sourceX: 176, sourceY: 96},
       1515: { sourceX: 160, sourceY: 112},
-      1516: {sourceX: 176, sourceY: 112}, // this set of 6 numbers is the 3x2 box
+      1516: {sourceX: 176, sourceY: 112}, 
       1533: {sourceX:448, sourceY: 112},
+      
+      // this is the pillars around the statue
       1534: {sourceX: 464, sourceY: 112},
       1565: {sourceX: 448, sourceY: 128},
       1566: {sourceX: 464, sourceY: 128},
       1597: {sourceX: 448, sourceY: 144},
-      1598: {sourceX: 464, sourceY: 144}, // this is the pillars around the statue
+      1598: {sourceX: 464, sourceY: 144}, 
+
+      // statue
+      1341: {sourceX: 448, sourceY: 16},
+      1342: {sourceX: 464, sourceY: 16},
+      1373: {sourceX: 448, sourceY: 32},
+      1374: {sourceX: 464, sourceY: 32},
+      1405: {sourceX: 448, sourceY: 48},
+      1406: {sourceX: 464, sourceY: 48},
+      1436: {sourceX: 432, sourceY: 64},
+      1437: {sourceX: 448, sourceY: 64},
+      1438: {sourceX: 464, sourceY: 64},
+      1439: {sourceX: 480, sourceY: 64},
+      1468: {sourceX: 432, sourceY: 80},
+      1469: {sourceX: 448, sourceY: 80},
+      1470: {sourceX: 464, sourceY: 80},
+      171: {sourceX: 480, sourceY: 80},
     };
+
     // Loop through each row and column in the map
     for (let i = 0; i < this.map.length; i++) {
       // y's rows
@@ -314,12 +455,14 @@ class levelOneProps {
         // x's columns
         const drawX = this.x + j * this.tileWidth * this.scale; // column
         const drawY = this.y + i * this.tileWidth * this.scale; // row
-        // If the current cell contains grass (value is 1), draw the grass tile
-        if (this.map[i][j] === 1813) {
+        const tileNumber = this.map[i][j];
+        // Check if the tile number exists in tileMappings
+        if (tileMappings.hasOwnProperty(tileNumber)) {
+          const { sourceX, sourceY } = tileMappings[tileNumber];
           ctx.drawImage(
             this.spritesheet,
-            384,
-            288,
+            sourceX,
+            sourceY,
             this.tileWidth,
             this.tileHeight,
             drawX - this.game.camera.x - this.game.camera.midpointX,
@@ -327,108 +470,170 @@ class levelOneProps {
             this.tileWidth * this.scale,
             this.tileHeight * this.scale
           );
-          ctx.drawImage(
-            this.spritesheet,
-            320,
-            256,
-            this.tileWidth,
-            this.tileHeight,
-            drawX - this.game.camera.x - this.game.camera.midpointX,
-            drawY - this.game.camera.y - this.game.camera.midpointY,
-            this.tileWidth * this.scale,
-            this.tileHeight * this.scale
-          );
-        } else if (this.map[i][j] === 1814) {
-          ctx.drawImage(
-            this.spritesheet,
-            400,
-            288,
-            this.tileWidth,
-            this.tileHeight,
-            drawX - this.game.camera.x - this.game.camera.midpointX,
-            drawY - this.game.camera.y - this.game.camera.midpointY,
-            this.tileWidth * this.scale,
-            this.tileHeight * this.scale
-          );
-          ctx.drawImage(
-            this.spritesheet,
-            336,
-            256,
-            this.tileWidth,
-            this.tileHeight,
-            drawX - this.game.camera.x - this.game.camera.midpointX,
-            drawY - this.game.camera.y - this.game.camera.midpointY,
-            this.tileWidth * this.scale,
-            this.tileHeight * this.scale
-          );
-        } else if (this.map[i][j] === 1845) {
-          ctx.drawImage(
-            this.spritesheet,
-            384,
-            304,
-            this.tileWidth,
-            this.tileHeight,
-            drawX - this.game.camera.x - this.game.camera.midpointX,
-            drawY - this.game.camera.y - this.game.camera.midpointY,
-            this.tileWidth * this.scale,
-            this.tileHeight * this.scale
-          );
-          ctx.drawImage(
-            this.spritesheet,
-            320,
-            272,
-            this.tileWidth,
-            this.tileHeight,
-            drawX - this.game.camera.x - this.game.camera.midpointX,
-            drawY - this.game.camera.y - this.game.camera.midpointY,
-            this.tileWidth * this.scale,
-            this.tileHeight * this.scale
-          );
-        } else if (this.map[i][j] === 1846) {
-          ctx.drawImage(
-            this.spritesheet,
-            400,
-            304,
-            this.tileWidth,
-            this.tileHeight,
-            drawX - this.game.camera.x - this.game.camera.midpointX,
-            drawY - this.game.camera.y - this.game.camera.midpointY,
-            this.tileWidth * this.scale,
-            this.tileHeight * this.scale
-          );
-          ctx.drawImage(
-            this.spritesheet,
-            336,
-            272,
-            this.tileWidth,
-            this.tileHeight,
-            drawX - this.game.camera.x - this.game.camera.midpointX,
-            drawY - this.game.camera.y - this.game.camera.midpointY,
-            this.tileWidth * this.scale,
-            this.tileHeight * this.scale
-          );
-        } else {
-          const tileNumber = this.map[i][j];
-          // Check if the tile number exists in tileMappings
-          if (tileMappings.hasOwnProperty(tileNumber)) {
-            const { sourceX, sourceY } = tileMappings[tileNumber];
-            ctx.drawImage(
-              this.spritesheet,
-              sourceX,
-              sourceY,
-              this.tileWidth,
-              this.tileHeight,
-              drawX - this.game.camera.x - this.game.camera.midpointX,
-              drawY - this.game.camera.y - this.game.camera.midpointY,
-              this.tileWidth * this.scale,
-              this.tileHeight * this.scale
-            );
-          }
         }
       }
     }
   }
 }
+
+// class levelOneProps {
+//   constructor(game, x, y, levelOne) {
+//     Object.assign(this, { game, x, y, levelOne });
+//     this.spritesheet = ASSET_MANAGER.getAsset("./sprites/props.png");
+//     this.treesSheet = ASSET_MANAGER.getAsset("./sprites/trees.png");
+//     this.level = new loadBackground(
+//       this.game,
+//       this.x - this.game.camera.x,
+//       this.y - this.game.camera.y,
+//       this.levelOne
+//     );
+//     this.map = this.level.formMap("Props");
+//     this.tileWidth = 16; // Width of each tile
+//     this.tileHeight = 16; // Height of each tile
+//     this.scale = 0.5;
+//   }
+
+//   update() {
+//     // Update logic goes here if needed
+//   }
+
+//   draw(ctx) {
+//     const tileMappings = {
+//       1451: { sourceX: 160, sourceY: 80 },
+//       1452: { sourceX: 176, sourceY: 80 },
+//       1483: { sourceX: 160, sourceY: 96},
+//       1484: { sourceX: 176, sourceY: 96},
+//       1515: { sourceX: 160, sourceY: 112},
+//       1516: {sourceX: 176, sourceY: 112}, // this set of 6 numbers is the 3x2 box
+//       1533: {sourceX:448, sourceY: 112},
+//       1534: {sourceX: 464, sourceY: 112},
+//       1565: {sourceX: 448, sourceY: 128},
+//       1566: {sourceX: 464, sourceY: 128},
+//       1597: {sourceX: 448, sourceY: 144},
+//       1598: {sourceX: 464, sourceY: 144}, // this is the pillars around the statue
+//     };
+//     // Loop through each row and column in the map
+//     for (let i = 0; i < this.map.length; i++) {
+//       // y's rows
+//       for (let j = 0; j < this.map[i].length; j++) {
+//         // x's columns
+//         const drawX = this.x + j * this.tileWidth * this.scale; // column
+//         const drawY = this.y + i * this.tileWidth * this.scale; // row
+//         // If the current cell contains grass (value is 1), draw the grass tile
+//         if (this.map[i][j] === 1813) {
+//           ctx.drawImage(
+//             this.spritesheet,
+//             384,
+//             288,
+//             this.tileWidth,
+//             this.tileHeight,
+//             drawX - this.game.camera.x - this.game.camera.midpointX,
+//             drawY - this.game.camera.y - this.game.camera.midpointY,
+//             this.tileWidth * this.scale,
+//             this.tileHeight * this.scale
+//           );
+//           ctx.drawImage(
+//             this.spritesheet,
+//             320,
+//             256,
+//             this.tileWidth,
+//             this.tileHeight,
+//             drawX - this.game.camera.x - this.game.camera.midpointX,
+//             drawY - this.game.camera.y - this.game.camera.midpointY,
+//             this.tileWidth * this.scale,
+//             this.tileHeight * this.scale
+//           );
+//         } else if (this.map[i][j] === 1814) {
+//           ctx.drawImage(
+//             this.spritesheet,
+//             400,
+//             288,
+//             this.tileWidth,
+//             this.tileHeight,
+//             drawX - this.game.camera.x - this.game.camera.midpointX,
+//             drawY - this.game.camera.y - this.game.camera.midpointY,
+//             this.tileWidth * this.scale,
+//             this.tileHeight * this.scale
+//           );
+//           ctx.drawImage(
+//             this.spritesheet,
+//             336,
+//             256,
+//             this.tileWidth,
+//             this.tileHeight,
+//             drawX - this.game.camera.x - this.game.camera.midpointX,
+//             drawY - this.game.camera.y - this.game.camera.midpointY,
+//             this.tileWidth * this.scale,
+//             this.tileHeight * this.scale
+//           );
+//         } else if (this.map[i][j] === 1845) {
+//           ctx.drawImage(
+//             this.spritesheet,
+//             384,
+//             304,
+//             this.tileWidth,
+//             this.tileHeight,
+//             drawX - this.game.camera.x - this.game.camera.midpointX,
+//             drawY - this.game.camera.y - this.game.camera.midpointY,
+//             this.tileWidth * this.scale,
+//             this.tileHeight * this.scale
+//           );
+//           ctx.drawImage(
+//             this.spritesheet,
+//             320,
+//             272,
+//             this.tileWidth,
+//             this.tileHeight,
+//             drawX - this.game.camera.x - this.game.camera.midpointX,
+//             drawY - this.game.camera.y - this.game.camera.midpointY,
+//             this.tileWidth * this.scale,
+//             this.tileHeight * this.scale
+//           );
+//         } else if (this.map[i][j] === 1846) {
+//           ctx.drawImage(
+//             this.spritesheet,
+//             400,
+//             304,
+//             this.tileWidth,
+//             this.tileHeight,
+//             drawX - this.game.camera.x - this.game.camera.midpointX,
+//             drawY - this.game.camera.y - this.game.camera.midpointY,
+//             this.tileWidth * this.scale,
+//             this.tileHeight * this.scale
+//           );
+//           ctx.drawImage(
+//             this.spritesheet,
+//             336,
+//             272,
+//             this.tileWidth,
+//             this.tileHeight,
+//             drawX - this.game.camera.x - this.game.camera.midpointX,
+//             drawY - this.game.camera.y - this.game.camera.midpointY,
+//             this.tileWidth * this.scale,
+//             this.tileHeight * this.scale
+//           );
+//         } else {
+//           const tileNumber = this.map[i][j];
+//           // Check if the tile number exists in tileMappings
+//           if (tileMappings.hasOwnProperty(tileNumber)) {
+//             const { sourceX, sourceY } = tileMappings[tileNumber];
+//             ctx.drawImage(
+//               this.spritesheet,
+//               sourceX,
+//               sourceY,
+//               this.tileWidth,
+//               this.tileHeight,
+//               drawX - this.game.camera.x - this.game.camera.midpointX,
+//               drawY - this.game.camera.y - this.game.camera.midpointY,
+//               this.tileWidth * this.scale,
+//               this.tileHeight * this.scale
+//             );
+//           }
+//         }
+//       }
+//     }
+//   }
+// }
 
 class loadBackground {
   constructor(game, x, y, level) {
