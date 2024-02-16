@@ -19,7 +19,7 @@ class Link {
 		this.maxComboCounter = 2;
 		// link's state variables
 		this.itemsEquipped = 1; // 0 = none, 1 = master sword and shield 
-		this.state = 0; // 0 = idle, 1 = walking, 2 = running, 3 = damaged, 4 = jumping/falling, 5 = attack1 6= attack2
+		this.state = 4; // 0 = idle, 1 = walking, 2 = running, 3 = damaged, 4 = dead, 5 = attack1 6= attack2
 		this.facing = 0; // 0 = right, 1 = left
 		this.dead = false;
 		this.animations = [];
@@ -284,7 +284,7 @@ class Link {
         this.animations[0][1][0] = new Animator(ASSET_MANAGER.getAsset("./sprites/Link_main_character.png"), 20, 144, 40, 60, 6, 0.2, 0, false, true,false);
     	this.animations[0][2][0] = new Animator(ASSET_MANAGER.getAsset("./sprites/Link_main_character.png"), 28, 335, 52, 50, 8, 0.15, 0, false, true,false);
 		// this.animations[0][3][0] = new Animator(this.spritesheet, 209, 122, 16, 32, 1, 0.33, 14, false, true);
-		// this.animations[0][4][0] = new Animator(this.spritesheet, 209, 122, 16, 32, 1, 0.33, 14, false, true);d
+		this.animations[0][4][0] = new Animator(ASSET_MANAGER.getAsset("./sprites/Link_main_character.png"), 250, 720, 56, 50, 1, 0.15, 0, false, true,false);
 		//no animations without attacking without a weapon, or blocking
 		// this.animations[0][5][0] = null;
 		// this.animations[0][6][0] = null;
@@ -297,7 +297,7 @@ class Link {
         this.animations[0][1][1] = new Animator(ASSET_MANAGER.getAsset("./sprites/Link_main_character.png"), 20, 144, 40, 60, 6, 0.2, 0, false, true,true);
         this.animations[0][2][1] = new Animator(ASSET_MANAGER.getAsset("./sprites/Link_main_character.png"), 503, 335, 52, 50, 8, 0.15, 0, false, true,false);
 		// this.animations[0][3][1] = new Animator(this.spritesheet, 209, 122, 16, 32, 1, 0.33, 14, false, true);
-		// this.animations[0][4][1] = new Animator(this.spritesheet, 209, 122, 16, 32, 1, 0.33, 14, false, true);
+		 this.animations[0][4][1] = new Animator(ASSET_MANAGER.getAsset("./sprites/Link_main_character.png"), 250, 720, 56, 50, 1, 0.15, 0, false, true,true);
 		//no animations without attacking without a weapon, or blocking
 		// this.animations[0][5][1] = null;
 		// this.animations[0][6][1] = null;
@@ -309,7 +309,7 @@ class Link {
         this.animations[1][1][0] = new Animator(ASSET_MANAGER.getAsset("./sprites/Link_main_character.png"), 297, 139, 51, 60, 6, 0.2, 0, false, true,false);
         this.animations[1][2][0] = new Animator(ASSET_MANAGER.getAsset("./sprites/Link_main_character.png"), 28, 403, 55, 50, 8, 0.15, 0, false, true,false);
 		// this.animations[1][3][0] = new Animator(this.spritesheet, 209, 122, 16, 32, 1, 0.33, 14, false, true);
-		// this.animations[1][4][0] = new Animator(this.spritesheet, 209, 122, 16, 32, 1, 0.33, 14, false, true);
+		this.animations[1][4][0] = new Animator(ASSET_MANAGER.getAsset("./sprites/Link_main_character.png"), 588, 720, 86, 50, 1, 0.15, 0, false, true,false);
 		// this.animations[1][5][0] = new Animator(this.spritesheet, 209, 122, 16, 32, 1, 0.33, 14, false, true);
 		this.animations[1][5][0] = new Animator(ASSET_MANAGER.getAsset("./sprites/Link_attack_1.png"), 0, 20, 102, 60, 4, 0.18, 1, false, true, false);
 		this.animations[1][6][0] = new Animator(ASSET_MANAGER.getAsset("./sprites/Link_attack_1.png"), 439, 2, 122, 73, 6, 0.15, 0, false, true, false);
@@ -320,7 +320,7 @@ class Link {
         this.animations[1][1][1] = new Animator(ASSET_MANAGER.getAsset("./sprites/Link_main_character.png"), 646, 139, 60, 60, 6, 0.2, 0, false, true,false);
         this.animations[1][2][1] = new Animator(ASSET_MANAGER.getAsset("./sprites/Link_main_character.png"), 502, 403, 54, 50, 8, 0.15, 0, false, true,false);
 		// this.animations[1][3][1] = new Animator(this.spritesheet, 209, 122, 16, 32, 1, 0.33, 14, false, true);
-		// this.animations[1][4][1] = new Animator(this.spritesheet, 209, 122, 16, 32, 1, 0.33, 14, false, true);
+		this.animations[1][4][1] = new Animator(ASSET_MANAGER.getAsset("./sprites/Link_main_character.png"), 997, 720, 86, 50, 1, 0.15, 0, false, true,false);
 		// this.animations[1][5][1] = new Animator(this.spritesheet, 209, 122, 16, 32, 1, 0.33, 14, false, true);
 		this.animations[1][5][1] = new Animator(ASSET_MANAGER.getAsset("./sprites/Link_attack_1.png"), 0, 20, 102, 60, 4, 0.2, 1, false, true, true);
 		this.animations[1][6][1] = new Animator(ASSET_MANAGER.getAsset("./sprites/Link_attack_1.png"), 439, 2, 122, 73, 6, 0.2, 0, false, true, true);
@@ -563,6 +563,12 @@ class Link {
 			}
 		} else if(this.itemsEquipped === 1 && this.state === 2){
 			this.animations[this.itemsEquipped][this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y + 20  - this.game.camera.y, 3);
+		}else if(this.itemsEquipped === 1 && this.state === 4){
+			if(this.facing === 0){
+				this.animations[this.itemsEquipped][this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - 90 - this.game.camera.x, this.y  + 30 - this.game.camera.y, 3);
+				} else if(this.facing === 1){
+					this.animations[this.itemsEquipped][this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - 90 - this.game.camera.x, this.y  + 30 - this.game.camera.y, 3);
+				}
 		}else if(this.itemsEquipped === 1 && this.state === 5 ){
             if(this.facing === 0){
                 this.animations[this.itemsEquipped][this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x- 85-this.game.camera.x, this.y+5 - this.game.camera.y, 3);
@@ -581,6 +587,9 @@ class Link {
 			this.animations[this.itemsEquipped][this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x- 20 - this.game.camera.x, this.y - this.game.camera.y+ 10, 3);
 		}else if(this.itemsEquipped === 0 && this.state === 2) {
 			this.animations[this.itemsEquipped][this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y + 20, 3);
+		}else if(this.itemsEquipped === 0 && this.state === 4){
+			
+			this.animations[this.itemsEquipped][this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y  + 30 - this.game.camera.y, 3);
 		}else{
             this.animations[this.itemsEquipped][this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y  - this.game.camera.y, 3);
         }
@@ -589,7 +598,7 @@ class Link {
 		if(!this.dead) {
             this.healthbar.draw(ctx);
         }
-		
+
          //drawing the hitbox of the attack animation
          if (PARAMS.DEBUG && this.hitBox) {
             
