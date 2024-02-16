@@ -20,15 +20,19 @@ class SceneManager {
 
         this.banshee = new Banshee(this.game, 1000, 800, [{ x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: 0, y: 0 }]);
         this.game.addEntity(this.banshee);
-
+        
+        this.walls = new LevelOneWalls(this.game, 0, 0, levelOne);
+        this.game.addEntity(this.walls);
         this.ground = new Grass(this.game, 0, 0, levelOne);
         this.game.addEntity(this.ground);
-
-        // this.concrete = new Concrete(this.game, 0, 0, levelOne);
-        // this.game.addEntity(this.concrete);
-
         this.stairs = new Stairs(this.game, 0, 0, levelOne);
         this.game.addEntity(this.stairs);
+        this.concrete = new Concrete(this.game, 0, 0, levelOne);
+        this.game.addEntity(this.concrete);
+        
+
+
+        
 
         // this.wall = new Wall(this.game, 0, 0, levelOne);
         // this.game.addEntity(this.wall);
