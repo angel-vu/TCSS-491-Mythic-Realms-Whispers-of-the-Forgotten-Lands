@@ -22,6 +22,8 @@ ASSET_MANAGER.queueDownload("./boss_sprites/Ganondorf.png");
 ASSET_MANAGER.queueDownload("./sprites/grass.png");
 ASSET_MANAGER.queueDownload("./sprites/stairs.png");
 ASSET_MANAGER.queueDownload("./sprites/wall.png");
+ASSET_MANAGER.queueDownload("./sprites/trees.png");
+ASSET_MANAGER.queueDownload("./sprites/props.png");
 ASSET_MANAGER.downloadAll(() => {
 	const canvas = document.getElementById("gameWorld");
 

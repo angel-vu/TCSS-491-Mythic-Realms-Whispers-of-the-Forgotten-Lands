@@ -18,7 +18,7 @@ class Grass {
       this.y - this.game.camera.y,
       this.levelOne
     );
-    this.map = this.level.formMap('Grass');
+    this.map = this.level.formMap("Grass");
     this.tileWidth = 16; // Width of each tile
     this.tileHeight = 16; // Height of each tile
     this.scale = 1;
@@ -67,7 +67,7 @@ class Concrete {
       this.y - this.game.camera.y,
       this.levelOne
     );
-    this.map = this.level.formMap('Grass');
+    this.map = this.level.formMap("Grass");
     this.concreteFiller = [
       { x: 80, y: 208 },
       { x: 32, y: 192 },
@@ -133,7 +133,7 @@ class Stairs {
       this.y - this.game.camera.y,
       this.levelOne
     );
-    this.map = this.level.formMap('Grass');
+    this.map = this.level.formMap("Grass");
     this.tileWidth = 16; // Width of each tile
     this.tileHeight = 16; // Height of each tile
     this.scale = 1;
@@ -226,7 +226,7 @@ class Stairs {
 
 class LevelOneWalls {
   constructor(game, x, y, levelOne) {
-    Object.assign(this, {game, x, y, levelOne});
+    Object.assign(this, { game, x, y, levelOne });
     this.spritesheet = ASSET_MANAGER.getAsset("./sprites/wall.png");
     this.level = new loadBackground(
       this.game,
@@ -238,7 +238,7 @@ class LevelOneWalls {
     this.tileWidth = 16; // Width of each tile
     this.tileHeight = 16; // Height of each tile
     this.scale = 1;
-  };
+  }
 
   update() {
     // Update logic goes here if needed
@@ -246,8 +246,10 @@ class LevelOneWalls {
 
   draw(ctx) {
     // Loop through each row and column in the map
-    for (let i = 0; i < this.map.length; i++) {// y's rows
-      for (let j = 0; j < this.map[i].length; j++) { // x's columns
+    for (let i = 0; i < this.map.length; i++) {
+      // y's rows
+      for (let j = 0; j < this.map[i].length; j++) {
+        // x's columns
         const drawX = this.x + j * this.tileWidth * this.scale; // column
         const drawY = this.y + i * this.tileWidth * this.scale; // row
         // If the current cell contains grass (value is 1), draw the grass tile
@@ -266,7 +268,166 @@ class LevelOneWalls {
         }
       }
     }
-  };
+  }
+}
+
+class levelOneProps {
+  constructor(game, x, y, levelOne) {
+    Object.assign(this, { game, x, y, levelOne });
+    this.spritesheet = ASSET_MANAGER.getAsset("./sprites/props.png");
+    this.treesSheet = ASSET_MANAGER.getAsset("./sprites/trees.png");
+    this.level = new loadBackground(
+      this.game,
+      this.x - this.game.camera.x,
+      this.y - this.game.camera.y,
+      this.levelOne
+    );
+    this.map = this.level.formMap("Props");
+    this.tileWidth = 16; // Width of each tile
+    this.tileHeight = 16; // Height of each tile
+    this.scale = 1;
+  }
+
+  update() {
+    // Update logic goes here if needed
+  }
+
+  draw(ctx) {
+    const tileMappings = {
+      1451: { sourceX: 160, sourceY: 80 },
+      1452: { sourceX: 176, sourceY: 80 },
+      1483: { sourceX: 160, sourceY: 96},
+      1484: { sourceX: 176, sourceY: 96},
+      1515: { sourceX: 160, sourceY: 112},
+      1516: {sourceX: 176, sourceY: 112}, // this set of 6 numbers is the 3x2 box
+      1533: {sourceX:448, sourceY: 112},
+      1534: {sourceX: 464, sourceY: 112},
+      1565: {sourceX: 448, sourceY: 128},
+      1566: {sourceX: 464, sourceY: 128},
+      1597: {sourceX: 448, sourceY: 144},
+      1598: {sourceX: 464, sourceY: 144}, // this is the pillars around the statue
+    };
+    // Loop through each row and column in the map
+    for (let i = 0; i < this.map.length; i++) {
+      // y's rows
+      for (let j = 0; j < this.map[i].length; j++) {
+        // x's columns
+        const drawX = this.x + j * this.tileWidth * this.scale; // column
+        const drawY = this.y + i * this.tileWidth * this.scale; // row
+        // If the current cell contains grass (value is 1), draw the grass tile
+        if (this.map[i][j] === 1813) {
+          ctx.drawImage(
+            this.spritesheet,
+            384,
+            288,
+            this.tileWidth,
+            this.tileHeight,
+            drawX - this.game.camera.x - this.game.camera.midpointX,
+            drawY - this.game.camera.y - this.game.camera.midpointY,
+            this.tileWidth * this.scale,
+            this.tileHeight * this.scale
+          );
+          ctx.drawImage(
+            this.spritesheet,
+            320,
+            256,
+            this.tileWidth,
+            this.tileHeight,
+            drawX - this.game.camera.x - this.game.camera.midpointX,
+            drawY - this.game.camera.y - this.game.camera.midpointY,
+            this.tileWidth * this.scale,
+            this.tileHeight * this.scale
+          );
+        } else if (this.map[i][j] === 1814) {
+          ctx.drawImage(
+            this.spritesheet,
+            400,
+            288,
+            this.tileWidth,
+            this.tileHeight,
+            drawX - this.game.camera.x - this.game.camera.midpointX,
+            drawY - this.game.camera.y - this.game.camera.midpointY,
+            this.tileWidth * this.scale,
+            this.tileHeight * this.scale
+          );
+          ctx.drawImage(
+            this.spritesheet,
+            336,
+            256,
+            this.tileWidth,
+            this.tileHeight,
+            drawX - this.game.camera.x - this.game.camera.midpointX,
+            drawY - this.game.camera.y - this.game.camera.midpointY,
+            this.tileWidth * this.scale,
+            this.tileHeight * this.scale
+          );
+        } else if (this.map[i][j] === 1845) {
+          ctx.drawImage(
+            this.spritesheet,
+            384,
+            304,
+            this.tileWidth,
+            this.tileHeight,
+            drawX - this.game.camera.x - this.game.camera.midpointX,
+            drawY - this.game.camera.y - this.game.camera.midpointY,
+            this.tileWidth * this.scale,
+            this.tileHeight * this.scale
+          );
+          ctx.drawImage(
+            this.spritesheet,
+            320,
+            272,
+            this.tileWidth,
+            this.tileHeight,
+            drawX - this.game.camera.x - this.game.camera.midpointX,
+            drawY - this.game.camera.y - this.game.camera.midpointY,
+            this.tileWidth * this.scale,
+            this.tileHeight * this.scale
+          );
+        } else if (this.map[i][j] === 1846) {
+          ctx.drawImage(
+            this.spritesheet,
+            400,
+            304,
+            this.tileWidth,
+            this.tileHeight,
+            drawX - this.game.camera.x - this.game.camera.midpointX,
+            drawY - this.game.camera.y - this.game.camera.midpointY,
+            this.tileWidth * this.scale,
+            this.tileHeight * this.scale
+          );
+          ctx.drawImage(
+            this.spritesheet,
+            336,
+            272,
+            this.tileWidth,
+            this.tileHeight,
+            drawX - this.game.camera.x - this.game.camera.midpointX,
+            drawY - this.game.camera.y - this.game.camera.midpointY,
+            this.tileWidth * this.scale,
+            this.tileHeight * this.scale
+          );
+        } else {
+          const tileNumber = this.map[i][j];
+          // Check if the tile number exists in tileMappings
+          if (tileMappings.hasOwnProperty(tileNumber)) {
+            const { sourceX, sourceY } = tileMappings[tileNumber];
+            ctx.drawImage(
+              this.spritesheet,
+              sourceX,
+              sourceY,
+              this.tileWidth,
+              this.tileHeight,
+              drawX - this.game.camera.x - this.game.camera.midpointX,
+              drawY - this.game.camera.y - this.game.camera.midpointY,
+              this.tileWidth * this.scale,
+              this.tileHeight * this.scale
+            );
+          }
+        }
+      }
+    }
+  }
 }
 
 class loadBackground {
@@ -275,6 +436,7 @@ class loadBackground {
 
     this.belowData = this.level.world[0].below;
     this.collisionData = this.level.world[1].collision;
+    this.props = this.level.world[2].props;
     this.rowWidth = 80;
     this.numCol = Math.ceil(this.belowData.length / this.rowWidth);
     //this.map = Array.from({length: this.rowWidth}, () => Array(this.numCol).fill(null));
@@ -327,6 +489,8 @@ class loadBackground {
         } else if (stringDet == "Collision") {
           // Add the element from the 1D array to the current row using the collision data
           row.push(this.collisionData[index]);
+        } else {
+          row.push(this.props[index]);
         }
       }
 
