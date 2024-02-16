@@ -9,6 +9,10 @@ class Link {
 	
 		this.maxHealth = 5;
 		this.currentHealth =5;
+		this.healthbar = new HealthBar(this);
+
+
+
 		this.comboCounter = 0;
 		this.comboWindowTime = 0;
 		this.enterComboWindow = false;
@@ -481,7 +485,12 @@ class Link {
 			}
 		} 
 
-
+		if(this.currentHealth <= 0) {
+            this.dead = true;
+            // DEATH ANIMATION?
+          
+            console.log("LINK DEAD");
+        }
 		//collision logic 
 		let that = this;
 
@@ -575,7 +584,12 @@ class Link {
 		}else{
             this.animations[this.itemsEquipped][this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y  - this.game.camera.y, 3);
         }
-    
+
+
+		if(!this.dead) {
+            this.healthbar.draw(ctx);
+        }
+		
          //drawing the hitbox of the attack animation
          if (PARAMS.DEBUG && this.hitBox) {
             
