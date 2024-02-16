@@ -14,22 +14,31 @@ class Scream {
 
         this.cache = [];
 
-        // this.updateHitBox();
+        this.updateHitBox();
         this.animations = [];
         this.animations.push(new Animator(this.spritesheet, 0, 0, 10, 10, 2, 0.2, 0, false, true, false));
-        
         this.elapsedTime = 0;
     };
 
+    updateLastHitBox() {
+        this.lastHitBox = this.hitBox;
+    }
+
+    updateHitBox() {
+        this.hitBox = new BoundingBox(this.x, this.y, 50, 50);
+    }
 
     update() {
         this.x += this.velocity.x * this.game.clockTick;
         this.y += this.velocity.y * this.game.clockTick;
 
+        this.updateLastHitBox();
+        this.updateHitBox();
+
         for (var i = 0; i < this.game.entities.length; i++) {
             var ent = this.game.entities[i];
-            if (ent instanceof Link && collide(this, ent)) {
-                // ent instanceof Link && ent.hurtBox.collide(this.hitBox);
+            if (ent instanceof Link && this.hitBox.collide(ent.hurtBox)) {
+                console.log("ATTACK LANDED - PROJECTILE (BANSHEE) VS LINK");
                 var damage = 10; 
                 ent.hitpoints -= damage;
                 // this.game.addEntity(new Score(this.game, ent.x, ent.y, damage));
@@ -51,5 +60,11 @@ class Scream {
         //     ctx.closePath();
         //     ctx.stroke();
         // }
+
+         //drawing the hitbox of the attack animation
+         if (PARAMS.DEBUG && this.hitBox) {
+            ctx.strokeStyle = 'Red';
+            ctx.strokeRect(this.hitBox.x - this.game.camera.x, this.hitBox.y - this.game.camera.y, this.hitBox.width, this.hitBox.height);
+        }
     };
 };
