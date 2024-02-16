@@ -11,12 +11,12 @@ class SceneManager {
         this.credits = false;
         this.level = null;
 
-        // the -100 offsets Link to be in the middle shawty
-        this.midpointX = PARAMS.CANVAS_WIDTH / 2 - 100;
-        this.midpointY = PARAMS.CANVAS_HEIGHT / 2 - 100;
-        
         this.link = new Link(this.game, 0, 0);
         this.game.addEntity(this.link);
+
+        // the -100 offsets Link to be in the middle shawty
+        this.midpointX = PARAMS.CANVAS_WIDTH / 2 - this.link.BB;
+        this.midpointY = PARAMS.CANVAS_HEIGHT / 2 - 100;
 
         this.banshee = new Banshee(this.game, 1000, 800, [{ x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: 0, y: 0 }]);
         this.game.addEntity(this.banshee);
