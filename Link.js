@@ -19,7 +19,7 @@ class Link {
 		this.maxComboCounter = 2;
 		// link's state variables
 		this.itemsEquipped = 1; // 0 = none, 1 = master sword and shield 
-		this.state = 4; // 0 = idle, 1 = walking, 2 = running, 3 = damaged, 4 = dead, 5 = attack1 6= attack2
+		this.state = 0; // 0 = idle, 1 = walking, 2 = running, 3 = damaged, 4 = dead, 5 = attack1 6= attack2
 		this.facing = 0; // 0 = right, 1 = left
 		this.dead = false;
 		this.animations = [];
