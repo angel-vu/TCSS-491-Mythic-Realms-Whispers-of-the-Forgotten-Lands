@@ -21,6 +21,8 @@ class SceneManager {
         this.banshee = new Banshee(this.game, 1000, 800, [{ x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: 0, y: 0 }]);
         this.game.addEntity(this.banshee);
         
+        this.props = new levelOneProps(this.game, 0, 0, levelOne);
+        this.game.addEntity(this.props);
         this.walls = new LevelOneWalls(this.game, 0, 0, levelOne);
         this.game.addEntity(this.walls);
         this.ground = new Grass(this.game, 0, 0, levelOne);
