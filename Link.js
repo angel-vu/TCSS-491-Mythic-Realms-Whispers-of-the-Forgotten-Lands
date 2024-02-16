@@ -487,7 +487,7 @@ class Link {
 
 		this.game.entities.forEach(function (entity){
 				//if link attacks collide with another entities hitbox.
-			if(that.hitBox && entity.hurtBox){
+			if(entity.hurtBox && that.hitBox && that.hitBox.collide(entity.hurtBox)){
 				if(entity instanceof Banshee || entity instanceof Ganon || entity instanceof Akagane|| entity instanceof Goblin|| entity instanceof Knight|| entity instanceof Skeleton || entity instanceof Wizard ){
 
 					// Sword dealing 1 point of damage.
