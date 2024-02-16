@@ -7,8 +7,8 @@ class Banshee {
 
         this.initialPoint = { x, y };
 
-        this.radius = 100;
-        this.visualRadius = 200;
+        // this.radius = 100;
+        // this.visualRadius = 200;
 
         this.currentHealth = 100;
         this.maxHealth = 100;
@@ -34,16 +34,16 @@ class Banshee {
         // banshee's animations
         this.updateBB();
         this.updateHurtBox();
-        // this.updateHitBox();
         this.updatePathingCircle();
         this.animations = [];
         this.loadAnimations();
         this.elapsedTime = 0;
+        // no hit box, hit box is the projectile 
     };
 
     // Bounding sphere for enemy vision
 	updatePathingCircle(){
-		this.pathingCircle = new BoundingCircle(this.hurtBox.x + this.hurtBox.width/2, this.hurtBox.y + this.hurtBox.height/2, 20, 0);
+		this.pathingCircle = new BoundingCircle(this.hurtBox.x + this.hurtBox.width/2, this.hurtBox.y + this.hurtBox.height/2, 100, 200);
 	}
 
     updateHurtBox() {
@@ -67,7 +67,7 @@ class Banshee {
     }
 
     updateHitBox() {
-
+        // projectile 
     }
 
     updateBB() {
@@ -131,7 +131,13 @@ class Banshee {
     };
 
     update() {
-        console.log("STATE " + this.state);
+        if(this.currentHealth <= 0) {
+            this.dead = true;
+            // DEATH ANIMATION?
+            this.removeFromWorld = true;
+            console.log("BANSHEE DEAD");
+        }
+
         this.elapsedTime += this.game.clockTick;
         var dist = distance(this, this.target);
 
@@ -144,20 +150,20 @@ class Banshee {
 
         for (var i = 0; i < this.game.entities.length; i++) {
             var ent = this.game.entities[i];
-            if (ent instanceof Link && canSee(this, ent)) {
-                this.target = ent;
+            if (ent instanceof Link && canSee(this.pathingCircle, ent.pathingCircle)) {
+                this.target = ent.pathingCircle;
             } 
-            if (ent instanceof Link && collide(this, ent)) {
+            if (ent instanceof Link && collide(this.pathingCircle, ent.pathingCircle)) {
                 if (this.state === 0 || this.state === 1) {
                     this.state = 2;
                     this.elapsedTime = 0;
                 } else if (this.elapsedTime > 1) {
                     console.log("ATTACK LANDED!");
-                    this.game.addEntity(new Scream(this.game, this.x, this.y, ent, false));
+                    this.game.addEntity(new Scream(this.game, this.hurtBox.x, this.hurtBox.y, ent, false));
                     this.elapsedTime = 0;
                 } 
             }
-            if (ent instanceof Link && this.state === 2 && !collide(this, ent)) {
+            if (ent instanceof Link && this.state === 2 && !collide(this.pathingCircle, ent.pathingCircle)) {
                 this.state = 0;
             }
         }
@@ -191,17 +197,20 @@ class Banshee {
 
     draw(ctx) {         
         this.animations[this.facing][this.state].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, this.scale);
-        this.healthbar.draw(ctx);
+        
+        if(!this.dead) {
+            this.healthbar.draw(ctx);
+        }
 
         if (PARAMS.DEBUG) {
             // Pathing 
-            // ctx.strokeStyle = "Black";
-            // ctx.beginPath();
-            // ctx.moveTo(this.initialPoint.x, this.initialPoint.y);
-            // for (var i = 0; i < this.path.length; i++) {
-            //     ctx.lineTo(this.path[i].x, this.path[i].y);
-            // };
-            // ctx.stroke();
+            ctx.strokeStyle = "Black";
+            ctx.beginPath();
+            ctx.moveTo(this.initialPoint.x - this.game.camera.x, this.initialPoint.y - this.game.camera.y);
+            for (var i = 0; i < this.path.length; i++) {
+                ctx.lineTo(this.path[i].x - this.game.camera.x, this.path[i].y - this.game.camera.y);
+            };
+            ctx.stroke();
 
             // Hit Box (Attack)          
             // ctx.strokeStyle = 'Red';
@@ -211,31 +220,17 @@ class Banshee {
             ctx.strokeStyle = 'Blue';
             ctx.strokeRect(this.hurtBox.x - this.game.camera.x, this.hurtBox.y - this.game.camera.y, this.hurtBox.width, this.hurtBox.height);
 
-            // Soon to be Circles
-            // ctx.strokeStyle = "Red";
-            // ctx.beginPath();
-            // ctx.arc(this.pathingCircle.x- this.game.camera.x, this.pathingCircle.y - this.game.camera.y, this.pathingCircle.radius, 0, 2 * Math.PI);
-            // ctx.closePath();
-            // ctx.stroke();
-            
-            // ctx.setLineDash([5, 15]);
-            // ctx.beginPath();
-            // ctx.arc(this.pathingCircle.x- this.game.camera.x, this.pathingCircle.y - this.game.camera.y, this.pathingCircle.radius, 0, 2 * Math.PI);
-            // ctx.closePath();
-            // ctx.stroke();
-            // ctx.setLineDash([]);
-
             // Inner Circle 
             ctx.strokeStyle = "Yellow";
             ctx.beginPath();
-            ctx.arc(this.pathingCircle.x - this.game.camera.x, this.pathingCircle.y - this.game.camera.y, this.radius, 0, 2 * Math.PI);
+            ctx.arc(this.pathingCircle.x - this.game.camera.x, this.pathingCircle.y - this.game.camera.y, this.pathingCircle.radius, 0, 2 * Math.PI);
             ctx.closePath();
             ctx.stroke();
 
             // Vision Circle
             ctx.setLineDash([5, 15]);
             ctx.beginPath();
-            ctx.arc(this.pathingCircle.x - this.game.camera.x, this.pathingCircle.y - this.game.camera.y, this.visualRadius, 0, 2 * Math.PI);
+            ctx.arc(this.pathingCircle.x - this.game.camera.x, this.pathingCircle.y - this.game.camera.y, this.pathingCircle.visualRadius, 0, 2 * Math.PI);
             ctx.closePath();
             ctx.stroke();
             ctx.setLineDash([]);

@@ -1,8 +1,6 @@
 class BoundingCircle {
     constructor(x, y, radius, visualRadius) {
-        Object.assign(this, { x, y, radius, visualRadius});
-
-      
+        Object.assign(this, { x, y, radius, visualRadius});      
     };
 
     distance(A, B) {
