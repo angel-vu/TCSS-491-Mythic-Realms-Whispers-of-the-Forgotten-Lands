@@ -6,9 +6,6 @@ class Goblin {
 
         this.initialPoint = { x, y };
 
-        this.radius = 20;
-        this.visualRadius = 100;
-
         this.currentHealth = 100;
         this.maxHealth = 100;
         this.dead = false;
@@ -29,6 +26,7 @@ class Goblin {
         this.velocity = { x: (this.target.x - this.x) / dist * this.maxSpeed, y: (this.target.y - this.y) / dist * this.maxSpeed };
 
         // banshee's animations
+        this.healthbar = new HealthBar(this);
         this.updateBB();
         this.updateHurtBox();
         this.updateHitBox();
@@ -40,18 +38,26 @@ class Goblin {
 
     // Bounding sphere for enemy vision
 	updatePathingCircle(){
-		this.pathingCircle = new BoundingCircle(this.hurtBox.x + this.hurtBox.width/2, this.hurtBox.y + this.hurtBox.height/2, 20, 200);
+		this.pathingCircle = new BoundingCircle(this.hurtBox.x + this.hurtBox.width/2, this.hurtBox.y + this.hurtBox.height/2, 30, 200);
 	}
 
     updateBB() {
-        if (this.state === 0) {
-            this.BB = new BoundingBox(this.x, this.y, 50 * this.scale, 60 * this.scale);
-        } else if (this.state === 1) {
-            this.BB = new BoundingBox(this.x, this.y, 50 * this.scale, 60 * this.scale);
-        } else if (this.state === 2) {
-            this.BB = new BoundingBox(this.x, this.y, 50 * this.scale, 60 * this.scale);
-        } else {
-            this.BB = new BoundingBox(this.x, this.y, 50 * this.scale, 60 * this.scale);
+        if(this.facing === 3) { // right
+            if(this.state === 0) { // walking
+                this.BB = new BoundingBox(this.x, this.y, 50, 65);
+            } else if (this.state === 1) {
+                this.BB = new BoundingBox(this.x, this.y, 50, 75);
+            } else {
+                this.BB = new BoundingBox(this.x, this.y, 50, 75);
+            }
+        } else { // left
+            if(this.state === 0) { // walking
+                this.BB = new BoundingBox(this.x, this.y, 50, 65);
+            } else if (this.state === 1) {
+                this.BB = new BoundingBox(this.x, this.y, 50, 75);
+            } else {
+                this.BB = new BoundingBox(this.x, this.y, 50, 75);
+            }
         }
     };
 
@@ -60,7 +66,7 @@ class Goblin {
             this.hitBox = new BoundingBox(this.x, this.y, 0, 0);
         } else { // attack state
             if(this.facing === 3) { // right
-                this.hitBox = new BoundingBox(this.x, this.y, 10 + 50, 50);
+                this.hitBox = new BoundingBox(this.x + 55, this.y, 10, 50);
             } else { // left
                 this.hitBox = new BoundingBox(this.x, this.y, 10, 50);
             }
@@ -140,6 +146,14 @@ class Goblin {
     };
 
     update() {
+
+        if(this.currentHealth <= 0) {
+            this.dead = true;
+            // DEATH ANIMATION?
+            this.removeFromWorld = true;
+            console.log("GOBLIN DEAD");
+        }
+
         this.elapsedTime += this.game.clockTick;
         var dist = distance(this, this.target);
 
@@ -152,23 +166,22 @@ class Goblin {
 
         for (var i = 0; i < this.game.entities.length; i++) {
             var ent = this.game.entities[i];
-            if (ent instanceof Link && canSee(this, ent)) {
-                console.log("ENEMY SPOTTEd");
-                this.target = ent;
+            if (ent instanceof Link && canSee(this.pathingCircle, ent.pathingCircle)) {
+                this.target = ent.pathingCircle;
             } 
-            if (ent instanceof Link && collide(this, ent)) {
-                console.log("ENEMy COLLIDE")
+            if (ent instanceof Link && collide(this.pathingCircle, ent.pathingCircle)) {
                 if (this.state === 0 || this.state === 1) {
-                    console.log("ATTACK")
                     this.state = 2;
                     this.elapsedTime = 0;
-                } else if (this.elapsedTime > 1) {
-                    console.log("ATTACK LANDED!");
-                    ent.currentHealth -= 1;
-                    this.elapsedTime = 0;
+                } else if (this.elapsedTime > 0.3) {
+                    if (ent instanceof Link && this.hitBox.collide(ent.hurtBox)) {
+                        console.log("ATTACK LANDED - GOBLIN VS LINK!");
+                        ent.currentHealth -= 1;
+                        this.elapsedTime = 0;
+                    }
                 } 
             }
-            if (ent instanceof Link && this.state === 2 && !collide(this, ent)) {
+            if (ent instanceof Link && this.state === 2 && !collide(this.pathingCircle, ent.pathingCircle)) {
                 this.state = 0;
             }
         }
@@ -179,34 +192,32 @@ class Goblin {
             this.x += this.velocity.x * this.game.clockTick;
             this.y += this.velocity.y * this.game.clockTick;
 
-            if(this.velocity.x > 0) {
+            if (this.velocity.x > 0){
                 this.facing = 3;
             } else {
                 this.facing = 2;
             }
         } else {
-            dist = distance(this, this.target);
-            if (this.game.camera.link.x - 1 >= this.x){
-                this.facing = 3;
-            } else {
+            // Goblin Direction always faces Link
+            if (this.game.camera.link.x < this.x){
                 this.facing = 2;
+            } else {
+                this.facing = 3;
             }
         }
-
-        
         
         this.updateLastBB();
         this.updateBB();
         this.updateLastHurtBox();
+        this.updatePathingCircle();
         this.updateHurtBox();
         this.updateLastHitBox();
         this.updateHitBox();
-        this.updatePathingCircle();
     };
 
     draw(ctx) {         
         this.animations[this.facing][this.state].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, 2);
-        // this.healthbar.draw(ctx);
+        this.healthbar.draw(ctx);
     
         if (PARAMS.DEBUG) {
             // Pathing 
@@ -218,45 +229,31 @@ class Goblin {
             // };
             // ctx.stroke();
     
-            // Hit Box (Attack)          
-            ctx.strokeStyle = 'Red';
-            ctx.strokeRect(this.hitBox.x - this.game.camera.x, this.hitBox.y - this.game.camera.y, this.hitBox.width, this.hitBox.height);
+            // // Hit Box (Attack)          
+            // ctx.strokeStyle = 'Red';
+            // ctx.strokeRect(this.hitBox.x - this.game.camera.x, this.hitBox.y - this.game.camera.y, this.hitBox.width, this.hitBox.height);
     
-            // Hurt Box (Damage Taken)
+            // // Hurt Box (Damage Taken)
             ctx.strokeStyle = 'Blue';
             ctx.strokeRect(this.hurtBox.x - this.game.camera.x, this.hurtBox.y - this.game.camera.y, this.hurtBox.width, this.hurtBox.height);
     
-            console.log(this.pathingCircle.x);
-            console.log(this.pathingCircle.y);
-            // // Soon to be Circles
-            ctx.strokeStyle = "Black";
+            // ctx.strokeStyle = 'Red';
+            // ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y - this.game.camera.y, this.BB.width, this.BB.height);
+    
+            // Inner Circle 
+            ctx.strokeStyle = "Yellow";
             ctx.beginPath();
             ctx.arc(this.pathingCircle.x - this.game.camera.x, this.pathingCircle.y - this.game.camera.y, this.pathingCircle.radius, 0, 2 * Math.PI);
             ctx.closePath();
             ctx.stroke();
-            
-            ctx.strokeStyle = "Blue";
+    
+            // Vision Circle
             ctx.setLineDash([5, 15]);
             ctx.beginPath();
-            ctx.arc(this.pathingCircle.x - this.game.camera.x, this.pathingCircle.y - this.game.camera.y, this.pathingCircle.radius, 0, 2 * Math.PI);
+            ctx.arc(this.pathingCircle.x - this.game.camera.x, this.pathingCircle.y - this.game.camera.y, this.pathingCircle.visualRadius, 0, 2 * Math.PI);
             ctx.closePath();
             ctx.stroke();
             ctx.setLineDash([]);
-    
-            // Inner Circle 
-            // ctx.strokeStyle = "Yellow";
-            // ctx.beginPath();
-            // ctx.arc(this.x - this.game.camera.x, this.y - this.game.camera.y, this.radius, 0, 2 * Math.PI);
-            // ctx.closePath();
-            // ctx.stroke();
-    
-            // // Vision Circle
-            // ctx.setLineDash([5, 15]);
-            // ctx.beginPath();
-            // ctx.arc(this.x - this.game.camera.x, this.y - this.game.camera.y, this.visualRadius, 0, 2 * Math.PI);
-            // ctx.closePath();
-            // ctx.stroke();
-            // ctx.setLineDash([]);
     
             // Bounding Box
             // ctx.strokeStyle = 'Red';
