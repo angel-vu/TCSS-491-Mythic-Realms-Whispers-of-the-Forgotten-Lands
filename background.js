@@ -21,7 +21,7 @@ class Grass {
     this.map = this.level.formMap("Grass");
     this.tileWidth = 16; // Width of each tile
     this.tileHeight = 16; // Height of each tile
-    this.scale = 3;
+    this.scale = 1;
   }
 
   update() {
@@ -77,7 +77,7 @@ class Concrete {
 
     this.tileWidth = 16; // Width of each tile
     this.tileHeight = 16; // Height of each tile
-    this.scale = 3;
+    this.scale = 1;
   }
 
   update() {
@@ -136,7 +136,7 @@ class Stairs {
     this.map = this.level.formMap("Grass");
     this.tileWidth = 16; // Width of each tile
     this.tileHeight = 16; // Height of each tile
-    this.scale = 3;
+    this.scale = 1;
   }
 
   update() {
@@ -237,7 +237,7 @@ class LevelOneWalls {
     this.map = this.level.formMap("Collision");
     this.tileWidth = 16; // Width of each tile
     this.tileHeight = 16; // Height of each tile
-    this.scale = 3;
+    this.scale = 1;
   };
 
   update() {
@@ -406,7 +406,7 @@ class LevelOneProps {
     this.map = this.level.formMap("Props");
     this.tileWidth = 16; // Width of each tile
     this.tileHeight = 16; // Height of each tile
-    this.scale = 3;
+    this.scale = 1;
   }
 
   update() {
@@ -416,36 +416,112 @@ class LevelOneProps {
   draw(ctx) {
     const tileMappings = {
       // this set of 6 numbers is the 3x2 box
-      1451: { sourceX: 160, sourceY: 80 },
-      1452: { sourceX: 176, sourceY: 80 },
-      1483: { sourceX: 160, sourceY: 96},
-      1484: { sourceX: 176, sourceY: 96},
-      1515: { sourceX: 160, sourceY: 112},
-      1516: {sourceX: 176, sourceY: 112}, 
-      1533: {sourceX:448, sourceY: 112},
+      1451: { sourceX: 160, sourceY: 80, theSheet: this.spritesheet },
+      1452: { sourceX: 176, sourceY: 80, theSheet: this.spritesheet },
+      1483: { sourceX: 160, sourceY: 96, theSheet: this.spritesheet},
+      1484: { sourceX: 176, sourceY: 96,theSheet: this.spritesheet},
+      1515: { sourceX: 160, sourceY: 112, theSheet: this.spritesheet},
+      1516: {sourceX: 176, sourceY: 112, theSheet: this.spritesheet}, 
+      1533: {sourceX:448, sourceY: 112, theSheet: this.spritesheet},
       
       // this is the pillars around the statue
-      1534: {sourceX: 464, sourceY: 112},
-      1565: {sourceX: 448, sourceY: 128},
-      1566: {sourceX: 464, sourceY: 128},
-      1597: {sourceX: 448, sourceY: 144},
-      1598: {sourceX: 464, sourceY: 144}, 
+      1534: {sourceX: 464, sourceY: 112, theSheet: this.spritesheet},
+      1565: {sourceX: 448, sourceY: 128, theSheet: this.spritesheet},
+      1566: {sourceX: 464, sourceY: 128, theSheet: this.spritesheet},
+      1597: {sourceX: 448, sourceY: 144, theSheet: this.spritesheet},
+      1598: {sourceX: 464, sourceY: 144, theSheet: this.spritesheet}, 
 
       // statue
-      1341: {sourceX: 448, sourceY: 16},
-      1342: {sourceX: 464, sourceY: 16},
-      1373: {sourceX: 448, sourceY: 32},
-      1374: {sourceX: 464, sourceY: 32},
-      1405: {sourceX: 448, sourceY: 48},
-      1406: {sourceX: 464, sourceY: 48},
-      1436: {sourceX: 432, sourceY: 64},
-      1437: {sourceX: 448, sourceY: 64},
-      1438: {sourceX: 464, sourceY: 64},
-      1439: {sourceX: 480, sourceY: 64},
-      1468: {sourceX: 432, sourceY: 80},
-      1469: {sourceX: 448, sourceY: 80},
-      1470: {sourceX: 464, sourceY: 80},
-      171: {sourceX: 480, sourceY: 80},
+      1341: {sourceX: 448, sourceY: 16, theSheet: this.spritesheet},
+      1342: {sourceX: 464, sourceY: 16, theSheet: this.spritesheet},
+      1373: {sourceX: 448, sourceY: 32, theSheet: this.spritesheet},
+      1374: {sourceX: 464, sourceY: 32, theSheet: this.spritesheet},
+      1405: {sourceX: 448, sourceY: 48, theSheet: this.spritesheet},
+      1406: {sourceX: 464, sourceY: 48, theSheet: this.spritesheet},
+      1436: {sourceX: 432, sourceY: 64, theSheet: this.spritesheet},
+      1437: {sourceX: 448, sourceY: 64, theSheet: this.spritesheet},
+      1438: {sourceX: 464, sourceY: 64, theSheet: this.spritesheet},
+      1439: {sourceX: 480, sourceY: 64, theSheet: this.spritesheet},
+      1468: {sourceX: 432, sourceY: 80, theSheet: this.spritesheet},
+      1469: {sourceX: 448, sourceY: 80, theSheet: this.spritesheet},
+      1470: {sourceX: 464, sourceY: 80, theSheet: this.spritesheet},
+      171:  {sourceX: 480, sourceY: 80, theSheet: this.spritesheet},
+
+      // stone brick
+      2255: {sourceX: 224, sourceY: 480, theSheet: this.spritesheet},
+      2256: {sourceX: 240, sourceY: 480, theSheet: this.spritesheet},
+      2287: {sourceX: 224, sourceY: 496, theSheet: this.spritesheet},
+      2288: {sourceX: 240, sourceY: 496, theSheet: this.spritesheet},
+
+      // broken well
+      2011: {sourceX: 416, sourceY: 352, theSheet: this.spritesheet},
+      2012: {sourceX: 432, sourceY: 352, theSheet: this.spritesheet},
+      2013: {sourceX: 448, sourceY: 352, theSheet: this.spritesheet},
+      2014: {sourceX: 464, sourceY: 352, theSheet: this.spritesheet},
+      2043: {sourceX: 416, sourceY: 368, theSheet: this.spritesheet},
+      2044: {sourceX: 432, sourceY: 368, theSheet: this.spritesheet},
+      2045: {sourceX: 448, sourceY: 368, theSheet: this.spritesheet},
+      2046: {sourceX: 464, sourceY: 368, theSheet: this.spritesheet},
+      2075: {sourceX: 416, sourceY: 384, theSheet: this.spritesheet},
+      2076: {sourceX: 432, sourceY: 384, theSheet: this.spritesheet},
+      2077: {sourceX: 448, sourceY: 384, theSheet: this.spritesheet}, 
+      2078: {sourceX: 464, sourceY: 384, theSheet: this.spritesheet},
+      2107: {sourceX: 416, sourceY: 400, theSheet: this.spritesheet}, 
+      2108: {sourceX: 432, sourceY: 400, theSheet: this.spritesheet},
+      2109: {sourceX: 448, sourceY: 400, theSheet: this.spritesheet},
+      2110: {sourceX: 464, sourceY: 400, theSheet: this.spritesheet},
+
+      // 2x4 stone pillar
+
+      // fuller 2x2 bush 
+      3719: {sourceX: 96, sourceY: 192, theSheet: this.treesSheet},
+      3720: {sourceX: 112, sourceY: 192, theSheet: this.treesSheet},
+      3751: {sourceX: 96, sourceY: 208, theSheet: this.treesSheet},
+      3752: {sourceX: 112, sourceY: 208, theSheet: this.treesSheet},
+
+      // ---------------------------------------------------------------
+      // 3rd tree from png (drawing from the bottom up)
+      3637: {sourceX: 320, sourceY: 144, theSheet: this.treesSheet},
+      3605: {sourceX: 320, sourceY: 128, theSheet: this.treesSheet},
+      3606: {sourceX: 336, sourceY: 128, theSheet: this.treesSheet},
+
+      //3720: {sourceX: 304, sourceY: 112, theSheet: this.treesSheet},
+      3573: {sourceX: 320, sourceY: 112, theSheet: this.treesSheet},
+      3574: {sourceX: 336, sourceY: 112, theSheet: this.treesSheet},
+      3575: {sourceX: 352, sourceY: 112, theSheet: this.treesSheet},
+
+      3539:{sourceX: 288, sourceY: 96, theSheet: this.treesSheet},
+      3540:{sourceX: 304, sourceY: 96, theSheet: this.treesSheet},
+      3541:{sourceX: 320, sourceY: 96, theSheet: this.treesSheet},
+      3542: {sourceX: 336, sourceY: 96, theSheet: this.treesSheet},
+      3543:{sourceX: 352, sourceY: 96, theSheet: this.treesSheet},
+      3544: {sourceX: 368, sourceY: 96, theSheet: this.treesSheet},
+
+      3507:{sourceX: 288, sourceY: 80, theSheet: this.treesSheet},
+      3508:{sourceX: 304, sourceY: 80, theSheet: this.treesSheet},
+      3509:{sourceX: 320, sourceY: 80, theSheet: this.treesSheet},
+      3510:{sourceX: 336, sourceY: 80, theSheet: this.treesSheet},
+      3511:{sourceX: 352, sourceY: 80, theSheet: this.treesSheet},
+      3512:{sourceX: 368, sourceY: 80, theSheet: this.treesSheet},
+
+      3475:{sourceX: 288, sourceY: 64, theSheet: this.treesSheet},
+      3476:{sourceX: 304, sourceY: 64, theSheet: this.treesSheet},
+      3477:{sourceX: 320, sourceY: 64, theSheet: this.treesSheet},
+      3478:{sourceX: 336, sourceY: 64, theSheet: this.treesSheet},
+      3479:{sourceX: 352, sourceY: 64, theSheet: this.treesSheet},
+      3480:{sourceX: 368, sourceY: 64, theSheet: this.treesSheet},
+
+      3444:{sourceX: 304, sourceY: 48, theSheet: this.treesSheet},
+      3445:{sourceX: 320, sourceY: 48, theSheet: this.treesSheet},
+      3446:{sourceX: 336, sourceY: 48, theSheet: this.treesSheet},
+      3447: {sourceX: 352, sourceY: 48, theSheet: this.treesSheet},
+
+      3412:{sourceX: 304, sourceY: 32, theSheet: this.treesSheet},
+      3413:{sourceX: 320, sourceY: 32, theSheet: this.treesSheet},
+      3414:{sourceX: 336, sourceY: 32, theSheet: this.treesSheet},
+      3415:{sourceX: 352, sourceY: 32, theSheet: this.treesSheet},
+      3381: {sourceX: 320, sourceY: 16, theSheet: this.treesSheet},
+      //------------------------------------------------------------------
     };
 
     // Loop through each row and column in the map
@@ -458,9 +534,9 @@ class LevelOneProps {
         const tileNumber = this.map[i][j];
         // Check if the tile number exists in tileMappings
         if (tileMappings.hasOwnProperty(tileNumber)) {
-          const { sourceX, sourceY } = tileMappings[tileNumber];
+          const { sourceX, sourceY, theSheet } = tileMappings[tileNumber];
           ctx.drawImage(
-            this.spritesheet,
+            theSheet,
             sourceX,
             sourceY,
             this.tileWidth,
