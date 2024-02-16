@@ -174,9 +174,9 @@ class Goblin {
                     this.state = 2;
                     this.elapsedTime = 0;
                 } else if (this.elapsedTime > 0.3) {
-                    if (ent instanceof Link && this.hitBox.collide(ent.hurtBox)) {
+                    if (ent instanceof Link && this.hitBox.collide(ent.hurtBox)&& !ent.damagedState) {
                         console.log("ATTACK LANDED - GOBLIN VS LINK!");
-                        ent.currentHealth -= 1;
+                        ent.damageEntity(1);
                         this.elapsedTime = 0;
                     }
                 } 

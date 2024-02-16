@@ -22,6 +22,10 @@ class Link {
 		this.state = 0; // 0 = idle, 1 = walking, 2 = running, 3 = damaged, 4 = dead, 5 = attack1 6= attack2
 		this.facing = 0; // 0 = right, 1 = left
 		this.dead = false;
+		//how long Link has been dead for in seconds.
+		this.deadCounter = 0;
+		//Flag used to flicker when damaged.
+		this.flickerFlag = true;
 		this.animations = [];
 		//links animations
 		this.loadAnimations();
@@ -38,7 +42,12 @@ class Link {
 		this.updatePathingCircle();
 	};
 
-
+	//Function that subtracts the entitie's health and sets their damage flag to true.
+	damageEntity(damageNumber){
+		this.currentHealth -= damageNumber;
+		this.damagedState = true;
+		this.state = 0;
+	}
 	//a bounding sphere to attract enemy entities toward us.
 	updatePathingCircle(){
 		this.pathingCircle = new BoundingCircle(this.hurtBox.x+ this.hurtBox.width/2,this.hurtBox.y+ this.hurtBox.height/2, 20, 0);
@@ -311,7 +320,7 @@ class Link {
 		// this.animations[1][3][0] = new Animator(this.spritesheet, 209, 122, 16, 32, 1, 0.33, 14, false, true);
 		this.animations[1][4][0] = new Animator(ASSET_MANAGER.getAsset("./sprites/Link_main_character.png"), 588, 720, 86, 50, 1, 0.15, 0, false, true,false);
 		// this.animations[1][5][0] = new Animator(this.spritesheet, 209, 122, 16, 32, 1, 0.33, 14, false, true);
-		this.animations[1][5][0] = new Animator(ASSET_MANAGER.getAsset("./sprites/Link_attack_1.png"), 0, 20, 102, 60, 4, 0.18, 1, false, true, false);
+		this.animations[1][5][0] = new Animator(ASSET_MANAGER.getAsset("./sprites/Link_attack_1.png"), 0, 20, 102, 60, 4, 0.15, 1, false, true, false);
 		this.animations[1][6][0] = new Animator(ASSET_MANAGER.getAsset("./sprites/Link_attack_1.png"), 439, 2, 122, 73, 6, 0.15, 0, false, true, false);
 
 		// mastersword and shield 
@@ -321,9 +330,8 @@ class Link {
         this.animations[1][2][1] = new Animator(ASSET_MANAGER.getAsset("./sprites/Link_main_character.png"), 502, 403, 54, 50, 8, 0.15, 0, false, true,false);
 		// this.animations[1][3][1] = new Animator(this.spritesheet, 209, 122, 16, 32, 1, 0.33, 14, false, true);
 		this.animations[1][4][1] = new Animator(ASSET_MANAGER.getAsset("./sprites/Link_main_character.png"), 997, 720, 86, 50, 1, 0.15, 0, false, true,false);
-		// this.animations[1][5][1] = new Animator(this.spritesheet, 209, 122, 16, 32, 1, 0.33, 14, false, true);
-		this.animations[1][5][1] = new Animator(ASSET_MANAGER.getAsset("./sprites/Link_attack_1.png"), 0, 20, 102, 60, 4, 0.2, 1, false, true, true);
-		this.animations[1][6][1] = new Animator(ASSET_MANAGER.getAsset("./sprites/Link_attack_1.png"), 439, 2, 122, 73, 6, 0.2, 0, false, true, true);
+		this.animations[1][5][1] = new Animator(ASSET_MANAGER.getAsset("./sprites/Link_attack_1.png"), 0, 20, 102, 60, 4, 0.15, 1, false, true, true);
+		this.animations[1][6][1] = new Animator(ASSET_MANAGER.getAsset("./sprites/Link_attack_1.png"), 439, 2, 122, 73, 6, 0.15, 0, false, true, true);
 
 
 
@@ -345,7 +353,7 @@ class Link {
 		
 
 		//movement physics
-
+		if(!this.damagedState) { // can't move or attack when we are being damaged.
 		//walking, idle or running. 
 		if(this.state <= 2  ){
 			
@@ -429,7 +437,7 @@ class Link {
 				
 			}
 			//if the user is not moving at all set the velocity to 0
-			if(!this.game.down && !this.game.up && !this.game.left&& !this.game.right ){
+			if(!this.game.down && !this.game.up && !this.game.left&& !this.game.right  ){
 				this.velocity.x = 0;
 				this.velocity.y = 0;
 				this.state = 0;
@@ -459,12 +467,11 @@ class Link {
 			
 			
 		//creating  time windows for our combo system. 
-		} else if(this.state > 4 ){  // after attacking at least once.
+		}else if(this.state > 4 ){  // after attacking at least once.
 
 			//when the elapsed time is greater than the animation state, go back to idle, and allow to continue combo
 			//After animation is done leaves a little bit of the first frame after the last frame is done.
 			if(this.animations[1][this.state][this.facing].isDoneOutsideOfAnimator(this.game.clockTick)){
-				this.elapsedTime = 0;
 				this.state = 0;
 				this.enterComboWindow = true;
 			} 
@@ -484,13 +491,7 @@ class Link {
 				this.enterComboWindow = false;
 			}
 		} 
-
-		if(this.currentHealth <= 0) {
-            this.dead = true;
-            // DEATH ANIMATION?
-          
-            console.log("LINK DEAD");
-        }
+	
 		//collision logic 
 		let that = this;
 
@@ -511,11 +512,9 @@ class Link {
 				//}
 			//}
 		});
-		
+	
 			
-        if(this.game.damage) {
-            this.state = 1; 
-        }
+      
 		 // max speed calculation
 	
 		if (this.velocity.y >= MAX_RUN_VEL) this.velocity.y = MAX_RUN_VEL;
@@ -539,6 +538,24 @@ class Link {
 		this.updateMoveBox();
 		this.updatePathingCircle();
 
+	} else if(this.damagedState && !this.dead){//When in a state of being damaged, create a window where you flicker for 1 second and you can't take damage.
+			this.deadCounter+= this.game.clockTick;
+			if(this.deadCounter >= 2 ){
+				this.damagedState = false;
+				//stopping link from sliding when he is damaged.
+	
+			}
+	}
+	// If our health goes to 0 or below we set our state to 4 to draw the dead animation.
+	if(this.currentHealth <= 0) {
+		this.dead = true;
+		this.velocity.x = 0;
+		this.velocity.y = 0;
+		this.damagedState = false;
+		// DEATH ANIMATION?
+		this.state = 4;
+		console.log("LINK DEAD");
+		}
     };
 
 	draw(ctx) {
@@ -555,6 +572,9 @@ class Link {
 		// } else if (this.itemsEquipped === 0) {
 
 		// }
+
+		//if we haven't been hit draw as normal
+		if(!this.damagedState){
 		if(this.itemsEquipped === 1 && this.state <= 1){
 			if(this.facing === 0){
 				this.animations[this.itemsEquipped][this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, 3);
@@ -590,10 +610,18 @@ class Link {
 		}else if(this.itemsEquipped === 0 && this.state === 4){
 			
 			this.animations[this.itemsEquipped][this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y  + 30 - this.game.camera.y, 3);
-		}else{
+		}else {
             this.animations[this.itemsEquipped][this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y  - this.game.camera.y, 3);
         }
-
+		//If we have been damaged flicker for 2 seconds.
+		//has a unique damaged animation
+	} else if(this.damagedState && !this.dead){
+		 
+		 if(this.flickerFlag){
+			this.animations[this.itemsEquipped][this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x -20- this.game.camera.x, this.y  - this.game.camera.y +10, 3);
+		}
+		this.flickerFlag = !this.flickerFlag;
+	}
 
 		if(!this.dead) {
             this.healthbar.draw(ctx);
