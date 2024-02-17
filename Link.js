@@ -5,6 +5,9 @@ class Link {
 		this.game.link = this;
 
 		this.velocity = { x: 0, y: 0 };
+		//to instantly apply the accumulated velcoity for instance when moving right for awhile and then going up and right at the same time
+		// or else gives a sliding affect as there was different velocities in those different directions.
+		this.accumulatedVelocity =0;
 		this.radius = 20;
 	
 		this.maxHealth = 5;
@@ -345,10 +348,9 @@ class Link {
 		//Constants to use for movement physcs for Mario.
 		const MIN_WALK_VEL = 4.453125;
 		const MAX_WALK_VEL = 93.75;
-		const MAX_RUN_VEL = 153.75;
-
+		const MAX_RUN_VEL = 200;
 		const WALK_ACC =  133.59375;
-		const RUN_ACC = 200.390625;
+		const RUN_ACC = 230;
 
 		
 
@@ -440,6 +442,7 @@ class Link {
 			if(!this.game.down && !this.game.up && !this.game.left&& !this.game.right  ){
 				this.velocity.x = 0;
 				this.velocity.y = 0;
+				this.accumulatedVelocity = 0;
 				this.state = 0;
 			}
 	
@@ -448,7 +451,9 @@ class Link {
 		//Attack Physics. 
 		if(this.game.attack && this.state < 3 && this.itemsEquipped === 1 ){
 			console.log("Attack");
-		
+			this.velocity.x = 0;
+			this.velocity.y =0;
+			this.accumulatedVelocity = 0;
 			
 			
 			if(this.comboCounter === 0){
@@ -551,6 +556,7 @@ class Link {
 		this.dead = true;
 		this.velocity.x = 0;
 		this.velocity.y = 0;
+		this.accumulatedVelocity = 0;
 		this.damagedState = false;
 		// DEATH ANIMATION?
 		this.state = 4;
