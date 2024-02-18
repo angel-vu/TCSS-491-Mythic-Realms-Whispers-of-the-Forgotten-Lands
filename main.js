@@ -30,27 +30,6 @@ ASSET_MANAGER.downloadAll(() => {
 	const ctx = canvas.getContext("2d");
 	ctx.imageSmoothingEnabled = true;
 
-    //gameEngine.addEntity(new Banshee(gameEngine, 1000, 800, [{ x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: 0, y: 0 }]));
-    // gameEngine.addEntity(new Knight(gameEngine));
-	gameEngine.addEntity(new Wizard(gameEngine, 1000, 800, [{ x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: 0, y: 0 }]));
-	gameEngine.addEntity(new Goblin(gameEngine, 300, 800, [{ x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: 0, y: 0 }]));
-
-	gameEngine.addEntity(new Ganon(gameEngine, 300, 800, [{ x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: 0, y: 0 }]));
-	// gameEngine.addEntity(new Akagane(gameEngine));
-	//// gameEngine.addEntity(new Link(gameEngine,0,0));
-	//gameEngine.addEntity(new Skeleton(gameEngine));
-    // gameEngine.addEntity(new Coin(gameEngine));
-    // gameEngine.addEntity(new HealthPotion(gameEngine));
-    // gameEngine.addEntity(new InvisiblePotion(gameEngine));
-    // gameEngine.addEntity(new PowerPotion(gameEngine));
-    // gameEngine.addEntity(new Treasure(gameEngine));
-	// gameEngine.addEntity(new Goblin(gameEngine));
-    gameEngine.addEntity(new Banshee(gameEngine, 1000, 800, [{ x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: 0, y: 0 }]));
-    // gameEngine.addEntity(new Knight(gameEngine));
-	// gameEngine.addEntity(new Akagane(gameEngine));
-	// gameEngine.addEntity(new Link(gameEngine,0,0));
-	//gameEngine.addEntity(new Skeleton(gameEngine, 1000, 800, [{ x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: 0, y: 0 }]));
-    
 	gameEngine.addEntity(new SceneManager(gameEngine));
 
 	gameEngine.init(ctx);
@@ -58,7 +37,5 @@ ASSET_MANAGER.downloadAll(() => {
 	PARAMS.CANVAS_WIDTH = canvas.clientWidth
 	PARAMS.CANVAS_HEIGHT = canvas.clientHeight;
 	
-	//gameEngine.addEntity(new SceneManager(gameEngine));
-
 	gameEngine.start();
 });
