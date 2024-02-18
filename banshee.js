@@ -10,8 +10,8 @@ class Banshee {
         // this.radius = 100;
         // this.visualRadius = 200;
 
-        this.currentHealth = 100;
-        this.maxHealth = 100;
+        this.currentHealth = 20;
+        this.maxHealth = 20;
         this.dead = false;
 
         this.healthbar = new HealthBar(this);
@@ -40,6 +40,13 @@ class Banshee {
         this.elapsedTime = 0;
         // no hit box, hit box is the projectile 
     };
+
+    //Function that subtracts the entitie's health and sets their damage flag to true.
+	damageEntity(damageNumber){
+		this.currentHealth -= damageNumber;
+		this.damagedState = true;
+		this.state = 0;
+	}
 
     // Bounding sphere for enemy vision
 	updatePathingCircle(){
@@ -150,20 +157,24 @@ class Banshee {
 
         for (var i = 0; i < this.game.entities.length; i++) {
             var ent = this.game.entities[i];
-            if (ent instanceof Link && canSee(this.pathingCircle, ent.pathingCircle)) {
-                this.target = ent.pathingCircle;
-            } 
-            if (ent instanceof Link && collide(this.pathingCircle, ent.pathingCircle)) {
-                if (this.state === 0 || this.state === 1) {
-                    this.state = 2;
-                    this.elapsedTime = 0;
-                } else if (this.elapsedTime > 1) {
-                    console.log("ATTACK LANDED!");
-                    this.game.addEntity(new Scream(this.game, this.hurtBox.x, this.hurtBox.y, ent, false));
-                    this.elapsedTime = 0;
+
+            if (ent instanceof Link && !ent.dead) {
+                if (ent instanceof Link && canSee(this.pathingCircle, ent.pathingCircle)) {
+                    this.target = ent.pathingCircle;
                 } 
+                if (ent instanceof Link && collide(this.pathingCircle, ent.pathingCircle)) {
+                    if (this.state === 0 || this.state === 1) {
+                        this.state = 2;
+                        this.elapsedTime = 0;
+                    } else if (this.elapsedTime > 1) {
+                        console.log("ATTACK LANDED!");
+                        this.game.addEntity(new Scream(this.game, this.hurtBox.x, this.hurtBox.y, ent, false));
+                        this.elapsedTime = 0;
+                    } 
+                }
             }
-            if (ent instanceof Link && this.state === 2 && !collide(this.pathingCircle, ent.pathingCircle)) {
+
+            if (ent instanceof Link && this.state === 2 && !collide(this.pathingCircle, ent.pathingCircle) || (ent instanceof Link && ent.dead)) {
                 this.state = 0;
             }
         }

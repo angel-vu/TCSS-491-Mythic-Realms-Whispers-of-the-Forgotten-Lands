@@ -22,6 +22,7 @@ class Grass {
     this.tileWidth = 16; // Width of each tile
     this.tileHeight = 16; // Height of each tile
     this.scale = 3;
+    this.scale = 3;
   }
 
   update() {

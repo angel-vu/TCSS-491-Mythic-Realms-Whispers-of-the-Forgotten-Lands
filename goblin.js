@@ -36,6 +36,13 @@ class Goblin {
         this.elapsedTime = 0;
     };
 
+    //Function that subtracts the entitie's health and sets their damage flag to true.
+	damageEntity(damageNumber){
+		this.currentHealth -= damageNumber;
+		this.damagedState = true;
+		this.state = 0;
+	}
+
     // Bounding sphere for enemy vision
 	updatePathingCircle(){
 		this.pathingCircle = new BoundingCircle(this.hurtBox.x + this.hurtBox.width/2, this.hurtBox.y + this.hurtBox.height/2, 30, 200);
@@ -119,28 +126,28 @@ class Goblin {
         // down (Walk, Idle, Attack, Injured, Dead)
         this.animations[0][0] = new Animator(this.spritesheet,   0,     0, 34.5, 40, 3, 0.1, 0, false, true, false);
         this.animations[0][1] = new Animator(this.spritesheet,  34.5,   0, 34.5, 40, 1, 0.1, 0, false, true, false);
-        this.animations[0][2] = new Animator(this.spritesheet,  93,    80, 29,   35, 3, 0.1, 0, false, true, false);
+        this.animations[0][2] = new Animator(this.spritesheet,  93,    80, 29,   35, 3, 0.3, 0, false, true, false);
         this.animations[0][3] = new Animator(this.spritesheet,   5.4, 153, 32,   40, 1, 0.1, 0, false, true, false);
         this.animations[0][4] = new Animator(this.spritesheet,   5.4, 153, 32,   40, 2, 1,   0, false, true, false);
 
         // up (Walk, Idle, Attack, Injured, Dead)
         this.animations[1][0] = new Animator(this.spritesheet,  103.5,   0, 34.5, 40, 3, 0.1, 0, false, true, false);
         this.animations[1][1] = new Animator(this.spritesheet,  138,     0, 34.5, 40, 1, 0.1, 0, false, true, false);
-        this.animations[1][2] = new Animator(this.spritesheet,    6,    80, 29,   35, 3, 0.1, 0, false, true, false);
+        this.animations[1][2] = new Animator(this.spritesheet,    6,    80, 29,   35, 3, 0.3, 0, false, true, false);
         this.animations[1][3] = new Animator(this.spritesheet,    5.4, 153, 32,   40, 1, 0.1, 0, false, true, false);
         this.animations[1][4] = new Animator(this.spritesheet,    5.4, 153, 32,   40, 2, 1,   0, false, true, false);
 
         // left (Walk, Idle, Attack, Injured, Dead)
         this.animations[2][0] = new Animator(this.spritesheet,  100,   40,  29, 35, 3, 0.1, 0, false, true, true);
         this.animations[2][1] = new Animator(this.spritesheet,  100,   40,  29, 35, 1, 0.1, 0, false, true, true);
-        this.animations[2][2] = new Animator(this.spritesheet,    3,   115, 33, 38, 3, 0.1, 0, false, true, true);
+        this.animations[2][2] = new Animator(this.spritesheet,    3,   115, 33, 38, 3, 0.3, 0, false, true, true);
         this.animations[2][3] = new Animator(this.spritesheet,    5.4, 153, 32, 35, 1, 0.1, 0, false, true, true);
         this.animations[2][4] = new Animator(this.spritesheet,    5.4, 153, 32, 35, 2, 1,   0, false, true, true);
 
         // right (Walk, Idle, Attack, Injured, Dead)
         this.animations[3][0] = new Animator(this.spritesheet,   2,   40,  32, 35, 3, 0.1, 1, false, true, true);
         this.animations[3][1] = new Animator(this.spritesheet,   2,   40,  32, 35, 1, 0.1, 1, false, true, true);
-        this.animations[3][2] = new Animator(this.spritesheet, 101,   115, 32, 38, 3, 0.1, 0, false, true, true);
+        this.animations[3][2] = new Animator(this.spritesheet, 101,   115, 32, 38, 3, 0.3, 0, false, true, true);
         this.animations[3][3] = new Animator(this.spritesheet,   5.4, 153, 32, 35, 1, 0.1, 0, false, true, false);
         this.animations[3][4] = new Animator(this.spritesheet,   5.4, 153, 32, 35, 2, 1,   0, false, true, true);
     };
@@ -161,27 +168,35 @@ class Goblin {
             if (this.targetID < this.path.length - 1 && this.target === this.path[this.targetID]) {
                 this.targetID++;
             }
+
+            if (this.targetID === this.path.length - 1) {
+                this.targetID = 0;
+            }
+
             this.target = this.path[this.targetID];
         }
 
         for (var i = 0; i < this.game.entities.length; i++) {
             var ent = this.game.entities[i];
-            if (ent instanceof Link && canSee(this.pathingCircle, ent.pathingCircle)) {
-                this.target = ent.pathingCircle;
-            } 
-            if (ent instanceof Link && collide(this.pathingCircle, ent.pathingCircle)) {
-                if (this.state === 0 || this.state === 1) {
-                    this.state = 2;
-                    this.elapsedTime = 0;
-                } else if (this.elapsedTime > 0.3) {
-                    if (ent instanceof Link && this.hitBox.collide(ent.hurtBox)&& !ent.damagedState) {
-                        console.log("ATTACK LANDED - GOBLIN VS LINK!");
-                        ent.damageEntity(1);
-                        this.elapsedTime = 0;
-                    }
+            if(ent instanceof Link && !ent.dead) {
+                if (ent instanceof Link && canSee(this.pathingCircle, ent.pathingCircle)) {
+                    this.target = ent.pathingCircle;
                 } 
+                if (ent instanceof Link && collide(this.pathingCircle, ent.pathingCircle)) {
+                    if (this.state === 0 || this.state === 1) {
+                        this.state = 2;
+                        this.elapsedTime = 0;
+                    } else if (this.elapsedTime > 0.9) {
+                        if (ent instanceof Link && this.hitBox.collide(ent.hurtBox)&& !ent.damagedState) {
+                            console.log("ATTACK LANDED - GOBLIN VS LINK!");
+                            ent.damageEntity(1);
+                            this.elapsedTime = 0;
+                        }
+                    } 
+                }
             }
-            if (ent instanceof Link && this.state === 2 && !collide(this.pathingCircle, ent.pathingCircle)) {
+
+            if (ent instanceof Link && this.state === 2 && (!collide(this.pathingCircle, ent.pathingCircle)) || (ent instanceof Link && ent.dead)) {
                 this.state = 0;
             }
         }
@@ -221,13 +236,13 @@ class Goblin {
     
         if (PARAMS.DEBUG) {
             // Pathing 
-            // ctx.strokeStyle = "Black";
-            // ctx.beginPath();
-            // ctx.moveTo(this.initialPoint.x, this.initialPoint.y);
-            // for (var i = 0; i < this.path.length; i++) {
-            //     ctx.lineTo(this.path[i].x, this.path[i].y);
-            // };
-            // ctx.stroke();
+            ctx.strokeStyle = "Black";
+            ctx.beginPath();
+            ctx.moveTo(this.initialPoint.x, this.initialPoint.y);
+            for (var i = 0; i < this.path.length - 1; i++) {
+                ctx.lineTo(this.path[i].x - this.game.camera.x, this.path[i].y - this.game.camera.y);
+            };
+            ctx.stroke();
     
             // // Hit Box (Attack)          
             // ctx.strokeStyle = 'Red';
