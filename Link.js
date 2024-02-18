@@ -25,8 +25,8 @@ class Link {
 		this.state = 0; // 0 = idle, 1 = walking, 2 = running, 3 = damaged, 4 = dead, 5 = attack1 6= attack2
 		this.facing = 0; // 0 = right, 1 = left
 		this.dead = false;
-		//how long Link has been dead for in seconds.
-		this.deadCounter = 0;
+		//how long Link has been damaged for in seconds.
+		this.damagedCounter = 0;
 		//Flag used to flicker when damaged.
 		this.flickerFlag = true;
 		this.animations = [];
@@ -502,11 +502,12 @@ class Link {
 
 		this.game.entities.forEach(function (entity){
 				//if link attacks collide with another entities hitbox.
-			if(entity.hurtBox && that.hitBox && that.hitBox.collide(entity.hurtBox)){
+			if(entity.hurtBox && that.hitBox && that.hitBox.collide(entity.hurtBox)&& !entity.damagedState){
 				if(entity instanceof Banshee || entity instanceof Ganon || entity instanceof Akagane|| entity instanceof Goblin|| entity instanceof Knight|| entity instanceof Skeleton || entity instanceof Wizard ){
 
 					// Sword dealing 1 point of damage.
-					entity.currentHealth -= 1;
+					entity.damageEntity(1);
+					console.log(entity.currentHealth);
 				}
 			}
 			//Boundary checking for when link walks into a wall.
@@ -544,9 +545,10 @@ class Link {
 		this.updatePathingCircle();
 
 	} else if(this.damagedState && !this.dead){//When in a state of being damaged, create a window where you flicker for 1 second and you can't take damage.
-			this.deadCounter+= this.game.clockTick;
-			if(this.deadCounter >= 2 ){
+			this.damagedCounter+= this.game.clockTick;
+			if(this.damagedCounter >= 2 ){
 				this.damagedState = false;
+				this.damagedCounter = 0;
 				//stopping link from sliding when he is damaged.
 	
 			}
