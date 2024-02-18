@@ -508,7 +508,7 @@ class Link {
 					// Sword dealing 1 point of damage.
 					entity.currentHealth -= 1;
 				}
-			} 
+			}
 			//Boundary checking for when link walks into a wall.
 			//colliding with the
 			//  if(entity instanceof wall ){
@@ -624,7 +624,12 @@ class Link {
 	} else if(this.damagedState && !this.dead){
 		 
 		 if(this.flickerFlag){
-			this.animations[this.itemsEquipped][this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x -20- this.game.camera.x, this.y  - this.game.camera.y +10, 3);
+			if(this.itemsEquipped === 1){
+			this.animations[this.itemsEquipped][this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, 3);
+			} else {
+				this.animations[this.itemsEquipped][this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x- 20 - this.game.camera.x, this.y - this.game.camera.y+ 10, 3);
+			}
+		
 		}
 		this.flickerFlag = !this.flickerFlag;
 	}
