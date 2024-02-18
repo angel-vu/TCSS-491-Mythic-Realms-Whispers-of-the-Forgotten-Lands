@@ -21,7 +21,7 @@ class Grass {
     this.map = this.level.formMap("Grass");
     this.tileWidth = 16; // Width of each tile
     this.tileHeight = 16; // Height of each tile
-    this.scale = 1;
+    this.scale = 3;
   }
 
   update() {
@@ -77,7 +77,7 @@ class Concrete {
 
     this.tileWidth = 16; // Width of each tile
     this.tileHeight = 16; // Height of each tile
-    this.scale = 1;
+    this.scale = 3;
   }
 
   update() {
@@ -136,7 +136,7 @@ class Stairs {
     this.map = this.level.formMap("Grass");
     this.tileWidth = 16; // Width of each tile
     this.tileHeight = 16; // Height of each tile
-    this.scale = 1;
+    this.scale = 3;
   }
 
   update() {
@@ -237,7 +237,7 @@ class LevelOneWalls {
     this.map = this.level.formMap("Collision");
     this.tileWidth = 16; // Width of each tile
     this.tileHeight = 16; // Height of each tile
-    this.scale = 1;
+    this.scale = 3;
   };
 
   update() {
@@ -406,7 +406,7 @@ class LevelOneProps {
     this.map = this.level.formMap("Props");
     this.tileWidth = 16; // Width of each tile
     this.tileHeight = 16; // Height of each tile
-    this.scale = 1;
+    this.scale = 3;
   }
 
   update() {
