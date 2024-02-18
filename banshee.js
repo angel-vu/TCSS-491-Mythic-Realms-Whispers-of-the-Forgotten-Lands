@@ -10,9 +10,16 @@ class Banshee {
         // this.radius = 100;
         // this.visualRadius = 200;
 
-        this.currentHealth = 100;
-        this.maxHealth = 100;
+        this.damagedState = false;
+        this.currentHealth = 30;
+        this.maxHealth = 30;
+
         this.dead = false;
+
+        //how long Link has been dead for in seconds.
+        this.deadCounter = 0;
+        //Flag used to flicker when damaged.
+        this.flickerFlag = true;
 
         this.healthbar = new HealthBar(this);
 
@@ -40,6 +47,13 @@ class Banshee {
         this.elapsedTime = 0;
         // no hit box, hit box is the projectile 
     };
+
+    //Function that subtracts the entitie's health and sets their damage flag to true.
+	damageEntity(damageNumber){
+		this.currentHealth -= damageNumber;
+		this.damagedState = true;
+		this.state = 0;
+	}
 
     // Bounding sphere for enemy vision
 	updatePathingCircle(){
@@ -134,72 +148,100 @@ class Banshee {
         if(this.currentHealth <= 0) {
             this.dead = true;
             // DEATH ANIMATION?
+            this.game.camera.entityCount -= 1;
             this.removeFromWorld = true;
             console.log("BANSHEE DEAD");
         }
 
-        this.elapsedTime += this.game.clockTick;
-        var dist = distance(this, this.target);
+        if(!this.damagedState) { 
 
-        if (dist < 5) {
-            if (this.targetID < this.path.length - 1 && this.target === this.path[this.targetID]) {
-                this.targetID++;
+            var dist = distance(this, this.target);
+
+            if (dist < 5) {
+                if (this.targetID < this.path.length - 1 && this.target === this.path[this.targetID]) {
+                    this.targetID++;
+                }
+                this.target = this.path[this.targetID];
             }
-            this.target = this.path[this.targetID];
-        }
 
-        for (var i = 0; i < this.game.entities.length; i++) {
-            var ent = this.game.entities[i];
-            if (ent instanceof Link && canSee(this.pathingCircle, ent.pathingCircle)) {
-                this.target = ent.pathingCircle;
-            } 
-            if (ent instanceof Link && collide(this.pathingCircle, ent.pathingCircle)) {
-                if (this.state === 0 || this.state === 1) {
-                    this.state = 2;
-                    this.elapsedTime = 0;
-                } else if (this.elapsedTime > 1) {
-                    console.log("ATTACK LANDED!");
-                    this.game.addEntity(new Scream(this.game, this.hurtBox.x, this.hurtBox.y, ent, false));
-                    this.elapsedTime = 0;
-                } 
+            if(this.state === 2) {
+                this.elapsedTime += this.game.clockTick;
             }
-            if (ent instanceof Link && this.state === 2 && !collide(this.pathingCircle, ent.pathingCircle)) {
-                this.state = 0;
+
+            for (var i = 0; i < this.game.entities.length; i++) {
+                var ent = this.game.entities[i];
+
+                if (ent instanceof Link && !ent.dead) {
+                    if (ent instanceof Link && canSee(this.pathingCircle, ent.pathingCircle)) {
+                        this.target = ent.pathingCircle;
+                    } 
+                    if (ent instanceof Link && collide(this.pathingCircle, ent.pathingCircle)) {
+                        if (this.state === 0 || this.state === 1) {
+                            this.state = 2;
+                            this.elapsedTime = 0;
+                        } else if (this.elapsedTime > 1 && !ent.damagedState) {
+                            console.log("ATTACK LANDED!");
+                            this.game.addEntity(new Scream(this.game, this.hurtBox.x, this.hurtBox.y, ent, false));
+                            this.elapsedTime = 0;
+                        } 
+                    }
+                }
+
+                if (ent instanceof Link && this.state === 2 && !collide(this.pathingCircle, ent.pathingCircle) || (ent instanceof Link && ent.dead)) {
+                    this.state = 0;
+                }
             }
-        }
 
-        if (this.state !== 2) {
-            dist = distance(this, this.target);
-            this.velocity = { x: (this.target.x - this.x) / dist * this.maxSpeed, y: (this.target.y - this.y) / dist * this.maxSpeed };
-            this.x += this.velocity.x * this.game.clockTick;
-            this.y += this.velocity.y * this.game.clockTick;
+            if (this.state !== 2) {
+                dist = distance(this, this.target);
+                this.velocity = { x: (this.target.x - this.x) / dist * this.maxSpeed, y: (this.target.y - this.y) / dist * this.maxSpeed };
+                this.x += this.velocity.x * this.game.clockTick;
+                this.y += this.velocity.y * this.game.clockTick;
 
-            if (this.velocity.x > 0){
-                this.facing = 3;
+                if (this.velocity.x > 0){
+                    this.facing = 3;
+                } else {
+                    this.facing = 2;
+                }
             } else {
-                this.facing = 2;
+                // Banshee Direction always faces Link
+                if (this.game.camera.link.x < this.x){
+                    this.facing = 2;
+                } else {
+                    this.facing = 3;
+                }
             }
-        } else {
-            // Banshee Direction always faces Link
-            if (this.game.camera.link.x < this.x){
-                this.facing = 2;
-            } else {
-                this.facing = 3;
+            
+            this.updateLastBB();
+            this.updateLastHurtBox();
+            this.updateBB();
+            this.updatePathingCircle();
+            this.updateHurtBox();
+
+            if(this.damagedState && !this.dead){//When in a state of being damaged, create a window where you flicker for 1 second and you can't take damage.
+                this.deadCounter+= this.game.clockTick;
+                if(this.deadCounter >= 1 ){
+                    this.damagedState = false;
+                    this.state = 0;
+                    //stopping link from sliding when he is damaged.
+                }
             }
-        }
-        
-        this.updateLastBB();
-        this.updateLastHurtBox();
-        this.updateBB();
-        this.updatePathingCircle();
-        this.updateHurtBox();
+	    }
     };
 
-    draw(ctx) {         
-        this.animations[this.facing][this.state].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, this.scale);
+    draw(ctx) {      
         
-        if(!this.dead) {
-            this.healthbar.draw(ctx);
+        if(this.damagedState && !this.dead){
+            if(this.flickerFlag){
+               this.animations[this.facing][this.state].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y  - this.game.camera.y, this.scale);
+            }
+           this.flickerFlag = !this.flickerFlag;
+        } else {
+            this.animations[this.facing][this.state].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, this.scale);
+            
+            if(!this.dead) {
+                this.healthbar.draw(ctx);
+            }
         }
 
         if (PARAMS.DEBUG) {

@@ -613,3 +613,60 @@ class Ganon {
     this.pauseCount = 0;
   }
 }
+
+class Trident {
+  constructor(game, x, y, path) {
+    Object.assign(this, { game, x, y, path });
+    this.spritesheet = ASSET_MANAGER.getAsset("./boss_sprites/Ganondorf.png");
+    this.game.Trident = this;
+
+    this.initialPoint = { x, y };
+    this.speed = 100;
+
+    this.radius = 50;
+    this.visualRadius = 400;
+    this.weapons = [];
+    this.loadAnimations();
+  };
+
+  loadAnimations() {
+
+  }
+
+  update() {
+
+  };
+  
+  draw(ctx) {
+
+  };
+
+}
+
+class Orb {
+  constructor(game, x, y, path) {
+    Object.assign(this, { game, x, y, path });
+    this.spritesheet = ASSET_MANAGER.getAsset("./boss_sprites/Ganondorf.png");
+    this.game.Trident = this;
+
+    this.initialPoint = { x, y };
+    this.speed = 100;
+
+    this.radius = 50;
+    this.visualRadius = 400;
+    this.weapons = [];
+    this.loadAnimations();
+  };
+
+  loadAnimations() {
+
+  }
+
+  update() {
+
+  };
+  
+  draw(ctx) {
+
+  };
+}
