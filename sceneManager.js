@@ -18,20 +18,29 @@ class SceneManager {
         this.midpointX = PARAMS.CANVAS_WIDTH / 2 - 100;
         this.midpointY = PARAMS.CANVAS_HEIGHT / 2 - 100;
 
-        this.banshee = new Banshee(this.game, 1000, 800, [{ x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: 0, y: 0 }]);
-        this.game.addEntity(this.banshee);
-        this.props = new LevelOneProps(this.game, 0, 0, levelOne);
-        this.game.addEntity(this.props);
-        this.walls = new LevelOneWalls(this.game, 0, 0, levelOne);
-        this.game.addEntity(this.walls);
-        this.ground = new Grass(this.game, 0, 0, levelOne);
-        this.game.addEntity(this.ground);
-        this.stairs = new Stairs(this.game, 0, 0, levelOne);
-        this.game.addEntity(this.stairs);
         this.concrete = new Concrete(this.game, 0, 0, levelOne);
         this.game.addEntity(this.concrete);
-
         
+        this.stairs = new Stairs(this.game, 0, 0, levelOne);
+        this.game.addEntity(this.stairs);
+
+        this.ground = new Grass(this.game, 0, 0, levelOne);
+        this.game.addEntity(this.ground);
+
+        this.walls = new LevelOneWalls(this.game, 0, 0, levelOne);
+        this.game.addEntity(this.walls);
+
+        this.walls = new LevelOneWalls(this.game, 0, 0, levelOne);
+        this.game.addEntity(this.walls);
+
+        this.props = new LevelOneProps(this.game, 0, 0, levelOne);
+        this.game.addEntity(this.props);
+
+        this.banshee = new Banshee(this.game, 1000, 800, [{ x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: 0, y: 0 }]);
+        this.game.addEntity(this.banshee);
+
+        this.link = new Link(this.game, 0, 0);
+        this.game.addEntity(this.link);
     };
 
     clearEntities() {
