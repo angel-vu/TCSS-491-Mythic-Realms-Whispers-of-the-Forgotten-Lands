@@ -9,23 +9,180 @@
     <script type="text/javascript" src="./timer.js"></script>
     <script type="text/javascript" src="./gameengine.js"></script>
     <script type="text/javascript" src="./util.js"></script>
+    <script type="text/javascript" src="./background.js"></script>
+    <script type="text/javascript" src="./sceneManager.js"></script>
+    <script type="text/javascript" src="./level_1.js"></script>
     <script type="text/javascript" src="./Ganon.js"></script>
     <script type="text/javascript" src="./Akagane.js"></script>
     <script type="text/javascript" src="./animator.js"></script>
     <script type="text/javascript" src="./boundingbox.js"></script>
+    <script type="text/javascript" src="./boundingcircle.js"></script>
     <script type="text/javascript" src="./healthbar.js"></script>
     <script type="text/javascript" src="./Link.js"></script>
     <script type="text/javascript" src="./goblin.js"></script>
+    <script type="text/javascript" src="./scream.js"></script>
     <script type="text/javascript" src="./banshee.js"></script>
     <script type="text/javascript" src="./knight.js"></script>
     <script type="text/javascript" src="./skeleton.js"></script>
     <script type="text/javascript" src="./item.js"></script>
     <script type="text/javascript" src="./wizard.js"></script>
+    <script type="text/javascript" src="./background.js"></script>
+    <script type="text/javascript" src="./level_1.js"></script>
+    <script type="text/javascript" src="./transition.js"></script>
     <script type="text/javascript" src="./sceneManager.js"></script>
     <script type="text/javascript" src="./main.js"></script>
-</head>
-<body>
-    <canvas id="gameWorld" width="1024" height="768" style="background: rgb(102, 73, 99); border: 1px solid rgba(0, 0, 0, 0)" tabindex="0" autofocus></canvas>
-</body>
 
+    <style>
+        .popup-overlay {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); 
+            z-index: 9999; 
+        }
+        
+        .popup-content {
+            position: relative; 
+            background-color: white;
+            border-radius: 5px;
+            text-align: center;
+            max-width: 850px; 
+        }
+
+        .popup-content img {
+            max-width: 850px; 
+            max-height: 850px; 
+            display: block; 
+            margin: 0 auto; 
+        }
+
+        .popup-title {
+            position: absolute; 
+            top: 20px;
+            left: 425px;
+            transform: translateX(-50%); 
+            z-index: 1; 
+            font-size: 40px;
+            font-weight: bold;
+            color: white; 
+        }
+
+        .popup-message {
+            position: absolute; 
+            bottom: 20px;
+            left: 425px;
+            transform: translateX(-50%); 
+            z-index: 1; 
+            font-size: 20px;
+            color: white; 
+        }
+
+        .popup-overlay-image {
+            position: absolute;
+            top: 150px;
+            left: 150px;
+            transform: translate(-50%, 0%);
+            width: 300px;
+            height: 300px;
+            z-index: 0;
+        }
+
+    </style>
+    </head>
+    <body>
+        <div class="popup-overlay" id="popup">
+            <div class="popup-content">
+                <img src="./sprites/fantasyrealm.png" alt="Popup Image">
+                <img src="./sprites/Link.png" alt="Overlay Image" class="popup-overlay-image">
+                <h2 class="popup-title">Welcome to Mythic Realms Whispers of the Forgotten Lands</h2>
+                <p class="popup-message">Click anywhere to start the game.</p>
+            </div>
+        </div>
+        <div class="popup-overlay" id="secondPopup" style="display: none;">
+            <div class="popup-content">
+                <img src="./sprites/fantasyrealm.png" alt="Popup Image">
+                <img src="./sprites/Link.png" alt="Overlay Image" class="popup-overlay-image">
+                <h2 class="popup-title">Quest</h2>
+                <p class="popup-message">Once upon a time, in the Mystic Realms Whispers of the Forgotten Lands, there lived a courageous hero named Link. 
+                    One day, he received a quest was to defeat the wicked enemies threatening the peace of the Forgotten Lands: the terrifying Banshee 
+                    haunting the forests and the mischievous Goblins lurking in the dark caves.</p>
+            </div>
+        </div>
+        <div class="popup-overlay" id="thirdPopup" style="display: none;">
+            <div class="popup-content">
+                <img src="./sprites/fantasyrealm.png" alt="Popup Image">
+                <img src="./sprites/Link.png" alt="Overlay Image" class="popup-overlay-image">
+                <h2 class="popup-title">How To Play</h2>
+                <p class="popup-message">Use W,A,S,D keys for movements up, down, left, and right. 
+                    Hold shift key for Link to run. Click the mouse to attack the enemies. 
+                    Defeat all enemies to win the game. Are you capable to complete this quest? Good luck! </p>
+            </div>
+        </div>
+        <canvas id="gameWorld" width="1024" height="768" style="background: rgb(102, 73, 99); border: 1px solid rgba(0, 0, 0, 0)"
+                tabindex="0" autofocus></canvas>
+    
+        <script>
+            var popupOverlay = document.getElementById('popup');
+            var secondPopupOverlay = document.getElementById('secondPopup');
+            var thirdPopupOverlay = document.getElementById('thirdPopup');
+            var canvas = document.getElementById('gameWorld');
+            var gameStarted = false;
+    
+            function hideFirstPopup() {
+                // Hide the first popup
+                popupOverlay.style.display = 'none';
+                // Show the second popup
+                secondPopupOverlay.style.display = 'flex';
+            }
+    
+            function hideSecondPopup() {
+                // Hide the second popup
+                secondPopupOverlay.style.display = 'none';
+                // Show the third popup
+                thirdPopupOverlay.style.display = 'flex';
+            }
+    
+            function startGame() {
+                // Hide all popups
+                popupOverlay.style.display = 'none';
+                secondPopupOverlay.style.display = 'none';
+                thirdPopupOverlay.style.display = 'none';
+                // Show the game canvas
+                canvas.style.display = 'block';
+                // Start the game
+                canvas.focus();
+                canvas.addEventListener("keydown", handleKeyDown);
+            }
+    
+            function handleKeyDown(e) {
+                switch (e.code) {
+                    case "KeyA":
+                        this.left = true;
+                        console.log("left");
+                        break;
+                    case "KeyD":
+                        this.right = true;
+                        console.log("right");
+                        break;
+                    case "KeyW":
+                        this.up = true;
+                        console.log("up");
+                        break;
+                    case "KeyS":
+                        this.down = true;
+                        console.log("down");
+                        break;
+                }
+            }
+    
+            popupOverlay.addEventListener('click', hideFirstPopup);
+            secondPopupOverlay.addEventListener('click', hideSecondPopup);
+            thirdPopupOverlay.addEventListener('click', startGame);
+        </script>
+    </body>
 </html>
