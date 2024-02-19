@@ -112,8 +112,8 @@ class Concrete {
             this.randomStone.y,
             this.tileWidth,
             this.tileHeight,
-            drawX - this.game.camera.x - this.game.camera.midpointX,
-            drawY - this.game.camera.y - this.game.camera.midpointY,
+            drawX - this.game.camera.x,
+            drawY - this.game.camera.y,
             this.tileWidth * this.scale,
             this.tileHeight * this.scale
           );
@@ -214,8 +214,8 @@ class Stairs {
             sourceY,
             this.tileWidth,
             this.tileHeight,
-            drawX - this.game.camera.x - this.game.camera.midpointX,
-            drawY - this.game.camera.y - this.game.camera.midpointY,
+            drawX - this.game.camera.x,
+            drawY - this.game.camera.y,
             this.tileWidth * this.scale,
             this.tileHeight * this.scale
           );
@@ -574,8 +574,8 @@ class LevelOneProps {
             sourceY,
             this.tileWidth,
             this.tileHeight,
-            drawX - this.game.camera.x - this.game.camera.midpointX,
-            drawY - this.game.camera.y - this.game.camera.midpointY,
+            drawX - this.game.camera.x,
+            drawY - this.game.camera.y,
             this.tileWidth * this.scale,
             this.tileHeight * this.scale
           );
@@ -662,12 +662,7 @@ class loadBackground {
 class CollisionBox {
   constructor(game, x, y, width, height, scale) {
     Object.assign(this, { game, x, y, width, height, scale });
-    this.BoundingBox = new BoundingBox(
-      this.x,
-      this.y,
-      this.width * this.scale,
-      this.height * this.scale
-    );
+    this.BoundingBox = new BoundingBox(this.x, this.y, this.width * this.scale, this.height * this.scale);
   }
 
   update() {}
@@ -677,12 +672,7 @@ class CollisionBox {
       // Draw the bounding box
       ctx.strokeStyle = "blue";
       ctx.lineWidth = 2;
-      ctx.strokeRect(
-        this.BoundingBox.x - this.game.camera.x - this.game.camera.midpointX,
-        this.BoundingBox.y - this.game.camera.y - this.game.camera.midpointY,
-        this.BoundingBox.width,
-        this.BoundingBox.height
-      );
+      ctx.strokeRect(this.BoundingBox.x - this.game.camera.x, this.BoundingBox.y - this.game.camera.y, this.BoundingBox.width, this.BoundingBox.height);
     }
   }
 }

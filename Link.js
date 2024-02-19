@@ -461,28 +461,6 @@ class Link {
           this.enterComboWindow = false;
         }
       }
-
-      //collision logic
-      let that = this;
-
-      this.game.entities.forEach(function (entity) {
-        //if link attacks collide with another entities hitbox.
-        if (entity.hurtBox && that.hitBox && that.hitBox.collide(entity.hurtBox) && !entity.damagedState) {
-          if (entity instanceof Banshee || entity instanceof Ganon || entity instanceof Akagane || entity instanceof Goblin || entity instanceof Knight || entity instanceof Skeleton || entity instanceof Wizard) {
-            // Sword dealing 1 point of damage.
-            entity.damageEntity(1);
-            console.log(entity.currentHealth);
-          }
-        }
-        //Boundary checking for when link walks into a wall.
-        //colliding with the
-        //  if(entity instanceof wall ){
-        //if(that.hurtBox.){
-
-        //}
-        //}
-      });
-
       // max speed calculation
 
       if (this.velocity.y >= MAX_RUN_VEL) this.velocity.y = MAX_RUN_VEL;
@@ -504,6 +482,38 @@ class Link {
       this.updateHurtBox();
       this.updateMoveBox();
       this.updatePathingCircle();
+      //collision logic
+      let that = this;
+
+      this.game.entities.forEach(function (entity) {
+        //if link attacks collide with another entities hitbox.
+        if (entity.hurtBox && that.hitBox && that.hitBox.collide(entity.hurtBox) && !entity.damagedState) {
+          if (entity instanceof Banshee || entity instanceof Ganon || entity instanceof Akagane || entity instanceof Goblin || entity instanceof Knight || entity instanceof Skeleton || entity instanceof Wizard) {
+            // Sword dealing 1 point of damage.
+            entity.damageEntity(1);
+            console.log(entity.currentHealth);
+          }
+            //Boundary checking for when link walks into a wall.
+        }  
+        if(that.moveBox && entity.BoundingBox && that.moveBox.collide(entity.BoundingBox)){
+          if(entity instanceof CollisionBox){
+            if(that.lastMoveBox.left >= entity.BoundingBox.right){ // collided with the right side of the CollisionBox
+              that.x = entity.BoundingBox.right;
+
+            }
+          }
+          that.updateMoveBox();
+        }
+        //Boundary checking for when link walks into a wall.
+        //colliding with the
+        //  if(entity instanceof wall ){
+        //if(that.hurtBox.){
+
+        //}
+        //}
+      });
+
+ 
     } else if (this.damagedState && !this.dead) {
       //When in a state of being damaged, create a window where you flicker for 1 second and you can't take damage.
       this.damagedCounter += this.game.clockTick;
