@@ -160,19 +160,23 @@ class Banshee {
   update() {
     if (this.currentHealth <= 0) {
       this.dead = true;
-      // DEATH ANIMATION?
       this.game.camera.entityCount -= 1;
       this.removeFromWorld = true;
-      console.log("BANSHEE DEAD");
     }
 
     if (!this.damagedState) {
       var dist = distance(this, this.target);
 
       if (dist < 5) {
+
+        if(this.targetID === this.path.length - 1) {
+            this.targetID = 0;
+        }
+
         if (this.targetID < this.path.length - 1 && this.target === this.path[this.targetID]) {
           this.targetID++;
         }
+
         this.target = this.path[this.targetID];
       }
 
@@ -233,6 +237,7 @@ class Banshee {
       this.updatePathingCircle();
       this.updateHurtBox();
     }
+    
     if (this.damagedState && !this.dead) {
       //When in a state of being damaged, create a window where you flicker for 1 second and you can't take damage.
       this.damagedCounter += this.game.clockTick;

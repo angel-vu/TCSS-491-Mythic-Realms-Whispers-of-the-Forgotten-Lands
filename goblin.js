@@ -6,9 +6,16 @@ class Goblin {
 
         this.initialPoint = { x, y };
 
-        this.currentHealth = 100;
-        this.maxHealth = 100;
+        this.currentHealth = 3;
+        this.maxHealth = 3;
         this.dead = false;
+        this.damagedState = false;
+        this.scale = 2;
+
+        //how long Link has been damagedfor in seconds.
+        this.damagedCounter = 0;
+        //Flag used to flicker when damaged.
+        this.flickerFlag = true;
 
         // spritesheet
         this.spritesheet = ASSET_MANAGER.getAsset("./enemies/goblin.png");
@@ -156,83 +163,107 @@ class Goblin {
 
         if(this.currentHealth <= 0) {
             this.dead = true;
-            // DEATH ANIMATION?
+            this.game.camera.entityCount -= 1;
             this.removeFromWorld = true;
-            console.log("GOBLIN DEAD");
         }
 
-        this.elapsedTime += this.game.clockTick;
-        var dist = distance(this, this.target);
+        if (!this.damagedState) {
+            var dist = distance(this, this.target);
 
-        if (dist < 5) {
-            if (this.targetID < this.path.length - 1 && this.target === this.path[this.targetID]) {
-                this.targetID++;
+            if (dist < 5) {
+                if(this.targetID === this.path.length - 1) {
+                    this.targetID = 0;
+                }
+
+                if (this.targetID < this.path.length - 1 && this.target === this.path[this.targetID]) {
+                    this.targetID++;
+                }
+
+                this.target = this.path[this.targetID];
             }
 
-            if (this.targetID === this.path.length - 1) {
-                this.targetID = 0;
+            if (this.state === 2) {
+                this.elapsedTime += this.game.clockTick;
             }
 
-            this.target = this.path[this.targetID];
-        }
-
-        for (var i = 0; i < this.game.entities.length; i++) {
-            var ent = this.game.entities[i];
-            if(ent instanceof Link && !ent.dead) {
-                if (ent instanceof Link && canSee(this.pathingCircle, ent.pathingCircle)) {
-                    this.target = ent.pathingCircle;
-                } 
-                if (ent instanceof Link && collide(this.pathingCircle, ent.pathingCircle)) {
-                    if (this.state === 0 || this.state === 1) {
-                        this.state = 2;
-                        this.elapsedTime = 0;
-                    } else if (this.elapsedTime > 0.9) {
-                        if (ent instanceof Link && this.hitBox.collide(ent.hurtBox)&& !ent.damagedState) {
-                            console.log("ATTACK LANDED - GOBLIN VS LINK!");
-                            ent.damageEntity(1);
-                            this.elapsedTime = 0;
-                        }
+            for (var i = 0; i < this.game.entities.length; i++) {
+                var ent = this.game.entities[i];
+                if(ent instanceof Link && !ent.dead) {
+                    if (ent instanceof Link && canSee(this.pathingCircle, ent.pathingCircle)) {
+                        this.target = ent.pathingCircle;
                     } 
+                    if (ent instanceof Link && collide(this.pathingCircle, ent.pathingCircle) && !ent.damagedState) {
+                        if (this.state === 0 || this.state === 1) {
+                            this.state = 2;
+                            this.elapsedTime = 0;
+                        } else if (this.elapsedTime > 0.9 && !ent.damagedState) {
+                            if (ent instanceof Link && this.hitBox.collide(ent.hurtBox)&& !ent.damagedState) {
+                                console.log("ATTACK LANDED - GOBLIN VS LINK!");
+                                ent.damageEntity(1);
+                                this.elapsedTime = 0;
+                            }
+                        } 
+                    }
+                }
+
+                if (ent instanceof Link && this.state === 2 && (!collide(this.pathingCircle, ent.pathingCircle)) || (ent instanceof Link && ent.dead)) {
+                    this.state = 0;
                 }
             }
 
-            if (ent instanceof Link && this.state === 2 && (!collide(this.pathingCircle, ent.pathingCircle)) || (ent instanceof Link && ent.dead)) {
-                this.state = 0;
+            if (this.state !== 2) {
+                dist = distance(this, this.target);
+                this.velocity = { x: (this.target.x - this.x) / dist * this.maxSpeed, y: (this.target.y - this.y) / dist * this.maxSpeed };
+                this.x += this.velocity.x * this.game.clockTick;
+                this.y += this.velocity.y * this.game.clockTick;
+
+                if (this.velocity.x > 0){
+                    this.facing = 3;
+                } else {
+                    this.facing = 2;
+                }
+            } else {
+                // Goblin Direction always faces Link
+                if (this.game.camera.link.x < this.x){
+                    this.facing = 2;
+                } else {
+                    this.facing = 3;
+                }
             }
+            
+            this.updateLastBB();
+            this.updateBB();
+            this.updateLastHurtBox();
+            this.updatePathingCircle();
+            this.updateHurtBox();
+            this.updateLastHitBox();
+            this.updateHitBox();
         }
 
-        if (this.state !== 2) {
-            dist = distance(this, this.target);
-            this.velocity = { x: (this.target.x - this.x) / dist * this.maxSpeed, y: (this.target.y - this.y) / dist * this.maxSpeed };
-            this.x += this.velocity.x * this.game.clockTick;
-            this.y += this.velocity.y * this.game.clockTick;
-
-            if (this.velocity.x > 0){
-                this.facing = 3;
-            } else {
-                this.facing = 2;
+        if (this.damagedState && !this.dead) {
+            //When in a state of being damaged, create a window where you flicker for 1 second and you can't take damage.
+            this.damagedCounter += this.game.clockTick;
+            if (this.damagedCounter >= 1) {
+              this.damagedState = false;
+              this.state = 0;
+              this.damagedCounter = 0;
+              //stopping link from sliding when he is damaged.
             }
-        } else {
-            // Goblin Direction always faces Link
-            if (this.game.camera.link.x < this.x){
-                this.facing = 2;
-            } else {
-                this.facing = 3;
-            }
-        }
-        
-        this.updateLastBB();
-        this.updateBB();
-        this.updateLastHurtBox();
-        this.updatePathingCircle();
-        this.updateHurtBox();
-        this.updateLastHitBox();
-        this.updateHitBox();
+          }
     };
 
     draw(ctx) {         
-        this.animations[this.facing][this.state].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, 2);
-        this.healthbar.draw(ctx);
+        if (this.damagedState && !this.dead) {
+            if (this.flickerFlag) {
+              this.animations[this.facing][this.state].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, this.scale);
+            }
+            this.flickerFlag = !this.flickerFlag;
+          } else {
+            this.animations[this.facing][this.state].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, this.scale);
+          }
+          if (!this.dead) {
+            this.healthbar.draw(ctx);
+          }
     
         if (PARAMS.DEBUG) {
             // Pathing 
