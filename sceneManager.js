@@ -9,15 +9,15 @@ class SceneManager {
         this.gameOver = false;
         this.gameWin = false;
 
+        this.midpointX = PARAMS.CANVAS_WIDTH / 2 - 26 * 3 / 2; // 26 * 3 (3 is Links Scale) this is his idle hurt box width
+        this.midpointY = PARAMS.CANVAS_HEIGHT / 2 - 58 * 3/ 2; // 58 * 3 (3 is Links Scale) this is his idle hurt box height
+
         this.title = true;
         this.credits = false;
         this.level = 1;
 
-        this.link = new Link(this.game, 0, 0);
+        this.link = new Link(this.game, 100, 100);
 
-        // the -100 offsets Link to be in the middle shawty
-        // this.midpointX = PARAMS.CANVAS_WIDTH / 2 - 100;
-        // this.midpointY = PARAMS.CANVAS_HEIGHT / 2 - 100;
 
         this.loadLevel(1, 0, 0, false, this.title, this.gameOver, this.gameWin)
     };
@@ -76,8 +76,8 @@ class SceneManager {
             this.loadLevel(1, 0, 0, true, this.title, this.gameOver, this.gameWin);
         }
 
-        this.midpointX = PARAMS.CANVAS_WIDTH / 2 - 26 * 3 / 2; // 26 * 3 (3 is Links Scale) this is his idle hurt box width
-        this.midpointY = PARAMS.CANVAS_HEIGHT / 2 - 58 * 3/ 2; // 58 * 3 (3 is Links Scale) this is his idle hurt box height
+        // this.midpointX = PARAMS.CANVAS_WIDTH / 2 - 26 * 3 / 2; // 26 * 3 (3 is Links Scale) this is his idle hurt box width
+        // this.midpointY = PARAMS.CANVAS_HEIGHT / 2 - 58 * 3/ 2; // 58 * 3 (3 is Links Scale) this is his idle hurt box height
 
         this.x = 0;
         this.y = 0;
