@@ -31,8 +31,7 @@ class Banshee {
     this.state = 0; // 0 = walk || idle, 1 = attack, 3 = damage taken
 
     this.targetID = 0;
-    if (this.path && this.path[this.targetID])
-      this.target = this.path[this.targetID];
+    if (this.path && this.path[this.targetID]) this.target = this.path[this.targetID];
 
     var dist = distance(this, this.target);
     this.maxSpeed = 75; // pixels per second
@@ -61,12 +60,7 @@ class Banshee {
 
   // Bounding sphere for enemy vision
   updatePathingCircle() {
-    this.pathingCircle = new BoundingCircle(
-      this.hurtBox.x + this.hurtBox.width / 2,
-      this.hurtBox.y + this.hurtBox.height / 2,
-      100,
-      200
-    );
+    this.pathingCircle = new BoundingCircle(this.hurtBox.x + this.hurtBox.width / 2, this.hurtBox.y + this.hurtBox.height / 2, 100, 200);
   }
 
   updateHurtBox() {
@@ -103,33 +97,13 @@ class Banshee {
 
   updateBB() {
     if (this.state === 0) {
-      this.BB = new BoundingBox(
-        this.x,
-        this.y,
-        50 * this.scale,
-        60 * this.scale
-      );
+      this.BB = new BoundingBox(this.x, this.y, 50 * this.scale, 60 * this.scale);
     } else if (this.state === 1) {
-      this.BB = new BoundingBox(
-        this.x,
-        this.y,
-        50 * this.scale,
-        60 * this.scale
-      );
+      this.BB = new BoundingBox(this.x, this.y, 50 * this.scale, 60 * this.scale);
     } else if (this.state === 2) {
-      this.BB = new BoundingBox(
-        this.x,
-        this.y,
-        50 * this.scale,
-        60 * this.scale
-      );
+      this.BB = new BoundingBox(this.x, this.y, 50 * this.scale, 60 * this.scale);
     } else {
-      this.BB = new BoundingBox(
-        this.x,
-        this.y,
-        50 * this.scale,
-        60 * this.scale
-      );
+      this.BB = new BoundingBox(this.x, this.y, 50 * this.scale, 60 * this.scale);
     }
   }
 
@@ -159,220 +133,28 @@ class Banshee {
     }
 
     // down (Walk, Idle, Attack)
-    this.animations[0][0] = new Animator(
-      this.spritesheet,
-      0,
-      15,
-      52,
-      65,
-      16,
-      0.1,
-      0,
-      false,
-      true,
-      false
-    );
-    this.animations[0][1] = new Animator(
-      this.spritesheet,
-      0,
-      15,
-      52,
-      65,
-      16,
-      0.1,
-      0,
-      false,
-      true,
-      false
-    );
-    this.animations[0][2] = new Animator(
-      this.spritesheet,
-      0,
-      160,
-      53.2,
-      67,
-      10,
-      0.1,
-      0,
-      false,
-      true,
-      false
-    );
-    this.animations[0][3] = new Animator(
-      this.spritesheet,
-      0,
-      350,
-      53.2,
-      80,
-      1,
-      0.1,
-      0,
-      false,
-      true,
-      false
-    );
+    this.animations[0][0] = new Animator(this.spritesheet, 0, 15, 52, 65, 16, 0.1, 0, false, true, false);
+    this.animations[0][1] = new Animator(this.spritesheet, 0, 15, 52, 65, 16, 0.1, 0, false, true, false);
+    this.animations[0][2] = new Animator(this.spritesheet, 0, 160, 53.2, 67, 10, 0.1, 0, false, true, false);
+    this.animations[0][3] = new Animator(this.spritesheet, 0, 350, 53.2, 80, 1, 0.1, 0, false, true, false);
 
     // up (Walk, Idle, Attack)
-    this.animations[1][0] = new Animator(
-      this.spritesheet,
-      0,
-      15,
-      52,
-      65,
-      16,
-      0.1,
-      0,
-      false,
-      true,
-      false
-    );
-    this.animations[1][1] = new Animator(
-      this.spritesheet,
-      0,
-      15,
-      52,
-      65,
-      16,
-      0.1,
-      0,
-      false,
-      true,
-      false
-    );
-    this.animations[1][2] = new Animator(
-      this.spritesheet,
-      0,
-      160,
-      53.2,
-      67,
-      10,
-      0.1,
-      0,
-      false,
-      true,
-      false
-    );
-    this.animations[1][3] = new Animator(
-      this.spritesheet,
-      0,
-      350,
-      53.2,
-      80,
-      1,
-      0.1,
-      0,
-      false,
-      true,
-      false
-    );
+    this.animations[1][0] = new Animator(this.spritesheet, 0, 15, 52, 65, 16, 0.1, 0, false, true, false);
+    this.animations[1][1] = new Animator(this.spritesheet, 0, 15, 52, 65, 16, 0.1, 0, false, true, false);
+    this.animations[1][2] = new Animator(this.spritesheet, 0, 160, 53.2, 67, 10, 0.1, 0, false, true, false);
+    this.animations[1][3] = new Animator(this.spritesheet, 0, 350, 53.2, 80, 1, 0.1, 0, false, true, false);
 
     // left (Walk, Idle, Attack)
-    this.animations[2][0] = new Animator(
-      this.spritesheet,
-      0,
-      15,
-      52,
-      65,
-      16,
-      0.1,
-      0,
-      false,
-      true,
-      false
-    );
-    this.animations[2][1] = new Animator(
-      this.spritesheet,
-      0,
-      15,
-      52,
-      65,
-      16,
-      0.1,
-      0,
-      false,
-      true,
-      false
-    );
-    this.animations[2][2] = new Animator(
-      this.spritesheet,
-      0,
-      160,
-      53.2,
-      67,
-      10,
-      0.1,
-      0,
-      false,
-      true,
-      false
-    );
-    this.animations[2][3] = new Animator(
-      this.spritesheet,
-      0,
-      350,
-      53.2,
-      60,
-      1,
-      0.1,
-      0,
-      false,
-      true,
-      false
-    );
+    this.animations[2][0] = new Animator(this.spritesheet, 0, 15, 52, 65, 16, 0.1, 0, false, true, false);
+    this.animations[2][1] = new Animator(this.spritesheet, 0, 15, 52, 65, 16, 0.1, 0, false, true, false);
+    this.animations[2][2] = new Animator(this.spritesheet, 0, 160, 53.2, 67, 10, 0.1, 0, false, true, false);
+    this.animations[2][3] = new Animator(this.spritesheet, 0, 350, 53.2, 60, 1, 0.1, 0, false, true, false);
 
     // right (Walk, Idle, Attack)
-    this.animations[3][0] = new Animator(
-      this.spritesheet,
-      0,
-      15,
-      52,
-      65,
-      16,
-      0.1,
-      0,
-      false,
-      true,
-      true
-    );
-    this.animations[3][1] = new Animator(
-      this.spritesheet,
-      0,
-      15,
-      52,
-      65,
-      16,
-      0.1,
-      0,
-      false,
-      true,
-      true
-    );
-    this.animations[3][2] = new Animator(
-      this.spritesheet,
-      0,
-      160,
-      53.2,
-      67,
-      10,
-      0.1,
-      0,
-      false,
-      true,
-      true
-    );
-    this.animations[3][3] = new Animator(
-      this.spritesheet,
-      0,
-      350,
-      53.2,
-      60,
-      1,
-      0.1,
-      0,
-      false,
-      true,
-      true
-    );
+    this.animations[3][0] = new Animator(this.spritesheet, 0, 15, 52, 65, 16, 0.1, 0, false, true, true);
+    this.animations[3][1] = new Animator(this.spritesheet, 0, 15, 52, 65, 16, 0.1, 0, false, true, true);
+    this.animations[3][2] = new Animator(this.spritesheet, 0, 160, 53.2, 67, 10, 0.1, 0, false, true, true);
+    this.animations[3][3] = new Animator(this.spritesheet, 0, 350, 53.2, 60, 1, 0.1, 0, false, true, true);
   }
 
   update() {
@@ -388,10 +170,7 @@ class Banshee {
       var dist = distance(this, this.target);
 
       if (dist < 5) {
-        if (
-          this.targetID < this.path.length - 1 &&
-          this.target === this.path[this.targetID]
-        ) {
+        if (this.targetID < this.path.length - 1 && this.target === this.path[this.targetID]) {
           this.targetID++;
         }
         this.target = this.path[this.targetID];
@@ -405,41 +184,22 @@ class Banshee {
         var ent = this.game.entities[i];
 
         if (ent instanceof Link && !ent.dead) {
-          if (
-            ent instanceof Link &&
-            canSee(this.pathingCircle, ent.pathingCircle)
-          ) {
+          if (ent instanceof Link && canSee(this.pathingCircle, ent.pathingCircle)) {
             this.target = ent.pathingCircle;
           }
-          if (
-            ent instanceof Link &&
-            collide(this.pathingCircle, ent.pathingCircle)
-          ) {
+          if (ent instanceof Link && collide(this.pathingCircle, ent.pathingCircle) && !ent.damagedState) {
             if (this.state === 0 || this.state === 1) {
               this.state = 2;
               this.elapsedTime = 0;
             } else if (this.elapsedTime > 1 && !ent.damagedState) {
               console.log("ATTACK LANDED!");
-              this.game.addEntity(
-                new Scream(
-                  this.game,
-                  this.hurtBox.x,
-                  this.hurtBox.y,
-                  ent,
-                  false
-                )
-              );
+              this.game.addEntity(new Scream(this.game, this.hurtBox.x, this.hurtBox.y, ent, false));
               this.elapsedTime = 0;
             }
           }
         }
 
-        if (
-          (ent instanceof Link &&
-            this.state === 2 &&
-            !collide(this.pathingCircle, ent.pathingCircle)) ||
-          (ent instanceof Link && ent.dead)
-        ) {
+        if ((ent instanceof Link && this.state === 2 && !collide(this.pathingCircle, ent.pathingCircle)) || (ent instanceof Link && ent.dead)) {
           this.state = 0;
         }
       }
@@ -472,61 +232,39 @@ class Banshee {
       this.updateBB();
       this.updatePathingCircle();
       this.updateHurtBox();
-
- 
-      }
+    }
     if (this.damagedState && !this.dead) {
-        //When in a state of being damaged, create a window where you flicker for 1 second and you can't take damage.
-        this.damagedCounter += this.game.clockTick;
-         if (this.damagedCounter >= 1) {
-            this.damagedState = false;
-            this.state = 0;
-            this.damagedCounter = 0;
-             //stopping link from sliding when he is damaged.
-            }
-        }
+      //When in a state of being damaged, create a window where you flicker for 1 second and you can't take damage.
+      this.damagedCounter += this.game.clockTick;
+      if (this.damagedCounter >= 1) {
+        this.damagedState = false;
+        this.state = 0;
+        this.damagedCounter = 0;
+        //stopping link from sliding when he is damaged.
+      }
+    }
   }
 
   draw(ctx) {
     if (this.damagedState && !this.dead) {
       if (this.flickerFlag) {
-        this.animations[this.facing][this.state].drawFrame(
-          this.game.clockTick,
-          ctx,
-          this.x - this.game.camera.x,
-          this.y - this.game.camera.y,
-          this.scale
-        );
+        this.animations[this.facing][this.state].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, this.scale);
       }
       this.flickerFlag = !this.flickerFlag;
     } else {
-      this.animations[this.facing][this.state].drawFrame(
-        this.game.clockTick,
-        ctx,
-        this.x - this.game.camera.x,
-        this.y - this.game.camera.y,
-        this.scale
-      );
-
-    
+      this.animations[this.facing][this.state].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, this.scale);
     }
-      if (!this.dead) {
-        this.healthbar.draw(ctx);
-      }
+    if (!this.dead) {
+      this.healthbar.draw(ctx);
+    }
 
     if (PARAMS.DEBUG) {
       // Pathing
       ctx.strokeStyle = "Black";
       ctx.beginPath();
-      ctx.moveTo(
-        this.initialPoint.x - this.game.camera.x,
-        this.initialPoint.y - this.game.camera.y
-      );
+      ctx.moveTo(this.initialPoint.x - this.game.camera.x, this.initialPoint.y - this.game.camera.y);
       for (var i = 0; i < this.path.length; i++) {
-        ctx.lineTo(
-          this.path[i].x - this.game.camera.x,
-          this.path[i].y - this.game.camera.y
-        );
+        ctx.lineTo(this.path[i].x - this.game.camera.x, this.path[i].y - this.game.camera.y);
       }
       ctx.stroke();
 
@@ -536,36 +274,19 @@ class Banshee {
 
       // Hurt Box (Damage Taken)
       ctx.strokeStyle = "Blue";
-      ctx.strokeRect(
-        this.hurtBox.x - this.game.camera.x,
-        this.hurtBox.y - this.game.camera.y,
-        this.hurtBox.width,
-        this.hurtBox.height
-      );
+      ctx.strokeRect(this.hurtBox.x - this.game.camera.x, this.hurtBox.y - this.game.camera.y, this.hurtBox.width, this.hurtBox.height);
 
       // Inner Circle
       ctx.strokeStyle = "Yellow";
       ctx.beginPath();
-      ctx.arc(
-        this.pathingCircle.x - this.game.camera.x,
-        this.pathingCircle.y - this.game.camera.y,
-        this.pathingCircle.radius,
-        0,
-        2 * Math.PI
-      );
+      ctx.arc(this.pathingCircle.x - this.game.camera.x, this.pathingCircle.y - this.game.camera.y, this.pathingCircle.radius, 0, 2 * Math.PI);
       ctx.closePath();
       ctx.stroke();
 
       // Vision Circle
       ctx.setLineDash([5, 15]);
       ctx.beginPath();
-      ctx.arc(
-        this.pathingCircle.x - this.game.camera.x,
-        this.pathingCircle.y - this.game.camera.y,
-        this.pathingCircle.visualRadius,
-        0,
-        2 * Math.PI
-      );
+      ctx.arc(this.pathingCircle.x - this.game.camera.x, this.pathingCircle.y - this.game.camera.y, this.pathingCircle.visualRadius, 0, 2 * Math.PI);
       ctx.closePath();
       ctx.stroke();
       ctx.setLineDash([]);
