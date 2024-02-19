@@ -112,8 +112,8 @@ class Concrete {
             this.randomStone.y,
             this.tileWidth,
             this.tileHeight,
-            drawX - this.game.camera.x,
-            drawY - this.game.camera.y,
+            drawX - this.game.camera.x - this.game.camera.midpointX,
+            drawY - this.game.camera.y - this.game.camera.midpointY,
             this.tileWidth * this.scale,
             this.tileHeight * this.scale
           );
@@ -214,8 +214,8 @@ class Stairs {
             sourceY,
             this.tileWidth,
             this.tileHeight,
-            drawX - this.game.camera.x,
-            drawY - this.game.camera.y,
+            drawX - this.game.camera.x - this.game.camera.midpointX,
+            drawY - this.game.camera.y - this.game.camera.midpointY,
             this.tileWidth * this.scale,
             this.tileHeight * this.scale
           );
@@ -432,7 +432,7 @@ class LevelOneProps {
     this.treesSheet = ASSET_MANAGER.getAsset("./sprites/trees.png");
     this.level = new loadBackground(
       this.game,
-      this.x - this.game.camera.x,
+      this.x - this.game.camera.x, 
       this.y - this.game.camera.y,
       this.levelOne
     );
@@ -574,8 +574,8 @@ class LevelOneProps {
             sourceY,
             this.tileWidth,
             this.tileHeight,
-            drawX - this.game.camera.x,
-            drawY - this.game.camera.y,
+            drawX - this.game.camera.x - this.game.camera.midpointX,
+            drawY - this.game.camera.y - this.game.camera.midpointY,
             this.tileWidth * this.scale,
             this.tileHeight * this.scale
           );
