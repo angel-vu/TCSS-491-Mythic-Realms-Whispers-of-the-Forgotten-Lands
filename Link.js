@@ -592,10 +592,10 @@ class Link {
       //has a unique damaged animation
     } else if (this.damagedState && !this.dead) {
       if (this.flickerFlag) {
-        if (this.itemsEquipped === 1) {
+        if (this.itemsEquipped === 1 && this.facing === 0) {
           this.animations[this.itemsEquipped][this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, 3);
-        } else {
-          this.animations[this.itemsEquipped][this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - 20 - this.game.camera.x, this.y - this.game.camera.y + 10, 3);
+        } else if (this.itemsEquipped === 1 && this.facing === 1) {
+         this.animations[this.itemsEquipped][this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - 90 - this.game.camera.x, this.y - this.game.camera.y, 3);
         }
       }
       this.flickerFlag = !this.flickerFlag;
