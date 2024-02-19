@@ -29,13 +29,13 @@ ASSET_MANAGER.downloadAll(() => {
 
 	const ctx = canvas.getContext("2d");
 	ctx.imageSmoothingEnabled = true;
-
+	PARAMS.CANVAS_WIDTH = canvas.clientWidth;
+	PARAMS.CANVAS_HEIGHT = canvas.clientHeight;
 	gameEngine.addEntity(new SceneManager(gameEngine));
 
 	gameEngine.init(ctx);
 
-	PARAMS.CANVAS_WIDTH = canvas.clientWidth
-	PARAMS.CANVAS_HEIGHT = canvas.clientHeight;
+	
 	
 	gameEngine.start();
 });

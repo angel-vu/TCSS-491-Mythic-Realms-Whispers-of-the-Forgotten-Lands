@@ -22,7 +22,6 @@ class Grass {
     this.tileWidth = 16; // Width of each tile
     this.tileHeight = 16; // Height of each tile
     this.scale = 3;
-    this.scale = 3;
   }
 
   update() {
@@ -252,6 +251,7 @@ class LevelOneWalls {
   updateBoundingBox(tileMappings) {
     // Clear the existing array of collision boxes
     this.collisionBoxes = [];
+    console.log(this.game.camera.midpointX);
 
     // Iterate through the map to find positions of walls and create corresponding bounding boxes
     for (let i = 0; i < this.map.length; i++) {
@@ -265,8 +265,8 @@ class LevelOneWalls {
           this.collisionBoxes.push(
             (this.collisionBox = new CollisionBox(
               this.game,
-              wallX,
-              wallY,
+              wallX - this.game.camera.midpointX,
+              wallY - this.game.camera.midpointY,
               this.tileWidth,
               this.tileHeight,
               this.scale
@@ -432,7 +432,7 @@ class LevelOneProps {
     this.treesSheet = ASSET_MANAGER.getAsset("./sprites/trees.png");
     this.level = new loadBackground(
       this.game,
-      this.x - this.game.camera.x, 
+      this.x - this.game.camera.x,
       this.y - this.game.camera.y,
       this.levelOne
     );
@@ -661,18 +661,40 @@ class loadBackground {
 
 class CollisionBox {
   constructor(game, x, y, width, height, scale) {
+  // Adjust this.x and this.y based on the camera position
+    // x -= game.camera.x - game.midpointX;
+    // y -= game.camera.y;
     Object.assign(this, { game, x, y, width, height, scale });
-    this.BoundingBox = new BoundingBox(this.x, this.y, this.width * this.scale, this.height * this.scale);
+    
+    this.BoundingBox = new BoundingBox(
+      this.x,
+      this.y,
+      this.width * this.scale,
+      this.height * this.scale
+    );
   }
 
-  update() {}
+  update() {
+    // // Update the actual position of the object based on the camera position
+    // this.x -= this.game.camera.x; //- this.game.camera.midpointX;
+    // this.y -= this.game.camera.y; //- this.game.camera.midpointY;
+
+    // // Update the position of the bounding box
+    // this.BoundingBox.x = this.x;
+    // this.BoundingBox.y = this.y;
+  }
 
   draw(ctx) {
     if (PARAMS.DEBUG) {
       // Draw the bounding box
       ctx.strokeStyle = "blue";
       ctx.lineWidth = 2;
-      ctx.strokeRect(this.BoundingBox.x - this.game.camera.x, this.BoundingBox.y - this.game.camera.y, this.BoundingBox.width, this.BoundingBox.height);
+      ctx.strokeRect(
+        this.BoundingBox.x - this.game.camera.x,
+        this.BoundingBox.y - this.game.camera.y,
+        this.BoundingBox.width,
+        this.BoundingBox.height
+      );
     }
   }
 }

@@ -2,22 +2,22 @@ class SceneManager {
     constructor(game) {
         this.game = game;
         this.game.camera = this;
-        this.entityCount = 2;
+        this.entityCount = 5;
         this.x = 0;
         this.y = 0;
 
         this.gameOver = false;
         this.gameWin = false;
 
+        this.midpointX = PARAMS.CANVAS_WIDTH / 2 - 26 * 3 / 2; // 26 * 3 (3 is Links Scale) this is his idle hurt box width
+        this.midpointY = PARAMS.CANVAS_HEIGHT / 2 - 58 * 3/ 2; // 58 * 3 (3 is Links Scale) this is his idle hurt box height
+
         this.title = true;
         this.credits = false;
         this.level = 1;
 
-        this.link = new Link(this.game, 0, 0);
+        this.link = new Link(this.game, 100, 100);
 
-        // the -100 offsets Link to be in the middle shawty
-        // this.midpointX = PARAMS.CANVAS_WIDTH / 2 - 100;
-        // this.midpointY = PARAMS.CANVAS_HEIGHT / 2 - 100;
 
         this.loadLevel(1, 0, 0, false, this.title, this.gameOver, this.gameWin)
     };
@@ -52,11 +52,20 @@ class SceneManager {
             this.props = new LevelOneProps(this.game, 0, 0, levelOne);
             this.game.addEntity(this.props);
 
-            this.banshee = new Banshee(this.game, 1000, 800, [{ x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: 0, y: 0 }]);
-            this.game.addEntity(this.banshee);
+            this.banshee1 = new Banshee(this.game, 1000, 800, [{ x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: 0, y: 0 }]);
+            this.game.addEntity(this.banshee1);
 
-            this.banshee = new Banshee(this.game, 1000, 800, [{ x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: 0, y: 0 }]);
-            this.game.addEntity(this.banshee);
+            this.banshee2 = new Banshee(this.game, 900, 800, [{ x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: 0, y: 0 }]);
+            this.game.addEntity(this.banshee2);
+
+            this.goblin1 = new Goblin(this.game, 800, 800, [{ x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: 0, y: 0 }]);
+            this.game.addEntity(this.goblin1);
+
+            this.goblin2 = new Goblin(this.game, 700, 800, [{ x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: 0, y: 0 }]);
+            this.game.addEntity(this.goblin2);
+
+            this.goblin3 = new Goblin(this.game, 600, 800, [{ x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: 0, y: 0 }]);
+            this.game.addEntity(this.goblin3);
             
             this.game.addEntity(this.link);
         }
@@ -76,8 +85,8 @@ class SceneManager {
             this.loadLevel(1, 0, 0, true, this.title, this.gameOver, this.gameWin);
         }
 
-        this.midpointX = PARAMS.CANVAS_WIDTH / 2 - 26 * 3 / 2; // 26 * 3 (3 is Links Scale) this is his idle hurt box width
-        this.midpointY = PARAMS.CANVAS_HEIGHT / 2 - 58 * 3/ 2; // 58 * 3 (3 is Links Scale) this is his idle hurt box height
+        // this.midpointX = PARAMS.CANVAS_WIDTH / 2 - 26 * 3 / 2; // 26 * 3 (3 is Links Scale) this is his idle hurt box width
+        // this.midpointY = PARAMS.CANVAS_HEIGHT / 2 - 58 * 3/ 2; // 58 * 3 (3 is Links Scale) this is his idle hurt box height
 
         this.x = 0;
         this.y = 0;

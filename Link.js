@@ -500,7 +500,13 @@ class Link {
             if(that.lastMoveBox.left >= entity.BoundingBox.right){ // collided with the right side of the CollisionBox
               that.x = entity.BoundingBox.right;
 
-            }
+            } else if (that.lastMoveBox.right <= entity.BoundingBox.left) {
+				that.x = entity.BoundingBox.left - that.moveBox.width;
+			} else if (that.lastMoveBox.top <= entity.BoundingBox.bottom) {
+				that.y = entity.BoundingBox.bottom;
+			} else if (that.lastMoveBox.bottom >= entity.BoundingBox.top) {
+				that.y = entity.BoundingBox.top - that.lastMoveBox.height;
+			}
           }
           that.updateMoveBox();
         }
