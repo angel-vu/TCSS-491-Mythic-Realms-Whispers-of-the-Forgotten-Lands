@@ -645,6 +645,7 @@ class Trident {
 
 class Orb {
   constructor(game, x, y, path) {
+    console.log("Ganon Orb");
     Object.assign(this, { game, x, y, path });
     this.spritesheet = ASSET_MANAGER.getAsset("./boss_sprites/Ganondorf.png");
     this.game.Trident = this;
@@ -655,7 +656,17 @@ class Orb {
     this.radius = 50;
     this.visualRadius = 400;
     this.weapons = [];
-    this.loadAnimations();
+    this.weapons.push(new Animator(this.spritesheet,
+      31,
+      523,
+      36,
+      29,
+      8,
+      0.33,
+      0,
+      false,
+      true,
+      false));
   };
 
   loadAnimations() {
