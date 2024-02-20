@@ -14,8 +14,8 @@ class Grass {
     this.spritesheet = ASSET_MANAGER.getAsset("./sprites/grass.png");
     this.level = new loadBackground(
       this.game,
-      this.x - this.game.camera.x,
-      this.y - this.game.camera.y,
+      this.x,
+      this.y,
       this.levelOne
     );
     this.map = this.level.formMap("Grass");
@@ -63,8 +63,8 @@ class Concrete {
 
     this.level = new loadBackground(
       this.game,
-      this.x - this.game.camera.x,
-      this.y - this.game.camera.y,
+      this.x,
+      this.y,
       this.levelOne
     );
     this.map = this.level.formMap("Grass");
@@ -129,8 +129,8 @@ class Stairs {
     this.spritesheet = ASSET_MANAGER.getAsset("./sprites/stairs.png");
     this.level = new loadBackground(
       this.game,
-      this.x - this.game.camera.x,
-      this.y - this.game.camera.y,
+      this.x,
+      this.y,
       this.levelOne
     );
     this.map = this.level.formMap("Grass");
@@ -230,8 +230,8 @@ class LevelOneWalls {
     this.spritesheet = ASSET_MANAGER.getAsset("./sprites/wall.png");
     this.level = new loadBackground(
       this.game,
-      this.x - this.game.camera.x,
-      this.y - this.game.camera.y,
+      this.x,
+      this.y,
       this.levelOne
     );
     this.map = this.level.formMap("Collision");

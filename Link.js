@@ -493,20 +493,25 @@ class Link {
             entity.damageEntity(1);
             console.log(entity.currentHealth);
           }
-            //Boundary checking for when link walks into a wall.
-        }  
-        if(that.moveBox && entity.BoundingBox && that.moveBox.collide(entity.BoundingBox)){
-          if(entity instanceof CollisionBox){
-            if(that.lastMoveBox.left >= entity.BoundingBox.right){ // collided with the right side of the CollisionBox
-              that.x = entity.BoundingBox.right;
+          //Boundary checking for when link walks into a wall.
+        }
 
+        if (that.moveBox && entity.BoundingBox && that.moveBox.collide(entity.BoundingBox)) {
+          if (entity instanceof CollisionBox) {
+            if (that.lastMoveBox.left >= entity.BoundingBox.right) {
+              // collided with the right side of the CollisionBox
+              that.x = entity.BoundingBox.right;
+              //collided with the left side of the CollisionBox.
             } else if (that.lastMoveBox.right <= entity.BoundingBox.left) {
-				that.x = entity.BoundingBox.left - that.moveBox.width;
-			} else if (that.lastMoveBox.top <= entity.BoundingBox.bottom) {
-				that.y = entity.BoundingBox.bottom;
-			} else if (that.lastMoveBox.bottom >= entity.BoundingBox.top) {
-				that.y = entity.BoundingBox.top - that.lastMoveBox.height;
-			}
+              that.x = entity.BoundingBox.left - that.moveBox.width;
+              //collided with the bottom of the CollisonBox.Was below the Collisionbox.
+            } else if (that.lastMoveBox.top >= entity.BoundingBox.bottom) {
+              that.y = entity.BoundingBox.bottom - that.lastHurtBox.height + that.lastMoveBox.height;
+              // collided with the top of the CollisionBox. Was above the CollisionBox.
+            } else if (that.lastMoveBox.bottom <= entity.BoundingBox.top) {
+              //based off the height of the idle height of the hurtbox of link
+              that.y = entity.BoundingBox.top - 58 * 3;
+            }
           }
           that.updateMoveBox();
         }
@@ -518,8 +523,6 @@ class Link {
         //}
         //}
       });
-
- 
     } else if (this.damagedState && !this.dead) {
       //When in a state of being damaged, create a window where you flicker for 1 second and you can't take damage.
       this.damagedCounter += this.game.clockTick;
