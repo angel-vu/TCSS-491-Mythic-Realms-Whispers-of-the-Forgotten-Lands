@@ -60,13 +60,13 @@ class Link {
       if (this.state <= 1) {
         this.moveBox = new BoundingBox(this.x, this.y + 48 * 3, 26 * 3, 10 * 3);
       } else if (this.state === 2) {
-        this.moveBox = new BoundingBox(this.x, this.y + 42 * 3, 52 * 3, 15 * 3);
+        this.moveBox = new BoundingBox(this.x, this.y + 48 * 3, 52 * 3, 10 * 3);
       }
     } else if (this.itemsEquipped === 1) {
       if (this.state <= 1) {
         this.moveBox = new BoundingBox(this.x, this.y + 48 * 3, 26 * 3, 10 * 3);
       } else if (this.state === 2) {
-        this.moveBox = new BoundingBox(this.x, this.y + 42 * 3, 55 * 3, 15 * 3);
+        this.moveBox = new BoundingBox(this.x, this.y + 48 * 3, 55 * 3, 10 * 3);
       } else if (this.state === 5) {
         this.moveBox = new BoundingBox(this.x, this.y + 48 * 3, 30 * 3, 10 * 3);
       } else if (this.state === 6) {
@@ -510,7 +510,8 @@ class Link {
               // collided with the top of the CollisionBox. Was above the CollisionBox.
             } else if (that.lastMoveBox.bottom <= entity.BoundingBox.top) {
               //based off the height of the idle height of the hurtbox of link
-              that.y = entity.BoundingBox.top - 58 * 3;
+              // added one pixel or else we would clip into the wall
+              that.y = entity.BoundingBox.top - 59 * 3;
             }
           }
           that.updateMoveBox();
