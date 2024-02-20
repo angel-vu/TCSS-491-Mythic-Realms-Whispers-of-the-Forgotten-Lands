@@ -46,26 +46,23 @@ class SceneManager {
             this.walls = new LevelOneWalls(this.game, 0, 0, levelOne);
             this.game.addEntity(this.walls);
 
-            this.walls = new LevelOneWalls(this.game, 0, 0, levelOne);
-            this.game.addEntity(this.walls);
-
             this.props = new LevelOneProps(this.game, 0, 0, levelOne);
             this.game.addEntity(this.props);
 
-            this.banshee1 = new Banshee(this.game, 1000, 800, [{ x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: 0, y: 0 }]);
-            this.game.addEntity(this.banshee1);
+            // this.banshee1 = new Banshee(this.game, 1000, 800, [{ x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: 0, y: 0 }]);
+            // this.game.addEntity(this.banshee1);
 
-            this.banshee2 = new Banshee(this.game, 900, 800, [{ x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: 0, y: 0 }]);
-            this.game.addEntity(this.banshee2);
+            // this.banshee2 = new Banshee(this.game, 900, 800, [{ x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: 0, y: 0 }]);
+            // this.game.addEntity(this.banshee2);
 
-            this.goblin1 = new Goblin(this.game, 800, 800, [{ x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: 0, y: 0 }]);
-            this.game.addEntity(this.goblin1);
+            // this.goblin1 = new Goblin(this.game, 800, 800, [{ x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: 0, y: 0 }]);
+            // this.game.addEntity(this.goblin1);
 
-            this.goblin2 = new Goblin(this.game, 700, 800, [{ x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: 0, y: 0 }]);
-            this.game.addEntity(this.goblin2);
+            // this.goblin2 = new Goblin(this.game, 700, 800, [{ x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: 0, y: 0 }]);
+            // this.game.addEntity(this.goblin2);
 
-            this.goblin3 = new Goblin(this.game, 600, 800, [{ x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: 0, y: 0 }]);
-            this.game.addEntity(this.goblin3);
+            // this.goblin3 = new Goblin(this.game, 600, 800, [{ x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: 0, y: 0 }]);
+            // this.game.addEntity(this.goblin3);
             
             this.game.addEntity(this.link);
         }

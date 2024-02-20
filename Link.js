@@ -498,6 +498,7 @@ class Link {
 
         if (that.moveBox && entity.BoundingBox && that.moveBox.collide(entity.BoundingBox)) {
           if (entity instanceof CollisionBox) {
+            console.log(entity.row + " and " + entity.column);
             if (that.lastMoveBox.left >= entity.BoundingBox.right) {
               // collided with the right side of the CollisionBox
               that.x = entity.BoundingBox.right;
