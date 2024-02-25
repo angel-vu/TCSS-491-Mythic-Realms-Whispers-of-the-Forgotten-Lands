@@ -49,6 +49,12 @@ class SceneManager {
             this.props = new LevelOneProps(this.game, 0, 0, levelOne);
             this.game.addEntity(this.props);
 
+            //  this.skeleton1 = new Skeleton(this.game, 1000, 800, [{ x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: 0, y: 0 }]);
+            //  this.game.addEntity(this.skeleton1);
+
+            //  this.wizard1 = new Wizard(this.game, 1000, 800, [{ x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: 0, y: 0 }]);
+            //  this.game.addEntity(this.wizard1);
+
             // this.banshee1 = new Banshee(this.game, 1000, 800, [{ x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: 0, y: 0 }]);
             // this.game.addEntity(this.banshee1);
 
