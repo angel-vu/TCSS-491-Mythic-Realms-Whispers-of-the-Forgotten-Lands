@@ -66,6 +66,9 @@ class SceneManager {
 
             this.goblin3 = new Goblin(this.game, 600, 800, [{ x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: 0, y: 0 }]);
             this.game.addEntity(this.goblin3);
+
+            this.ganon = new Ganon(this.game, 600, 800, [{ x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: 0, y: 0 }]);
+            this.game.addEntity(this.ganon);
             
             this.game.addEntity(this.link);
         }
@@ -84,10 +87,7 @@ class SceneManager {
             this.gameWin = true;
             this.loadLevel(1, 0, 0, true, this.title, this.gameOver, this.gameWin);
         }
-
-        // this.midpointX = PARAMS.CANVAS_WIDTH / 2 - 26 * 3 / 2; // 26 * 3 (3 is Links Scale) this is his idle hurt box width
-        // this.midpointY = PARAMS.CANVAS_HEIGHT / 2 - 58 * 3/ 2; // 58 * 3 (3 is Links Scale) this is his idle hurt box height
-
+        
         this.x = 0;
         this.y = 0;
         
