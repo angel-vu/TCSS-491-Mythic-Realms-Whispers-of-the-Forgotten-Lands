@@ -12,7 +12,7 @@ class Goblin {
         this.damagedState = false;
         this.scale = 2;
 
-        //how long Link has been damagedfor in seconds.
+        //how long Goblin has been damagedfor in seconds.
         this.damagedCounter = 0;
         //Flag used to flicker when damaged.
         this.flickerFlag = true;
@@ -22,7 +22,7 @@ class Goblin {
 
         // goblins state variables
         this.facing = 3; //  2 = left, 3 = right 
-        this.state = 0; // 0 = walking, 1 = idle, 2 = swing
+        this.state = 0; // 0 = walking, 1 = idle, 2 = attack
 
         this.targetID = 0;
         if (this.path && this.path[this.targetID]) this.target = this.path[this.targetID];
@@ -32,7 +32,7 @@ class Goblin {
      
         this.velocity = { x: (this.target.x - this.x) / dist * this.maxSpeed, y: (this.target.y - this.y) / dist * this.maxSpeed };
 
-        // banshee's animations
+        // goblins's animations
         this.healthbar = new HealthBar(this);
         this.updateBB();
         this.updateHurtBox();

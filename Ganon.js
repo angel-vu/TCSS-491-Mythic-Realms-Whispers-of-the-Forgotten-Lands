@@ -3,6 +3,7 @@ class Ganon {
     Object.assign(this, { game, x, y, path });
     this.spritesheet = ASSET_MANAGER.getAsset("./boss_sprites/Ganondorf.png");
     this.game.ganon = this;
+    this.scale = 3;
 
     this.initialPoint = { x, y };
     this.speed = 100;
@@ -14,9 +15,14 @@ class Ganon {
     this.maxHealth = 200;
     this.dead = false;
 
+    //how long Link has been damagedfor in seconds.
+    this.damagedCounter = 0;
+    //Flag used to flicker when damaged.
+    this.flickerFlag = true;
+
     this.healthbar = new HealthBar(this);
 
-    this.phase = 0; // 0 = first phase (no spear), 1 = second phase (w/ spear), 2 = third phase (bat phase if we want)
+    this.phase = 0; // 0 = first phase (no spear), 1 = second phase. 2 = teleporting 
     this.state = 1; // 0 = idle, 1 = walking, 2 = attacking
     this.facing = 0; // 0 = down, 1 = left, 2 = up, 3 = right
     this.dead = false;
@@ -39,11 +45,8 @@ class Ganon {
 
     this.elapsedTime = 0;
     this.animations = [];
-    this.weapons = [];
     this.loadAnimations();
-    this.loadGanonWeapons();
     this.updateHurtBox();
-    //this.updateHitBox();
   }
 
   loadAnimations() {
@@ -194,6 +197,47 @@ class Ganon {
       false
     );
 
+    // phase 0, state 2, make every other direction a teleport
+    this.animations[0][2][1] = new Animator(
+      this.spritesheet,
+      25,
+      376,
+      76,
+      49,
+      4,
+      0.5,
+      0,
+      true,
+      true,
+      false
+    );
+    this.animations[0][2][2] = new Animator(
+      this.spritesheet,
+      25,
+      376,
+      76,
+      49,
+      4,
+      0.5,
+      0,
+      true,
+      true,
+      false
+    );
+    this.animations[0][2][3] = new Animator(
+      this.spritesheet,
+      25,
+      376,
+      76,
+      49,
+      4,
+      0.5,
+      0,
+      true,
+      true,
+      false
+    );
+
     // phase = 1
     // idle animation for state = 0
     // facing down = 0
@@ -319,11 +363,11 @@ class Ganon {
     // attack down (only direction - spear throw)
     this.animations[1][2][0] = new Animator(
       this.spritesheet,
-      710,
-      11,
-      92,
-      77,
-      4,
+      380,
+      721,
+      73,
+      74,
+      6,
       0.2,
       0,
       false,
@@ -331,8 +375,48 @@ class Ganon {
       false
     );
 
-    // phase = 2,
+      // phase 1, state 2, make remaining directions teleporting directions
+      this.animations[1][2][1] = new Animator(
+        this.spritesheet,
+        360,
+        513,
+        83,
+        49,
+        4,
+        0.2,
+        0,
+        true,
+        true,
+        false
+      );
+      this.animations[1][2][2] = new Animator(
+        this.spritesheet,
+        360,
+        513,
+        83,
+        49,
+        4,
+        0.2,
+        0,
+        true,
+        true,
+        false
+      );
+      this.animations[1][2][3] = new Animator(
+        this.spritesheet,
+        360,
+        513,
+        83,
+        49,
+        4,
+        0.2,
+        0,
+        true,
+        true,
+        false
+      );
 
+    // This animation when Ganon dies
     this.deadAnim = new Animator(
       this.spritesheet,
       17,
@@ -348,33 +432,6 @@ class Ganon {
     );
   }
 
-  loadGanonWeapons() {
-    for (let i = 0; i < 3; i++) {
-      // phase
-      this.weapons.push([]);
-      for (let j = 0; j < 1; j++) {
-        // weapon
-        this.weapons[i].push([]);
-      }
-    }
-
-    // this is for the 0 phase orb
-    this.weapons[0][0] = new Animator(
-      this.spritesheet,
-      31,
-      523,
-      36,
-      29,
-      8,
-      0.33,
-      0,
-      false,
-      true,
-      false
-    );
-
-    // this is for phase = 1; with trident
-  }
 
   // Ganon's character bounding boxes for collisions with other entities
   updateHurtBox() {
@@ -412,14 +469,14 @@ class Ganon {
 
   // Ganon's weapon doing the damage
   updateHitBox() {
-    if (
-      this.weapons[0][0] &&
-      this.animations[0][2][0].advanceAndGetCurrentFrame(
-        this.game.clockTick
-      ) === 3
-    ) {
-      this.boundingHitBox = new BoundingBox(this.x - 5, this.y - 30, 36, 29);
-    }
+    // if (
+    //   this.weapons[0][0] &&
+    //   this.animations[0][2][0].advanceAndGetCurrentFrame(
+    //     this.game.clockTick
+    //   ) === 3
+    // ) {
+    //   this.boundingHitBox = new BoundingBox(this.x - 5, this.y - 30, 36, 29);
+    // }
   }
 
   update() {
@@ -427,8 +484,15 @@ class Ganon {
       this.pauseAnimation(3);
       this.resumeAnimation();
     }
+    if (this.currentHealth <= 0) {
+      this.dead = true;
+      this.game.camera.entityCount -= 1;
+      this.removeFromWorld = true;
+    }
+
     this.elapsedTime += this.game.clockTick;
     var dist = distance(this, this.target);
+    let desiredDistance = 100;
 
     if (dist < 5) {
       if (
@@ -444,25 +508,32 @@ class Ganon {
       var ent = this.game.entities[i];
       if (ent instanceof Link && canSee(this, ent)) {
         this.target = ent;
-      }
-      if (ent instanceof Link && collide(this, ent)) {
-        if (this.state === 0 || this.state === 1) {
+        if (this.state === 0) {
+          if (this.state === 0 || this.state === 1) {
           this.state = 2;
+          this.facing = 0;
           this.elapsedTime = 0;
-        } else if (this.elapsedTime > 0.8) {
-          var damage = 7 + randomInt(4);
-          ent.hitpoints -= damage;
-          // this.game.addEntity(new Score(this.game, ent.x, ent.y, damage));
-          this.elapsedTime = 0;
+          this.game.addEntity(new Orb(this.game, this.x, this.y - 10, ent));
+  
         }
+        } else if (this.phase === 1) {
+          if (this.state === 0 || this.state === 1) {
+          this.state = 2;
+          this.facing = 0;
+          this.elapsedTime = 0;
+          this.game.addEntity(new Trident(this.game, this.x, this.y - 10, ent));
+  
+          }
+        } else {
+          this.deadAnim;
+        }
+        
       }
     }
 
-    if (this.state !== 2) {
+    if (this.state !== 2) { // if not attack state
       // Calculate distance between this entity and the target (main entity)
       let dist = distance(this, this.target);
-      // Define the desired distance (adjust as needed)
-      let desiredDistance = 150; // Adjust the desired distance as needed
 
       // If the current distance is less than the desired distance, move away from the main entity
       if (dist < desiredDistance) {
@@ -498,7 +569,9 @@ class Ganon {
     }
 
     // change facing if Link is above or below Ganon
-    if (Math.abs(this.velocity.y) > Math.abs(this.velocity.x)) {
+    if (this.state === 2) {
+      this.facing = 0;
+    } else if (Math.abs(this.velocity.y) > Math.abs(this.velocity.x)) {
       if (this.velocity.y < 0) {
         this.facing = 2; // facing up
       } else {
@@ -512,9 +585,13 @@ class Ganon {
         this.facing = 1; // face left
       }
     }
+
     this.updateHurtBox();
     //this.updateHitBox();
-  }
+    };
+
+    
+  
 
   draw(ctx) {
     // Draw the weapon and the Ganon animation if it's not dead
@@ -522,21 +599,14 @@ class Ganon {
       // Check if Ganon is in the attacking state with the weapon (phase 0, state 2)
       if (this.phase === 0 && this.state === 2) {
         // Draw the weapon
-        this.weapons[this.phase][0].drawFrame(
-          this.game.clockTick,
-          ctx,
-          this.x - this.game.camera.x - 5,
-          this.y - this.game.camera.y - 30,
-          1
-        );
-
+        console.log(this.phase, this.state, this.facing);
         // Draw the Ganon animation
         this.animations[this.phase][this.state][this.facing].drawFrame(
           this.game.clockTick,
           ctx,
           this.x - this.game.camera.x,
           this.y - this.game.camera.y,
-          1
+          this.scale
         );
 
         // Draw the red rectangle for the hitbox of the attack animation
@@ -556,7 +626,7 @@ class Ganon {
           ctx,
           this.x - this.game.camera.x,
           this.y - this.game.camera.y,
-          1
+          this.scale
         );
       }
     }
@@ -615,69 +685,160 @@ class Ganon {
 }
 
 class Trident {
-  constructor(game, x, y, path) {
-    Object.assign(this, { game, x, y, path });
+  constructor(game, x, y, target) {
+    console.log("Ganon Trident");
+    Object.assign(this, { game, x, y, target });
     this.spritesheet = ASSET_MANAGER.getAsset("./boss_sprites/Ganondorf.png");
     this.game.Trident = this;
 
     this.initialPoint = { x, y };
-    this.speed = 100;
+    this.maxSpeed = 100;
 
     this.radius = 50;
-    this.visualRadius = 400;
+
+    this.updateHitBox();
     this.weapons = [];
     this.loadAnimations();
+    this.elapsedTime = 0;
   };
 
   loadAnimations() {
+    this.weapons[0].push(new Animator(this.spritesheet, 725, 95, 82, 69, 1, 1, 0, false, false, false));
+    this.weapons[1].push(new Animator(this.spritesheet, 800, 95, 67, 69, 1, 1, 0, false, false, false));
+    this.weapons[2].push(new Animator(this.spritesheet, 871, 93, 62, 71, 1, 1, 0, false, false, false));
+    this.weapons[3].push(new Animator(this.spritesheet, 721, 165, 77, 66, 1, 1, 0, false, false, false));
+    this.weapons[4].push(new Animator(this.spritesheet, 798, 63, 69, 69, 1, 1, 0, false, false, false));
+    this.weapons[5].push(new Animator(this.spritesheet, 725, 95, 82, 69, 1, 1, 0, false, false, false));
+    this.weapons[6].push(new Animator(this.spritesheet, 725, 95, 82, 69, 1, 1, 0, false, false, false));
+    this.weapons[7].push(new Animator(this.spritesheet, 725, 95, 82, 69, 1, 1, 0, false, false, false));
 
   }
 
   update() {
+    this.elapsedTime += this.game.clockTick;
+    this.velocity = { X: Math.cos(this.elapsedTime), Y: Math.sin(this.elapsedTime) };
+
+    this.facing = getRotationFacing(this.velocity);
 
   };
-  
+
+  drawAngle(ctx, angle) {
+    if (angle < 0 || angle > 359) return;
+
+    if (!this.cache[angle]) {
+      let radians = angle / 360 * 2 * Math.PI;
+      let offscreenCanvas = document.createElement('canvas');
+
+      offscreenCanvas.width = 32;
+      offscreenCanvas.height = 32;
+
+      let offscreenCtx = offscreenCanvas.getContext('2d');
+
+      offscreenCtx.save();
+      offscreenCtx.translate(16, 16);
+      offscreenCtx.rotate(radians);
+      offscreenCtx.translate(-16, -16);
+      offscreenCtx.drawImage(this.spritesheet, 80, 0, 32, 32, 0, 0, 32, 32);
+      offscreenCtx.restore();
+      this.cache[angle] = offscreenCanvas;
+    }
+    var xOffset = 16;
+    var yOffset = 16;
+
+    ctx.drawImage(this.cache[angle], this.x - xOffset, this.y - yOffset);
+    if (PARAMS.DEBUG) {
+      ctx.strokeStyle = 'Green';
+      ctx.strokeRect(this.x - xOffset, this.y - yOffset, 32, 32);
+    }
+  }
+
+
   draw(ctx) {
+    if (this.facing < 5) {
+      this.weapons[this.facing].drawFrame(this.game.clockTick, ctx, this.x, this.y, 2);
+    } else {
+      ctx.save();
+      ctx.scale(-1, 1);
+      this.weapons[8 - this.facing].drawFrame(this.game.clockTick, ctx, -(this.x), this.y, 2);
+      ctx.restore();
+    }
 
+    let angle = Math.atan2(this.velocity.y, this.velocity.x);
+    if (angle < 0) angle += Math.PI * 2;
+    let degrees = Math.floor(angle / Math.PI / 2 * 360);
+
+    this.drawAngle(ctx, degrees);
   };
-
 }
 
+
 class Orb {
-  constructor(game, x, y, path) {
+  constructor(game, x, y, target) {
     console.log("Ganon Orb");
-    Object.assign(this, { game, x, y, path });
+    Object.assign(this, { game, x, y, target });
     this.spritesheet = ASSET_MANAGER.getAsset("./boss_sprites/Ganondorf.png");
-    this.game.Trident = this;
+    this.game.Orb = this;
+    var dist = distance(this, this.target);
+    this.radius = 12;
 
     this.initialPoint = { x, y };
-    this.speed = 100;
+    this.maxSpeed = 100;
+    this.velocity = { x: (this.target.x - this.x) / dist * this.maxSpeed, y: (this.target.y - this.y) / dist * this.maxSpeed };
 
     this.radius = 50;
-    this.visualRadius = 400;
+
+    this.updateHitBox();
     this.weapons = [];
     this.weapons.push(new Animator(this.spritesheet,
-      31,
+      30,
       523,
-      36,
-      29,
+      37,
+      27,
       8,
       0.33,
       0,
       false,
       true,
       false));
+    this.elapsedTime = 0;
   };
 
-  loadAnimations() {
+  updateLastHitBox() {
+    this.lastHitBox = this.hitBox;
+}
 
-  }
+updateHitBox() {
+    this.hitBox = new BoundingBox(this.x, this.y, 37 * 5, 27 * 5);
+}
 
-  update() {
+update() {
+    this.x += this.velocity.x * this.game.clockTick;
+    this.y += this.velocity.y * this.game.clockTick;
 
-  };
-  
-  draw(ctx) {
+    this.updateLastHitBox();
+    this.updateHitBox();
 
-  };
+    for (var i = 0; i < this.game.entities.length; i++) {
+        var ent = this.game.entities[i];
+        if (ent instanceof Link && this.hitBox.collide(ent.hurtBox) && !ent.damagedState) {
+            console.log("ATTACK LANDED - PROJECTILE (Ganon) VS LINK");
+            ent.damageEntity(1);
+            // this.game.addEntity(new Score(this.game, ent.x, ent.y, damage));
+            this.removeFromWorld = true;
+        }
+    }
+
+    // this.updateHitBox();
+    // this.updateLastHitBox();
+};
+
+draw(ctx) {
+    this.weapons[0].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, 5);
+
+     //drawing the hitbox of the attack animation
+     if (PARAMS.DEBUG && this.hitBox) {
+        ctx.strokeStyle = 'Red';
+        ctx.strokeRect(this.hitBox.x - this.game.camera.x, this.hitBox.y - this.game.camera.y, this.hitBox.width, this.hitBox.height);
+    }
+};
 }

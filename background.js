@@ -12,12 +12,7 @@ class Grass {
     Object.assign(this, { game, x, y, levelOne });
 
     this.spritesheet = ASSET_MANAGER.getAsset("./sprites/grass.png");
-    this.level = new loadBackground(
-      this.game,
-      this.x - this.game.camera.x,
-      this.y - this.game.camera.y,
-      this.levelOne
-    );
+    this.level = new loadBackground(this.game, this.x, this.y, this.levelOne);
     this.map = this.level.formMap("Grass");
     this.tileWidth = 16; // Width of each tile
     this.tileHeight = 16; // Height of each tile
@@ -26,6 +21,20 @@ class Grass {
 
   update() {
     // Update logic goes here if needed
+
+    //place bounding boxes so nothing can leave and exit the map.
+    // Loop through each row and column in the map
+    for (let i = 0; i < this.map.length; i++) {
+      // y's rows
+      for (let j = 0; j < this.map[i].length; j++) {
+        // x's columns
+        const wallX = this.x + j * this.tileWidth * this.scale;
+        const wallY = this.y + i * this.tileHeight * this.scale;
+        if( j===0){
+          //this.game.addEntity(new CollisionBox(this.game, wallX - (this.game.camera.midpointX)  , wallY - this.game.camera.midpointY, this.tileWidth, this.tileHeight, this.scale, i, j, 0));
+        }
+      }
+    }
   }
 
   draw(ctx) {
@@ -38,17 +47,7 @@ class Grass {
         const drawY = this.y + i * this.tileWidth * this.scale; // row
         // If the current cell contains grass (value is 1), draw the grass tile
         if (this.map[i][j] === 1) {
-          ctx.drawImage(
-            this.spritesheet,
-            0,
-            0,
-            this.tileWidth,
-            this.tileHeight,
-            drawX - this.game.camera.x - this.game.camera.midpointX,
-            drawY - this.game.camera.y - this.game.camera.midpointY,
-            this.tileWidth * this.scale,
-            this.tileHeight * this.scale
-          );
+          ctx.drawImage(this.spritesheet, 0, 0, this.tileWidth, this.tileHeight, drawX - this.game.camera.x - this.game.camera.midpointX, drawY - this.game.camera.y - this.game.camera.midpointY, this.tileWidth * this.scale, this.tileHeight * this.scale);
           // Adjust the destination x and y coordinates based on tile width and height
         }
       }
@@ -61,12 +60,7 @@ class Concrete {
     Object.assign(this, { game, x, y, levelOne });
     this.spritesheet = ASSET_MANAGER.getAsset("./sprites/grass.png");
 
-    this.level = new loadBackground(
-      this.game,
-      this.x - this.game.camera.x,
-      this.y - this.game.camera.y,
-      this.levelOne
-    );
+    this.level = new loadBackground(this.game, this.x, this.y, this.levelOne);
     this.map = this.level.formMap("Grass");
     this.concreteFiller = [
       { x: 80, y: 208 },
@@ -105,17 +99,7 @@ class Concrete {
         const drawY = this.y + i * this.tileWidth * this.scale; // row
         // If the current cell contains grass (value is 1), draw the grass tile
         if (this.map[i][j] > 125 && this.map[i][j] < 248) {
-          ctx.drawImage(
-            this.spritesheet,
-            this.randomStone.x,
-            this.randomStone.y,
-            this.tileWidth,
-            this.tileHeight,
-            drawX - this.game.camera.x - this.game.camera.midpointX,
-            drawY - this.game.camera.y - this.game.camera.midpointY,
-            this.tileWidth * this.scale,
-            this.tileHeight * this.scale
-          );
+          ctx.drawImage(this.spritesheet, this.randomStone.x, this.randomStone.y, this.tileWidth, this.tileHeight, drawX - this.game.camera.x - this.game.camera.midpointX, drawY - this.game.camera.y - this.game.camera.midpointY, this.tileWidth * this.scale, this.tileHeight * this.scale);
           // Adjust the destination x and y coordinates based on tile width and height
         }
       }
@@ -127,12 +111,7 @@ class Stairs {
   constructor(game, x, y, levelOne) {
     Object.assign(this, { game, x, y, levelOne });
     this.spritesheet = ASSET_MANAGER.getAsset("./sprites/stairs.png");
-    this.level = new loadBackground(
-      this.game,
-      this.x - this.game.camera.x,
-      this.y - this.game.camera.y,
-      this.levelOne
-    );
+    this.level = new loadBackground(this.game, this.x, this.y, this.levelOne);
     this.map = this.level.formMap("Grass");
     this.tileWidth = 16; // Width of each tile
     this.tileHeight = 16; // Height of each tile
@@ -207,17 +186,7 @@ class Stairs {
         // Check if the tile number exists in tileMappings
         if (tileMappings.hasOwnProperty(tileNumber)) {
           const { sourceX, sourceY } = tileMappings[tileNumber];
-          ctx.drawImage(
-            this.spritesheet,
-            sourceX,
-            sourceY,
-            this.tileWidth,
-            this.tileHeight,
-            drawX - this.game.camera.x - this.game.camera.midpointX,
-            drawY - this.game.camera.y - this.game.camera.midpointY,
-            this.tileWidth * this.scale,
-            this.tileHeight * this.scale
-          );
+          ctx.drawImage(this.spritesheet, sourceX, sourceY, this.tileWidth, this.tileHeight, drawX - this.game.camera.x - this.game.camera.midpointX, drawY - this.game.camera.y - this.game.camera.midpointY, this.tileWidth * this.scale, this.tileHeight * this.scale);
         }
       }
     }
@@ -228,12 +197,7 @@ class LevelOneWalls {
   constructor(game, x, y, levelOne) {
     Object.assign(this, { game, x, y, levelOne });
     this.spritesheet = ASSET_MANAGER.getAsset("./sprites/wall.png");
-    this.level = new loadBackground(
-      this.game,
-      this.x - this.game.camera.x,
-      this.y - this.game.camera.y,
-      this.levelOne
-    );
+    this.level = new loadBackground(this.game, this.x, this.y, this.levelOne);
     this.map = this.level.formMap("Collision");
     this.tileWidth = 16; // Width of each tile
     this.tileHeight = 16; // Height of each tile
@@ -262,16 +226,31 @@ class LevelOneWalls {
           const wallX = this.x + j * this.tileWidth * this.scale;
           const wallY = this.y + i * this.tileHeight * this.scale;
           // Create a new bounding box for the wall and add it to the array
-          this.collisionBoxes.push(
-            (this.collisionBox = new CollisionBox(
-              this.game,
-              wallX - this.game.camera.midpointX,
-              wallY - this.game.camera.midpointY,
-              this.tileWidth,
-              this.tileHeight,
-              this.scale
-            ))
-          );
+          if (tileNumber === 355 || tileNumber === 387 || tileNumber === 419 || tileNumber === 323 || tileNumber === 401) {
+            // vertical peices
+            this.collisionBoxes.push((this.collisionBox = new CollisionBox(this.game, wallX - this.game.camera.midpointX, wallY - this.game.camera.midpointY, this.tileWidth / 2, this.tileHeight, this.scale, i, j, tileNumber)));
+            //horizontal pieces
+          } else if (tileNumber >= 324 && tileNumber <= 327) {
+            this.collisionBoxes.push((this.collisionBox = new CollisionBox(this.game, wallX - this.game.camera.midpointX, wallY - this.game.camera.midpointY, this.tileWidth, this.tileHeight / 2, this.scale, i, j, tileNumber)));
+          } else if (tileNumber === 529 || tileNumber === 337) {
+            //manual adjustments to the bounding boxes so we can easily move through a section of the stairs
+            if ((i === 52 && j === 72) || (i === 52 && j === 75)) {
+            
+              //this.collisionBoxes.push(this.collisionBox = null);
+            }else {
+            // corner pieces
+            this.collisionBoxes.push((this.collisionBox = new CollisionBox(this.game, wallX - this.game.camera.midpointX, wallY - this.game.camera.midpointY, this.tileWidth / 2, this.tileHeight / 2, this.scale, i, j, tileNumber)));
+            }
+          } else if (tileNumber === 328 || tileNumber === 360 || tileNumber === 392 || tileNumber === 424 || tileNumber === 330) {
+            //pieces that are the walls that are  right closing
+            //have to offset to the right, order of the division and multiplication matters.
+            this.collisionBoxes.push((this.collisionBox = new CollisionBox(this.game, wallX + this.tileWidth * 1.5 - this.game.camera.midpointX, wallY - this.game.camera.midpointY, this.tileWidth / 2, this.tileHeight, this.scale, i, j, tileNumber)));
+          } else if (tileNumber === 522) {
+            //L corner peice that is on the right side
+            this.collisionBoxes.push((this.collisionBox = new CollisionBox(this.game, wallX + this.tileWidth * 1.5 - this.game.camera.midpointX, wallY - this.game.camera.midpointY, this.tileWidth / 2, this.tileHeight / 2, this.scale, i, j, tileNumber)));
+          } else {
+            this.collisionBoxes.push((this.collisionBox = new CollisionBox(this.game, wallX - this.game.camera.midpointX, wallY - this.game.camera.midpointY, this.tileWidth, this.tileHeight, this.scale, i, j, tileNumber)));
+          }
           this.game.addEntity(this.collisionBox);
         }
       }
@@ -408,17 +387,7 @@ class LevelOneWalls {
         // Check if the tile number exists in tileMappings
         if (this.tileMappings.hasOwnProperty(tileNumber)) {
           const { sourceX, sourceY } = this.tileMappings[tileNumber];
-          ctx.drawImage(
-            this.spritesheet,
-            sourceX,
-            sourceY,
-            this.tileWidth,
-            this.tileHeight,
-            drawX - this.game.camera.x - this.game.camera.midpointX,
-            drawY - this.game.camera.y - this.game.camera.midpointY,
-            this.tileWidth * this.scale,
-            this.tileHeight * this.scale
-          );
+          ctx.drawImage(this.spritesheet, sourceX, sourceY, this.tileWidth, this.tileHeight, drawX - this.game.camera.x - this.game.camera.midpointX, drawY - this.game.camera.y - this.game.camera.midpointY, this.tileWidth * this.scale, this.tileHeight * this.scale);
         }
       }
     }
@@ -430,12 +399,7 @@ class LevelOneProps {
     Object.assign(this, { game, x, y, levelOne });
     this.spritesheet = ASSET_MANAGER.getAsset("./sprites/props.png");
     this.treesSheet = ASSET_MANAGER.getAsset("./sprites/trees.png");
-    this.level = new loadBackground(
-      this.game,
-      this.x - this.game.camera.x,
-      this.y - this.game.camera.y,
-      this.levelOne
-    );
+    this.level = new loadBackground(this.game, this.x - this.game.camera.x, this.y - this.game.camera.y, this.levelOne);
     this.map = this.level.formMap("Props");
     this.tileWidth = 16; // Width of each tile
     this.tileHeight = 16; // Height of each tile
@@ -568,17 +532,7 @@ class LevelOneProps {
         // Check if the tile number exists in tileMappings
         if (tileMappings.hasOwnProperty(tileNumber)) {
           const { sourceX, sourceY, theSheet } = tileMappings[tileNumber];
-          ctx.drawImage(
-            theSheet,
-            sourceX,
-            sourceY,
-            this.tileWidth,
-            this.tileHeight,
-            drawX - this.game.camera.x - this.game.camera.midpointX,
-            drawY - this.game.camera.y - this.game.camera.midpointY,
-            this.tileWidth * this.scale,
-            this.tileHeight * this.scale
-          );
+          ctx.drawImage(theSheet, sourceX, sourceY, this.tileWidth, this.tileHeight, drawX - this.game.camera.x - this.game.camera.midpointX, drawY - this.game.camera.y - this.game.camera.midpointY, this.tileWidth * this.scale, this.tileHeight * this.scale);
         }
       }
     }
@@ -660,25 +614,19 @@ class loadBackground {
 }
 
 class CollisionBox {
-  constructor(game, x, y, width, height, scale) {
-  // Adjust this.x and this.y based on the camera position
+  constructor(game, x, y, width, height, scale, row, column, tileNumber) {
+    // Adjust this.x and this.y based on the camera position
     // x -= game.camera.x - game.midpointX;
     // y -= game.camera.y;
-    Object.assign(this, { game, x, y, width, height, scale });
-    
-    this.BoundingBox = new BoundingBox(
-      this.x,
-      this.y,
-      this.width * this.scale,
-      this.height * this.scale
-    );
+    Object.assign(this, { game, x, y, width, height, scale, row, column, tileNumber });
+
+    this.BoundingBox = new BoundingBox(this.x, this.y, this.width * this.scale, this.height * this.scale);
   }
 
   update() {
     // // Update the actual position of the object based on the camera position
     // this.x -= this.game.camera.x; //- this.game.camera.midpointX;
     // this.y -= this.game.camera.y; //- this.game.camera.midpointY;
-
     // // Update the position of the bounding box
     // this.BoundingBox.x = this.x;
     // this.BoundingBox.y = this.y;
@@ -689,12 +637,7 @@ class CollisionBox {
       // Draw the bounding box
       ctx.strokeStyle = "blue";
       ctx.lineWidth = 2;
-      ctx.strokeRect(
-        this.BoundingBox.x - this.game.camera.x,
-        this.BoundingBox.y - this.game.camera.y,
-        this.BoundingBox.width,
-        this.BoundingBox.height
-      );
+      ctx.strokeRect(this.BoundingBox.x - this.game.camera.x, this.BoundingBox.y - this.game.camera.y, this.BoundingBox.width, this.BoundingBox.height);
     }
   }
 }
