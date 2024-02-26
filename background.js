@@ -21,6 +21,20 @@ class Grass {
 
   update() {
     // Update logic goes here if needed
+
+    //place bounding boxes so nothing can leave and exit the map.
+    // Loop through each row and column in the map
+    for (let i = 0; i < this.map.length; i++) {
+      // y's rows
+      for (let j = 0; j < this.map[i].length; j++) {
+        // x's columns
+        const wallX = this.x + j * this.tileWidth * this.scale;
+        const wallY = this.y + i * this.tileHeight * this.scale;
+        if( j===0){
+          //this.game.addEntity(new CollisionBox(this.game, wallX - (this.game.camera.midpointX)  , wallY - this.game.camera.midpointY, this.tileWidth, this.tileHeight, this.scale, i, j, 0));
+        }
+      }
+    }
   }
 
   draw(ctx) {
@@ -212,63 +226,30 @@ class LevelOneWalls {
           const wallX = this.x + j * this.tileWidth * this.scale;
           const wallY = this.y + i * this.tileHeight * this.scale;
           // Create a new bounding box for the wall and add it to the array
-          if (i === 9 && j >= 5 && j <= 20) {
-            this.collisionBoxes.push((this.collisionBox = new CollisionBox(this.game, wallX - this.game.camera.midpointX, wallY - this.game.camera.midpointY, this.tileWidth, this.tileHeight / 2, this.scale, i, j)));
-          } else if (i >= 9 && i <= 20 && j === 4) {
-            this.collisionBoxes.push((this.collisionBox = new CollisionBox(this.game, wallX - this.game.camera.midpointX, wallY - this.game.camera.midpointY, this.tileWidth / 2, this.tileHeight, this.scale, i, j)));
-          } else if (i <= 9 && j === 21) {
-            if (i === 9) {
-              this.collisionBoxes.push((this.collisionBox = new CollisionBox(this.game, wallX - this.game.camera.midpointX, wallY - this.game.camera.midpointY, this.tileWidth / 2, this.tileHeight / 2, this.scale, i, j)));
-            } else {
-              this.collisionBoxes.push((this.collisionBox = new CollisionBox(this.game, wallX - this.game.camera.midpointX, wallY - this.game.camera.midpointY, this.tileWidth / 2, this.tileHeight, this.scale, i, j)));
+          if (tileNumber === 355 || tileNumber === 387 || tileNumber === 419 || tileNumber === 323 || tileNumber === 401) {
+            // vertical peices
+            this.collisionBoxes.push((this.collisionBox = new CollisionBox(this.game, wallX - this.game.camera.midpointX, wallY - this.game.camera.midpointY, this.tileWidth / 2, this.tileHeight, this.scale, i, j, tileNumber)));
+            //horizontal pieces
+          } else if (tileNumber >= 324 && tileNumber <= 327) {
+            this.collisionBoxes.push((this.collisionBox = new CollisionBox(this.game, wallX - this.game.camera.midpointX, wallY - this.game.camera.midpointY, this.tileWidth, this.tileHeight / 2, this.scale, i, j, tileNumber)));
+          } else if (tileNumber === 529 || tileNumber === 337) {
+            //manual adjustments to the bounding boxes so we can easily move through a section of the stairs
+            if ((i === 52 && j === 72) || (i === 52 && j === 75)) {
+            
+              //this.collisionBoxes.push(this.collisionBox = null);
+            }else {
+            // corner pieces
+            this.collisionBoxes.push((this.collisionBox = new CollisionBox(this.game, wallX - this.game.camera.midpointX, wallY - this.game.camera.midpointY, this.tileWidth / 2, this.tileHeight / 2, this.scale, i, j, tileNumber)));
             }
-          } else if (i === 5 && j >= 22 && j <= 37) {
-            this.collisionBoxes.push((this.collisionBox = new CollisionBox(this.game, wallX - this.game.camera.midpointX, wallY - this.game.camera.midpointY, this.tileWidth, this.tileHeight / 2, this.scale, i, j)));
-          } else if (i <= 23 && i >= 21 && j === 13) {
-            this.collisionBoxes.push((this.collisionBox = new CollisionBox(this.game, wallX - this.game.camera.midpointX, wallY - this.game.camera.midpointY, this.tileWidth / 2, this.tileHeight, this.scale, i, j)));
-          } else if (i <= 23 && i >= 18 && j === 39) {
+          } else if (tileNumber === 328 || tileNumber === 360 || tileNumber === 392 || tileNumber === 424 || tileNumber === 330) {
+            //pieces that are the walls that are  right closing
             //have to offset to the right, order of the division and multiplication matters.
-            this.collisionBoxes.push((this.collisionBox = new CollisionBox(this.game, wallX + this.tileWidth * 1.5 - this.game.camera.midpointX, wallY - this.game.camera.midpointY, this.tileWidth / 2, this.tileHeight, this.scale, i, j)));
-          } else if (i <= 7 && i >= 4 && j === 38) {
-            this.collisionBoxes.push((this.collisionBox = new CollisionBox(this.game, wallX - this.game.camera.midpointX, wallY - this.game.camera.midpointY, this.tileWidth / 2, this.tileHeight, this.scale, i, j)));
-          } else if (i <= 4 && i >= 0 && j <= 40 && j >= 39) {
-            if (j === 39) {
-              this.collisionBoxes.push((this.collisionBox = new CollisionBox(this.game, wallX - this.game.camera.midpointX, wallY - this.game.camera.midpointY, this.tileWidth, this.tileHeight / 2, this.scale, i, j)));
-            } else if (i === 4) {
-              this.collisionBoxes.push((this.collisionBox = new CollisionBox(this.game, wallX - this.game.camera.midpointX, wallY - this.game.camera.midpointY, this.tileWidth / 2, this.tileHeight / 2, this.scale, i, j)));
-            } else {
-              this.collisionBoxes.push((this.collisionBox = new CollisionBox(this.game, wallX - this.game.camera.midpointX, wallY - this.game.camera.midpointY, this.tileWidth / 2, this.tileHeight, this.scale, i, j)));
-            }
-          } else if (i === 0 && j <= 49 && j >= 41) {
-            this.collisionBoxes.push((this.collisionBox = new CollisionBox(this.game, wallX - this.game.camera.midpointX, wallY - this.game.camera.midpointY, this.tileWidth, this.tileHeight / 2, this.scale, i, j)));
-          } else if (i <= 4 && i >= 0 && j === 49) {
-            if (i === 4) {
-              this.collisionBoxes.push((this.collisionBox = new CollisionBox(this.game, wallX + this.tileWidth * 1.5 - this.game.camera.midpointX, wallY - this.game.camera.midpointY, this.tileWidth / 2, this.tileHeight / 2, this.scale, i, j)));
-            } else {
-              this.collisionBoxes.push((this.collisionBox = new CollisionBox(this.game, wallX + this.tileWidth * 1.5 - this.game.camera.midpointX, wallY - this.game.camera.midpointY, this.tileWidth / 2, this.tileHeight, this.scale, i, j)));
-            }
-          } else if (i <= 4 && i >= 0 && j >= 50 && j <= 57) {
-            this.collisionBoxes.push((this.collisionBox = new CollisionBox(this.game, wallX - this.game.camera.midpointX, wallY - this.game.camera.midpointY, this.tileWidth, this.tileHeight / 2, this.scale, i, j)));
-          } else if (i <= 7 && i >= 5 && j === 51) {
-            this.collisionBoxes.push((this.collisionBox = new CollisionBox(this.game, wallX + this.tileWidth * 1.5 - this.game.camera.midpointX, wallY - this.game.camera.midpointY, this.tileWidth / 2, this.tileHeight, this.scale, i, j)));
-          }else if (i <= 7 && i >= 1 && j === 58) {
-
-            if(i=== 7){
-              this.collisionBoxes.push((this.collisionBox = new CollisionBox(this.game, wallX + this.tileWidth * 1.5 - this.game.camera.midpointX, wallY - this.game.camera.midpointY, this.tileWidth / 2, this.tileHeight/2, this.scale, i, j)));
-            }else{
-            this.collisionBoxes.push((this.collisionBox = new CollisionBox(this.game, wallX + this.tileWidth * 1.5 - this.game.camera.midpointX, wallY - this.game.camera.midpointY, this.tileWidth / 2, this.tileHeight, this.scale, i, j)));
-          }
-          }else if( i=== 7 && j>=58 && j<= 74){
-            this.collisionBoxes.push((this.collisionBox = new CollisionBox(this.game, wallX - this.game.camera.midpointX, wallY - this.game.camera.midpointY, this.tileWidth, this.tileHeight / 2, this.scale, i, j)));
-
-          } else if( i>=8 && i<=17 &&j=== 74){
-            if( i=== 17){
-              this.collisionBoxes.push((this.collisionBox = new CollisionBox(this.game, wallX + this.tileWidth * 1.5 - this.game.camera.midpointX, wallY - this.game.camera.midpointY, this.tileWidth / 2, this.tileHeight / 2, this.scale, i, j)));
-            }else{
-            this.collisionBoxes.push((this.collisionBox = new CollisionBox(this.game, wallX + this.tileWidth * 1.5 - this.game.camera.midpointX, wallY - this.game.camera.midpointY, this.tileWidth / 2, this.tileHeight, this.scale, i, j)));
-            }
-          }else {
-            this.collisionBoxes.push((this.collisionBox = new CollisionBox(this.game, wallX - this.game.camera.midpointX, wallY - this.game.camera.midpointY, this.tileWidth, this.tileHeight, this.scale, i, j)));
+            this.collisionBoxes.push((this.collisionBox = new CollisionBox(this.game, wallX + this.tileWidth * 1.5 - this.game.camera.midpointX, wallY - this.game.camera.midpointY, this.tileWidth / 2, this.tileHeight, this.scale, i, j, tileNumber)));
+          } else if (tileNumber === 522) {
+            //L corner peice that is on the right side
+            this.collisionBoxes.push((this.collisionBox = new CollisionBox(this.game, wallX + this.tileWidth * 1.5 - this.game.camera.midpointX, wallY - this.game.camera.midpointY, this.tileWidth / 2, this.tileHeight / 2, this.scale, i, j, tileNumber)));
+          } else {
+            this.collisionBoxes.push((this.collisionBox = new CollisionBox(this.game, wallX - this.game.camera.midpointX, wallY - this.game.camera.midpointY, this.tileWidth, this.tileHeight, this.scale, i, j, tileNumber)));
           }
           this.game.addEntity(this.collisionBox);
         }
@@ -633,11 +614,11 @@ class loadBackground {
 }
 
 class CollisionBox {
-  constructor(game, x, y, width, height, scale, row, column) {
+  constructor(game, x, y, width, height, scale, row, column, tileNumber) {
     // Adjust this.x and this.y based on the camera position
     // x -= game.camera.x - game.midpointX;
     // y -= game.camera.y;
-    Object.assign(this, { game, x, y, width, height, scale, row, column });
+    Object.assign(this, { game, x, y, width, height, scale, row, column, tileNumber });
 
     this.BoundingBox = new BoundingBox(this.x, this.y, this.width * this.scale, this.height * this.scale);
   }

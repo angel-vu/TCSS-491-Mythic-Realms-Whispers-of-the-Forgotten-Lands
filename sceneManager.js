@@ -83,7 +83,7 @@ class SceneManager {
         } 
 
         if(this.entityCount === 0) {
-            this.gameOver = false;
+            this.gameOver = false;       
             this.gameWin = true;
             this.loadLevel(1, 0, 0, true, this.title, this.gameOver, this.gameWin);
         }

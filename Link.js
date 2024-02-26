@@ -498,7 +498,7 @@ class Link {
 
         if (that.moveBox && entity.BoundingBox && that.moveBox.collide(entity.BoundingBox)) {
           if (entity instanceof CollisionBox) {
-            console.log(entity.row + " and " + entity.column);
+            console.log(entity.row + " and " + entity.column + " tilenumber: " + entity.tileNumber);
             if (that.lastMoveBox.left >= entity.BoundingBox.right) {
               // collided with the right side of the CollisionBox
               that.x = entity.BoundingBox.right;
@@ -507,12 +507,12 @@ class Link {
               that.x = entity.BoundingBox.left - that.moveBox.width;
               //collided with the bottom of the CollisonBox.Was below the Collisionbox.
             } else if (that.lastMoveBox.top >= entity.BoundingBox.bottom) {
-              that.y = entity.BoundingBox.bottom - that.lastHurtBox.height + that.lastMoveBox.height;
+              that.y = entity.BoundingBox.bottom - 58 * 3 + that.lastMoveBox.height;
               // collided with the top of the CollisionBox. Was above the CollisionBox.
             } else if (that.lastMoveBox.bottom <= entity.BoundingBox.top) {
               //based off the height of the idle height of the hurtbox of link
               // added one pixel or else we would clip into the wall
-              that.y = entity.BoundingBox.top - 59 * 3;
+              that.y = entity.BoundingBox.top - 58 * 3;
             }
           }
           that.updateMoveBox();
