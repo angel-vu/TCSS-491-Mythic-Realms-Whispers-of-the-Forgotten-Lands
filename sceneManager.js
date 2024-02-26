@@ -74,6 +74,7 @@ class SceneManager {
             this.game.addEntity(this.ganon);
             
             this.game.addEntity(this.link);
+            this.ground.placeOuterBoundingBoxes();
         }
     }
 }
