@@ -325,7 +325,7 @@ class Link {
     const MAX_WALK_VEL = 93.75;
     const MAX_RUN_VEL = 200;
     const WALK_ACC = 133.59375;
-    const RUN_ACC = 230;
+    const RUN_ACC = 270;
 
     //movement physics
     if (!this.damagedState) {
@@ -515,16 +515,11 @@ class Link {
               that.y = entity.BoundingBox.top - 58 * 3;
             }
           }
+          
           that.updateMoveBox();
         }
-        //Boundary checking for when link walks into a wall.
-        //colliding with the
-        //  if(entity instanceof wall ){
-        //if(that.hurtBox.){
-
-        //}
-        //}
       });
+      
     } else if (this.damagedState && !this.dead) {
       //When in a state of being damaged, create a window where you flicker for 1 second and you can't take damage.
       this.damagedCounter += this.game.clockTick;

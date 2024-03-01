@@ -2,6 +2,8 @@ const gameEngine = new GameEngine();
 
 const ASSET_MANAGER = new AssetManager();
 
+
+
 ASSET_MANAGER.queueDownload("./sprites/Link_main_character_walking_no_sword.png");
 ASSET_MANAGER.queueDownload("./sprites/Link_main_character.png");
 ASSET_MANAGER.queueDownload("./sprites/Link_attack_1.png");
@@ -24,6 +26,9 @@ ASSET_MANAGER.queueDownload("./sprites/stairs.png");
 ASSET_MANAGER.queueDownload("./sprites/wall.png");
 ASSET_MANAGER.queueDownload("./sprites/trees.png");
 ASSET_MANAGER.queueDownload("./sprites/props.png");
+
+//music
+
 ASSET_MANAGER.downloadAll(() => {
 	const canvas = document.getElementById("gameWorld");
 
