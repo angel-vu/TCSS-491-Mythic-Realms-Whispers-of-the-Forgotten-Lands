@@ -6,13 +6,13 @@ class Skeleton {
 
         this.initialPoint = {x, y};
 
-        this.healthbar = new HealthBar(this);
-
         this.currentHealth = 3;
         this.maxHealth = 3;
+        this.healthbar = new HealthBar(this);
+
         this.dead = false;
         this.damagedState = false;
-        this.scale = 2;
+        this.scale = 1.5;
 
         //how long Link has been damagedfor in seconds.
         this.damagedCounter = 0;

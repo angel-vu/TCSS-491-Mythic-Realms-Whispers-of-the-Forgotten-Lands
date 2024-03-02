@@ -29,6 +29,18 @@ class SceneManager {
         this.goblinCounterImageWidth = 40; 
         this.goblinCounterImageHeight = 40
 
+        this.skeletonCounter = 0; 
+        this.skeletonCounterImage = new Image(); 
+        this.skeletonCounterImage.src = "./enemies/skeletoncount.png";
+        this.skeletonCounterImageWidth = 30; 
+        this.skeletonCounterImageHeight = 40
+
+        this.wizardCounter = 0; 
+        this.wizardCounterImage = new Image(); 
+        this.wizardCounterImage.src = "./enemies/wizardcount.png";
+        this.wizardCounterImageWidth = 30; 
+        this.wizardCounterImageHeight = 40
+
         this.loadLevel(1, 0, 0, false, this.title, this.gameOver, this.gameWin)
        
         // this.inventory = new Inventory(PARAMS.CANVAS_WIDTH - 400, PARAMS.CANVAS_HEIGHT - 100, 600, 200);
@@ -47,6 +59,7 @@ class SceneManager {
         this.gamePaused = false;
 
         canvas.addEventListener('click', this.handlePlayPauseClick.bind(this));        
+        
         
     };
 
@@ -113,25 +126,25 @@ class SceneManager {
             // this.inventory = new Inventory(this.game, 500, 500, levelOne);
             // this.game.addEntity(this.inventory);
 
-            //  this.skeleton1 = new Skeleton(this.game, 1000, 800, [{ x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: 0, y: 0 }]);
-            //  this.game.addEntity(this.skeleton1);
+             this.skeleton1 = new Skeleton(this.game, 1000, 800, [{ x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: 0, y: 0 }]);
+             this.game.addEntity(this.skeleton1);
 
-            //  this.wizard1 = new Wizard(this.game, 1000, 800, [{ x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: 0, y: 0 }]);
-            //  this.game.addEntity(this.wizard1);
+             this.wizard1 = new Wizard(this.game, 2500, 800, [{ x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: 0, y: 0 }]);
+             this.game.addEntity(this.wizard1);
 
-            this.banshee1 = new Banshee(this.game, 1000, 800, [{ x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: 0, y: 0 }]);
+            this.banshee1 = new Banshee(this.game, 2000, 2000, [{ x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: 0, y: 0 }]);
             this.game.addEntity(this.banshee1);
 
-            this.banshee2 = new Banshee(this.game, 900, 800, [{ x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: 0, y: 0 }]);
+            this.banshee2 = new Banshee(this.game, 2800, 1500, [{ x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: 0, y: 0 }]);
             this.game.addEntity(this.banshee2);
 
-            this.goblin1 = new Goblin(this.game, 800, 800, [{ x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: 0, y: 0 }]);
+            this.goblin1 = new Goblin(this.game, 100, 2000, [{ x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: 0, y: 0 }]);
             this.game.addEntity(this.goblin1);
 
             this.goblin2 = new Goblin(this.game, 700, 800, [{ x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: 0, y: 0 }]);
             this.game.addEntity(this.goblin2);
 
-            this.goblin3 = new Goblin(this.game, 600, 800, [{ x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: 0, y: 0 }]);
+            this.goblin3 = new Goblin(this.game, 2500, 2000, [{ x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: 0, y: 0 }]);
             this.game.addEntity(this.goblin3);
 
             // this.ganon = new Ganon(this.game, 600, 800, [{ x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: 0, y: 0 }]);
@@ -171,7 +184,11 @@ class SceneManager {
         this.bansheeCounter = this.game.entities.filter(entity => entity instanceof Banshee).length;
         // Updating goblin counter
         this.goblinCounter = this.game.entities.filter(entity => entity instanceof Goblin).length;
-        if (this.bansheeCounter === 0 && this.goblinCounter === 0) {
+        // Updating skeletotn counter
+        this.skeletonCounter = this.game.entities.filter(entity => entity instanceof Skeleton).length;
+        // Updating wizard counter
+        this.wizardCounter = this.game.entities.filter(entity => entity instanceof Wizard).length;
+        if (this.bansheeCounter === 0 && this.goblinCounter === 0 && this.skeletonCounter === 0 && this.wizardCounter === 0) {
             this.gameOver = false;       
             this.gameWin = true;
             this.loadLevel(1, 0, 0, true, this.title, this.gameOver, this.gameWin);
@@ -205,5 +222,15 @@ class SceneManager {
         ctx.fillStyle = '#000';
         ctx.font = '16px Arial';
         ctx.fillText(`: ${this.goblinCounter}`, 140, 35); 
+
+        ctx.drawImage(this.skeletonCounterImage, 170, 10, this.skeletonCounterImageWidth, this.skeletonCounterImageHeight);
+        ctx.fillStyle = '#000';
+        ctx.font = '16px Arial';
+        ctx.fillText(`: ${this.skeletonCounter}`, 210, 35); 
+
+        ctx.drawImage(this.wizardCounterImage, 240, 10, this.wizardCounterImageWidth, this.wizardCounterImageHeight);
+        ctx.fillStyle = '#000';
+        ctx.font = '16px Arial';
+        ctx.fillText(`: ${this.wizardCounter}`, 280, 35);
     };
 };

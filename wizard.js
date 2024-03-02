@@ -3,7 +3,7 @@ class Wizard {
         Object.assign(this, { game, x, y, path });
 
         this.game.wizard = this;
-        this.scale = 2;
+        this.scale = 1.5;
 
         this.initialPoint = {x, y};
 
