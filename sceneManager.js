@@ -180,19 +180,20 @@ class SceneManager {
             // add in logic 
         }
         
-        // Updating banshee counter
-        this.bansheeCounter = this.game.entities.filter(entity => entity instanceof Banshee).length;
-        // Updating goblin counter
-        this.goblinCounter = this.game.entities.filter(entity => entity instanceof Goblin).length;
-        // Updating skeletotn counter
-        this.skeletonCounter = this.game.entities.filter(entity => entity instanceof Skeleton).length;
-        // Updating wizard counter
-        this.wizardCounter = this.game.entities.filter(entity => entity instanceof Wizard).length;
-        if (this.bansheeCounter === 0 && this.goblinCounter === 0 && this.skeletonCounter === 0 && this.wizardCounter === 0) {
-            this.gameOver = false;       
+        // Count the total number of enemies
+        const totalEnemies = this.game.entities.filter(entity => entity instanceof Banshee || entity instanceof Goblin || entity instanceof Skeleton || entity instanceof Wizard).length;
+
+        if (totalEnemies === 0) {
+            this.gameOver = false;
             this.gameWin = true;
             this.loadLevel(1, 0, 0, true, this.title, this.gameOver, this.gameWin);
         }
+
+        // Updating counters for each enemy type
+        this.bansheeCounter = this.game.entities.filter(entity => entity instanceof Banshee).length;
+        this.goblinCounter = this.game.entities.filter(entity => entity instanceof Goblin).length;
+        this.skeletonCounter = this.game.entities.filter(entity => entity instanceof Skeleton).length;
+        this.wizardCounter = this.game.entities.filter(entity => entity instanceof Wizard).length;
     };
 
     draw(ctx) {
