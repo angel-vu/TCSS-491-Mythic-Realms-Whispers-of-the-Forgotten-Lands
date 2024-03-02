@@ -152,30 +152,31 @@
         canvas.addEventListener("keydown", handleKeyDown);
       }
 
-      function handleKeyDown(e) {
-        switch (e.code) {
-          case "KeyA":
-            this.left = true;
-            console.log("left");
-            break;
-          case "KeyD":
-            this.right = true;
-            console.log("right");
-            break;
-          case "KeyW":
-            this.up = true;
-            console.log("up");
-            break;
-          case "KeyS":
-            this.down = true;
-            console.log("down");
-            break;
-        }
-      }
+      // function handleKeyDown(e) {
+      //   switch (e.code) {
+      //     case "KeyA":
+      //       this.left = true;
+      //       console.log("left");
+      //       break;
+      //     case "KeyD":
+      //       this.right = true;
+      //       console.log("right");
+      //       break;
+      //     case "KeyW":
+      //       this.up = true;
+      //       console.log("up");
+      //       break;
+      //     case "KeyS":
+      //       this.down = true;
+      //       console.log("down");
+      //       break;
+      //   }
+      // }
 
       popupOverlay.addEventListener("click", hideFirstPopup);
       secondPopupOverlay.addEventListener("click", hideSecondPopup);
       thirdPopupOverlay.addEventListener("click", startGame);
+
     </script>
 
     <div>

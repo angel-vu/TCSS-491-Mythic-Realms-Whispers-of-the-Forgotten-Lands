@@ -158,97 +158,101 @@ class Banshee {
   }
 
   update() {
-    if (this.currentHealth <= 0) {
-      this.dead = true;
-      this.game.camera.entityCount -= 1;
-      this.removeFromWorld = true;
-    }
-
-    if (!this.damagedState) {
-      var dist = distance(this, this.target);
-
-      if (dist < 5) {
-
-        if(this.targetID === this.path.length - 1) {
-            this.targetID = 0;
+      if (!this.game.camera.gamePaused) {
+        if (this.currentHealth <= 0) {
+          this.dead = true;
+          this.game.camera.entityCount -= 1;
+          this.removeFromWorld = true;
         }
 
-        if (this.targetID < this.path.length - 1 && this.target === this.path[this.targetID]) {
-          this.targetID++;
-        }
+        if (!this.damagedState) {
+          var dist = distance(this, this.target);
 
-        this.target = this.path[this.targetID];
-      }
+          if (dist < 5) {
 
-      if (this.state === 2) {
-        this.elapsedTime += this.game.clockTick;
-      }
+            if(this.targetID === this.path.length - 1) {
+                this.targetID = 0;
+            }
 
-      for (var i = 0; i < this.game.entities.length; i++) {
-        var ent = this.game.entities[i];
+            if (this.targetID < this.path.length - 1 && this.target === this.path[this.targetID]) {
+              this.targetID++;
+            }
 
-        if (ent instanceof Link && !ent.dead) {
-          if (ent instanceof Link && canSee(this.pathingCircle, ent.pathingCircle)) {
-            this.target = ent.pathingCircle;
+            this.target = this.path[this.targetID];
           }
-          if (ent instanceof Link && collide(this.pathingCircle, ent.pathingCircle) && !ent.damagedState) {
-            if (this.state === 0 || this.state === 1) {
-              this.state = 2;
-              this.elapsedTime = 0;
-            } else if (this.elapsedTime > 1 && !ent.damagedState) {
-              console.log("ATTACK LANDED!");
-              this.game.addEntity(new Scream(this.game, this.hurtBox.x, this.hurtBox.y, ent, false));
-              this.elapsedTime = 0;
+
+          if (this.state === 2) {
+            this.elapsedTime += this.game.clockTick;
+          }
+
+          for (var i = 0; i < this.game.entities.length; i++) {
+            var ent = this.game.entities[i];
+
+            if (ent instanceof Link && !ent.dead) {
+              if (ent instanceof Link && canSee(this.pathingCircle, ent.pathingCircle)) {
+                this.target = ent.pathingCircle;
+              }
+              if (ent instanceof Link && collide(this.pathingCircle, ent.pathingCircle) && !ent.damagedState) {
+                if (this.state === 0 || this.state === 1) {
+                  this.state = 2;
+                  this.elapsedTime = 0;
+                } else if (this.elapsedTime > 1 && !ent.damagedState) {
+                  console.log("ATTACK LANDED!");
+                  this.game.addEntity(new Scream(this.game, this.hurtBox.x, this.hurtBox.y, ent, false));
+                  this.elapsedTime = 0;
+                }
+              }
+            }
+
+            if ((ent instanceof Link && this.state === 2 && !collide(this.pathingCircle, ent.pathingCircle)) || (ent instanceof Link && ent.dead)) {
+              this.state = 0;
             }
           }
+
+          if (this.state !== 2) {
+            dist = distance(this, this.target);
+            this.velocity = {
+              x: ((this.target.x - this.x) / dist) * this.maxSpeed,
+              y: ((this.target.y - this.y) / dist) * this.maxSpeed,
+            };
+            this.x += this.velocity.x * this.game.clockTick;
+            this.y += this.velocity.y * this.game.clockTick;
+
+            if (this.velocity.x > 0) {
+              this.facing = 3;
+            } else {
+              this.facing = 2;
+            }
+          } else {
+            // Banshee Direction always faces Link
+            if (this.game.camera.link.x < this.x) {
+              this.facing = 2;
+            } else {
+              this.facing = 3;
+            }
+          }
+
+          this.updateLastBB();
+          this.updateLastHurtBox();
+          this.updateBB();
+          this.updatePathingCircle();
+          this.updateHurtBox();
         }
-
-        if ((ent instanceof Link && this.state === 2 && !collide(this.pathingCircle, ent.pathingCircle)) || (ent instanceof Link && ent.dead)) {
-          this.state = 0;
-        }
-      }
-
-      if (this.state !== 2) {
-        dist = distance(this, this.target);
-        this.velocity = {
-          x: ((this.target.x - this.x) / dist) * this.maxSpeed,
-          y: ((this.target.y - this.y) / dist) * this.maxSpeed,
-        };
-        this.x += this.velocity.x * this.game.clockTick;
-        this.y += this.velocity.y * this.game.clockTick;
-
-        if (this.velocity.x > 0) {
-          this.facing = 3;
-        } else {
-          this.facing = 2;
+        
+        if (this.damagedState && !this.dead) {
+          //When in a state of being damaged, create a window where you flicker for 1 second and you can't take damage.
+          this.damagedCounter += this.game.clockTick;
+          if (this.damagedCounter >= 1) {
+            this.damagedState = false;
+            this.state = 0;
+            this.damagedCounter = 0;
+            //stopping link from sliding when he is damaged.
+          }
         }
       } else {
-        // Banshee Direction always faces Link
-        if (this.game.camera.link.x < this.x) {
-          this.facing = 2;
-        } else {
-          this.facing = 3;
-        }
-      }
-
-      this.updateLastBB();
-      this.updateLastHurtBox();
-      this.updateBB();
-      this.updatePathingCircle();
-      this.updateHurtBox();
+        this.state = 1;
     }
-    
-    if (this.damagedState && !this.dead) {
-      //When in a state of being damaged, create a window where you flicker for 1 second and you can't take damage.
-      this.damagedCounter += this.game.clockTick;
-      if (this.damagedCounter >= 1) {
-        this.damagedState = false;
-        this.state = 0;
-        this.damagedCounter = 0;
-        //stopping link from sliding when he is damaged.
-      }
-    }
-  }
+  };
 
   draw(ctx) {
     if (this.damagedState && !this.dead) {

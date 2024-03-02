@@ -320,6 +320,7 @@ class Link {
   }
 
   update() {
+    if (!this.game.camera.gamePaused) { // Check if the game is not paused
     //Constants to use for movement physcs for Mario.
     const MIN_WALK_VEL = 4.453125;
     const MAX_WALK_VEL = 93.75;
@@ -540,6 +541,9 @@ class Link {
       this.state = 4;
       console.log("LINK DEAD");
     }
+  } else {
+    this.state = 0;
+  }
   }
 
   draw(ctx) {
