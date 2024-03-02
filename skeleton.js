@@ -133,6 +133,7 @@ class Skeleton {
             if(this.currentHealth <= 0) {
                 this.dead = true;
                 this.game.camera.entityCount -= 1;
+                this.game.addEntity(new HealthPotion(this.game, this.x, this.y));
                 this.removeFromWorld = true;
             }
     
@@ -169,6 +170,7 @@ class Skeleton {
                                 if (ent instanceof Link && this.hitBox.collide(ent.hurtBox)&& !ent.damagedState) {
                                     console.log("ATTACK LANDED - SKELETON VS LINK!");
                                     ent.damageEntity(1);
+                                    this.state = 0;
                                     this.elapsedTime = 0;
                                 }
                             } 

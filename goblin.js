@@ -164,6 +164,7 @@ class Goblin {
             if(this.currentHealth <= 0) {
                 this.dead = true;
                 this.game.camera.entityCount -= 1;
+                this.game.addEntity(new HealthPotion(this.game, this.x, this.y));
                 this.removeFromWorld = true;
             }
 
@@ -192,6 +193,7 @@ class Goblin {
                         if (ent instanceof Link && canSee(this.pathingCircle, ent.pathingCircle)) {
                             this.target = ent.pathingCircle;
                         } 
+                        //makes sure that goblin doesn't cause Link to be within an attack loop state.
                         if (ent instanceof Link && collide(this.pathingCircle, ent.pathingCircle) && !ent.damagedState) {
                             if (this.state === 0 || this.state === 1) {
                                 this.state = 2;
@@ -201,6 +203,7 @@ class Goblin {
                                     console.log("ATTACK LANDED - GOBLIN VS LINK!");
                                     ent.damageEntity(1);
                                     this.elapsedTime = 0;
+                                    this.state = 0;
                                 }
                             } 
                         }

@@ -28,8 +28,12 @@ ASSET_MANAGER.queueDownload("./sprites/trees.png");
 ASSET_MANAGER.queueDownload("./sprites/props.png");
 
 //music
+ASSET_MANAGER.queueDownload("./music/Undertale-Waterfall.mp3");
+
 
 ASSET_MANAGER.downloadAll(() => {
+
+	ASSET_MANAGER.autoRepeat("./music/Undertale-Waterfall.mp3");
 	const canvas = document.getElementById("gameWorld");
 
 	const ctx = canvas.getContext("2d");

@@ -60,10 +60,10 @@ class HealthPotion {
 
         this.scale = 0.2;
         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/potions.png");
-        this.animation = new Animator(this.spritesheet, 20, 620, 240, 260, 4, 0.5, 0, false, true);
+        this.animation = new Animator(this.spritesheet, 743, 620, 240, 260, 1, 0.5, 0, false, true);
 
         // Define bounding box for collision detection
-        this.BB = new BoundingBox(x, y, 50 * this.scale, 50 * this.scale);
+        this.BB = new BoundingBox(x, y, this.animation.width * this.scale, this.animation.height * this.scale);
     }
 
     // Function to check collision with another entity (e.g., Link)

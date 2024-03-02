@@ -132,6 +132,7 @@ class Wizard {
             if(this.currentHealth <= 0) {
                 this.dead = true;
                 this.game.camera.entityCount -= 1;
+                this.game.addEntity(new HealthPotion(this.game, this.x, this.y));
                 this.removeFromWorld = true;
             }
 
