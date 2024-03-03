@@ -102,6 +102,9 @@ class SceneManager {
       if (transition) {
         this.game.addEntity(new TransitionScreen(this.game, this.level, x, y, this.title, gameOver, gameWin));
       } else {
+        //play music
+        ASSET_MANAGER.pauseBackgroundMusic();
+        ASSET_MANAGER.playAsset("./music/Undertale-Waterfall.mp3");
         this.concrete = new Concrete(this.game, 0, 0, levelOne);
         this.game.addEntity(this.concrete);
 
