@@ -560,19 +560,7 @@ class Link {
   }
 
   draw(ctx) {
-    // if(this.itemsEquipped === 1){
-    // 	if(this.facing === 0){
-    // 		if(this.state <= 1){
-    // 			this.animations[this.itemsEquipped][this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, 3);
-    // 		}else if(this.state === 2){
-    // 			this.animations[this.itemsEquipped][this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y + 20  - this.game.camera.y, 3);
-    // 		}
-    // 	} else if(this.facing === 1){
-
-    // 	}
-    // } else if (this.itemsEquipped === 0) {
-
-    // }
+ 
 
     //if we haven't been hit draw as normal
     if (!this.damagedState) {
@@ -616,7 +604,12 @@ class Link {
     } else if (this.damagedState && !this.dead) {
       if (this.flickerFlag) {
         if (this.itemsEquipped === 1) {
+
+          if(this.facing === 0){
           this.animations[this.itemsEquipped][this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, 3);
+          } else if(this.facing === 1){
+            this.animations[this.itemsEquipped][this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - 90 - this.game.camera.x, this.y - this.game.camera.y, 3);
+          }
         } else {
           this.animations[this.itemsEquipped][this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - 20 - this.game.camera.x, this.y - this.game.camera.y + 10, 3);
         }
