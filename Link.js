@@ -47,6 +47,7 @@ class Link {
     this.currentHealth -= damageNumber;
     this.damagedState = true;
     this.state = 0;
+    ASSET_MANAGER.playAsset("./music/link_damage_1.mp3");
   }
   //a bounding sphere to attract enemy entities toward us.
   updatePathingCircle() {
@@ -426,6 +427,7 @@ class Link {
 
           if (this.comboCounter === 0) {
             this.state = 5;
+            ASSET_MANAGER.playAsset("./music/link_attack_1.mp3");
             //Line needed here in the case where I interupt my attack animation and I try to enter the attack animation again afterwards.
             // to begin in the start.
             //this.animations[1][5][this.facing].elapsedTime = 0;
@@ -433,6 +435,7 @@ class Link {
           } else if (this.comboCounter === 1) {
             //begin attack animation interval.
             this.state = 6;
+            ASSET_MANAGER.playAsset("./music/link_attack_2.mp3");
             this.comboCounter++;
           } else if (this.comboCounter === this.maxComboCounter) {
             this.comboCounter = 0;
@@ -557,19 +560,7 @@ class Link {
   }
 
   draw(ctx) {
-    // if(this.itemsEquipped === 1){
-    // 	if(this.facing === 0){
-    // 		if(this.state <= 1){
-    // 			this.animations[this.itemsEquipped][this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, 3);
-    // 		}else if(this.state === 2){
-    // 			this.animations[this.itemsEquipped][this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y + 20  - this.game.camera.y, 3);
-    // 		}
-    // 	} else if(this.facing === 1){
-
-    // 	}
-    // } else if (this.itemsEquipped === 0) {
-
-    // }
+ 
 
     //if we haven't been hit draw as normal
     if (!this.damagedState) {
@@ -613,7 +604,12 @@ class Link {
     } else if (this.damagedState && !this.dead) {
       if (this.flickerFlag) {
         if (this.itemsEquipped === 1) {
+
+          if(this.facing === 0){
           this.animations[this.itemsEquipped][this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, 3);
+          } else if(this.facing === 1){
+            this.animations[this.itemsEquipped][this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - 90 - this.game.camera.x, this.y - this.game.camera.y, 3);
+          }
         } else {
           this.animations[this.itemsEquipped][this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - 20 - this.game.camera.x, this.y - this.game.camera.y + 10, 3);
         }

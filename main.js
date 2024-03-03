@@ -25,8 +25,14 @@ ASSET_MANAGER.queueDownload("./sprites/wall.png");
 ASSET_MANAGER.queueDownload("./sprites/trees.png");
 ASSET_MANAGER.queueDownload("./sprites/props.png");
 
-//music
+//sounds
 ASSET_MANAGER.queueDownload("./music/Undertale-Waterfall.mp3");
+
+
+ASSET_MANAGER.queueDownload("./music/link_attack_1.mp3");
+ASSET_MANAGER.queueDownload("./music/link_attack_2.mp3");
+ASSET_MANAGER.queueDownload("./music/link_damage_1.mp3");
+
 
 ASSET_MANAGER.downloadAll(() => {
   ASSET_MANAGER.autoRepeat("./music/Undertale-Waterfall.mp3");

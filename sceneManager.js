@@ -60,7 +60,7 @@ class SceneManager {
     this.playPauseButtonX =
       PARAMS.CANVAS_WIDTH - this.playPauseButtonWidth - 20; // 20 padding from the right edge
     this.playPauseButtonY = 20;
-    this.gamePaused = false;
+    this.gamePaused = true;
     this.canvas.addEventListener("click", this.handlePlayPauseClick.bind(this));
 
     // Coordinates and size for the options button
@@ -170,6 +170,14 @@ class SceneManager {
         ]);
         this.game.addEntity(this.skeleton1);
 
+        this.skeleton2 = new Skeleton(this.game, 2000, 2000, [
+          { x: randomInt(800), y: randomInt(800) },
+          { x: randomInt(800), y: randomInt(800) },
+          { x: randomInt(800), y: randomInt(800) },
+          { x: 0, y: 0 },
+        ]);
+        this.game.addEntity(this.skeleton2);
+
         this.wizard1 = new Wizard(this.game, 2500, 800, [
           { x: randomInt(800), y: randomInt(800) },
           { x: randomInt(800), y: randomInt(800) },
@@ -177,6 +185,14 @@ class SceneManager {
           { x: 0, y: 0 },
         ]);
         this.game.addEntity(this.wizard1);
+
+        this.wizard2 = new Wizard(this.game, 500, 2000, [
+          { x: randomInt(800), y: randomInt(800) },
+          { x: randomInt(800), y: randomInt(800) },
+          { x: randomInt(800), y: randomInt(800) },
+          { x: 0, y: 0 },
+        ]);
+        this.game.addEntity(this.wizard2);
 
         this.banshee1 = new Banshee(this.game, 2000, 2000, [
           { x: randomInt(800), y: randomInt(800) },
@@ -193,6 +209,14 @@ class SceneManager {
           { x: 0, y: 0 },
         ]);
         this.game.addEntity(this.banshee2);
+
+        this.banshee3 = new Banshee(this.game, 800, 2800, [
+          { x: randomInt(800), y: randomInt(800) },
+          { x: randomInt(800), y: randomInt(800) },
+          { x: randomInt(800), y: randomInt(800) },
+          { x: 0, y: 0 },
+        ]);
+        this.game.addEntity(this.banshee3);
 
         this.goblin1 = new Goblin(this.game, 100, 2000, [
           { x: randomInt(800), y: randomInt(800) },
@@ -217,6 +241,14 @@ class SceneManager {
           { x: 0, y: 0 },
         ]);
         this.game.addEntity(this.goblin3);
+
+        this.goblin4 = new Goblin(this.game, 800, 1000, [
+          { x: randomInt(800), y: randomInt(800) },
+          { x: randomInt(800), y: randomInt(800) },
+          { x: randomInt(800), y: randomInt(800) },
+          { x: 0, y: 0 },
+        ]);
+        this.game.addEntity(this.goblin4);
 
         this.game.addEntity(this.link);
         this.ground.placeOuterBoundingBoxes();
@@ -352,6 +384,15 @@ class SceneManager {
       this.playPauseButtonWidth,
       this.playPauseButtonHeight
     );
+    // Add border around the button
+    ctx.strokeStyle = "#000";
+    ctx.lineWidth = 2;
+    ctx.strokeRect(
+      this.playPauseButtonX, 
+      this.playPauseButtonY, 
+      this.playPauseButtonWidth, 
+      this.playPauseButtonHeight
+      );
     // Text for the button (using pause/play symbols)
     ctx.fillStyle = "#000";
     ctx.font = "24px Arial";
@@ -371,6 +412,14 @@ class SceneManager {
       this.optionsButtonWidth,
       this.optionsButtonHeight
     );
+    // Add border around the button
+    ctx.strokeStyle = "#000";
+    ctx.lineWidth = 2;
+    ctx.strokeRect(
+      this.optionsButtonX, 
+      this.optionsButtonY, 
+      this.optionsButtonWidth, 
+      this.optionsButtonHeight);
     ctx.fillStyle = "#000";
     ctx.font = "18px Arial";
     ctx.fillText("Options", this.optionsButtonX + 10, this.optionsButtonY + 30);
