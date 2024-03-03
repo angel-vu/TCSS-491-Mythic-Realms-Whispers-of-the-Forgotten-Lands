@@ -47,6 +47,7 @@ class Link {
     this.currentHealth -= damageNumber;
     this.damagedState = true;
     this.state = 0;
+    ASSET_MANAGER.playAsset("./music/link_damage_1.mp3");
   }
   //a bounding sphere to attract enemy entities toward us.
   updatePathingCircle() {
@@ -426,6 +427,7 @@ class Link {
 
           if (this.comboCounter === 0) {
             this.state = 5;
+            ASSET_MANAGER.playAsset("./music/link_attack_1.mp3");
             //Line needed here in the case where I interupt my attack animation and I try to enter the attack animation again afterwards.
             // to begin in the start.
             //this.animations[1][5][this.facing].elapsedTime = 0;
@@ -433,6 +435,7 @@ class Link {
           } else if (this.comboCounter === 1) {
             //begin attack animation interval.
             this.state = 6;
+            ASSET_MANAGER.playAsset("./music/link_attack_2.mp3");
             this.comboCounter++;
           } else if (this.comboCounter === this.maxComboCounter) {
             this.comboCounter = 0;
