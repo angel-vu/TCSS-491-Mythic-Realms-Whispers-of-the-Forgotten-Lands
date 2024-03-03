@@ -2,7 +2,7 @@ class SceneManager {
   constructor(game) {
     this.game = game;
     this.game.camera = this;
-    this.totalEnemies = 7;
+    this.totalEnemies = 0;
     this.x = 0;
     this.y = 0;
 
@@ -191,9 +191,6 @@ class SceneManager {
         ]);
         this.game.addEntity(this.goblin3);
 
-        // this.ganon = new Ganon(this.game, 600, 800, [{ x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: 0, y: 0 }]);
-        // this.game.addEntity(this.ganon);
-
         this.game.addEntity(this.link);
         this.ground.placeOuterBoundingBoxes();
       }
@@ -240,12 +237,19 @@ class SceneManager {
     }
 
     // Count total number of enemies
-    const totalEnemies = this.game.entities.filter((entity) => entity instanceof Banshee || entity instanceof Goblin || entity instanceof Skeleton || entity instanceof Wizard).length;
+    this.totalEnemies = this.game.entities.filter((entity) => entity instanceof Banshee || entity instanceof Goblin || entity instanceof Skeleton || entity instanceof Wizard || entity instanceof Ganon).length;
 
-    if (totalEnemies === 0) {
-      this.gameOver = false;
-      this.gameWin = true;
-      this.loadLevel(1, 0, 0, true, this.title, this.gameOver, this.gameWin);
+    if (this.totalEnemies === 0) {
+      this.totalEnemies = 1;
+      if (this.level == 1) {
+        this.ganon = new Ganon(this.game, 600, 800, [{ x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: 0, y: 0 }], 0);
+        this.game.addEntity(this.ganon);
+        if (this.ganon.dead) {
+          this.gameOver = false;
+          this.gameWin = true;
+          this.loadLevel(1, 0, 0, true, this.title, this.gameOver, this.gameWin);
+        }
+      }
     }
 
     // Updating counters for each enemy type
