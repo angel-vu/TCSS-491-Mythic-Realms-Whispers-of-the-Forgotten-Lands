@@ -26,7 +26,7 @@ class Ganon {
 
     this.healthbar = new HealthBar(this);
 
-    this.phase = phase; // 0 = first phase (no spear), 1 = second phase. 2 = teleporting
+    // this.phase: 0 = first phase (no spear), 1 = second phase. 2 = teleporting
     this.state = 0; // 0 = idle, 1 = walking, 2 = attacking
     this.facing = 0; // 0 = down, 1 = left, 2 = up, 3 = right
     this.dead = false;
@@ -760,7 +760,7 @@ class Ganon {
           this.scale
         );
       }
-    } else if (this.phase == 1) {
+    } else if (this.phase == 1 && this.dead) {
       this.animations = this.deadAnim;
       this.animations.drawFrame(
         this.game.clockTick,
@@ -871,7 +871,7 @@ class Trident {
   }
 
   loadAnimations() {
-    this.weapons[0].push(
+    this.weapons[1] = // trident left
       new Animator(
         this.spritesheet,
         725,
@@ -884,9 +884,9 @@ class Trident {
         false,
         false,
         false
-      )
-    );
-    this.weapons[1].push(
+      );
+    
+    this.weapons[0] = // trident top left
       new Animator(
         this.spritesheet,
         800,
@@ -899,9 +899,9 @@ class Trident {
         false,
         false,
         false
-      )
-    );
-    this.weapons[2].push(
+      );
+    
+    this.weapons[7] = // trident top
       new Animator(
         this.spritesheet,
         871,
@@ -914,9 +914,9 @@ class Trident {
         false,
         false,
         false
-      )
-    );
-    this.weapons[3].push(
+      );
+    
+    this.weapons[6] = // trident top right
       new Animator(
         this.spritesheet,
         721,
@@ -929,9 +929,9 @@ class Trident {
         false,
         false,
         false
-      )
-    );
-    this.weapons[4].push(
+      );
+    
+    this.weapons[5] = // trident right
       new Animator(
         this.spritesheet,
         798,
@@ -944,9 +944,9 @@ class Trident {
         false,
         false,
         false
-      )
-    );
-    this.weapons[5].push(
+      );
+    
+    this.weapons[4] = // trident bottom right
       new Animator(
         this.spritesheet,
         725,
@@ -959,9 +959,9 @@ class Trident {
         false,
         false,
         false
-      )
-    );
-    this.weapons[6].push(
+      );
+    
+    this.weapons[3] = // trident bottom
       new Animator(
         this.spritesheet,
         725,
@@ -974,9 +974,9 @@ class Trident {
         false,
         false,
         false
-      )
-    );
-    this.weapons[7].push(
+      );
+    
+    this.weapons[2] = // trident bottom left
       new Animator(
         this.spritesheet,
         725,
@@ -989,8 +989,22 @@ class Trident {
         false,
         false,
         false
-      )
-    );
+      );
+    
+  }
+
+  updateHitBox() {
+    // if (this.weapons[0]) {
+    //   this.hitBox = new BoundingBox(this.x, this.y, 67, 69);
+    // } else if (this.weapons[1] || this.weapons[2] || this.weapons[3] || this.weapons[4]) {
+    //   this.hitBox = new BoundingBox(this.x, this.y, 82, 69);
+    // } else if (this.weapons[5]) {
+    //   this.hitBox = new BoundingBox(this.x, this.y, 69, 69)
+    // } else if (this.weapons[6]) {
+    //   this.hitBox = new BoundingBox(this.x, this.y, 77, 66);
+    // } else if (this.weapons[7]) {
+    //   this.hitBox = new BoundingBox(this.x, this.y, 62, 71);
+    // }
   }
 
   update() {
@@ -1001,6 +1015,7 @@ class Trident {
     };
 
     this.facing = getRotationFacing(this.velocity);
+    this.updateHitBox();
   }
 
   drawAngle(ctx, angle) {

@@ -16,6 +16,8 @@ class SceneManager {
     this.title = true;
     this.credits = false;
     this.level = 1;
+    this.Ganon1Spawn = false;
+    this.Ganon2Spawn = false;
 
     this.bansheeCounter = 0;
     this.bansheeCounterImage = new Image();
@@ -269,13 +271,12 @@ class SceneManager {
         entity instanceof Wizard ||
         entity instanceof Ganon
     ).length;
-    let GanonSpawn = 0;
 
     if (this.totalEnemies == 0) {
-      if (GanonSpawn <= 2) {
-        this.game.camera.entityCount = 1;
-        GanonSpawn++;
-        if (this.level == 1 && GanonSpawn == 1) {
+      //if (GanonSpawn <= 2) {
+        if (this.level == 1 && !this.Ganon1Spawn) {
+          // Spawn Ganon with phase 0
+          console.log("1st phase spawn");
           this.ganon = new Ganon(
             this.game,
             600,
@@ -289,7 +290,9 @@ class SceneManager {
             0
           );
           this.game.addEntity(this.ganon);
-        } else if (this.level == 1 && GanonSpawn == 2) {
+          this.Ganon1Spawn = true;
+        } else if (this.level == 1 && !this.Ganon2Spawn && this.Ganon1Spawn) {
+          // Spawn Ganon with phase 1
           console.log("2nd phase Ganon appeared");
           this.ganon2 = new Ganon(
             this.game,
@@ -304,13 +307,22 @@ class SceneManager {
             1
           );
           this.game.addEntity(this.ganon2);
-          if (this.ganon2.dead) {
-            this.gameOver = false;       
-            this.gameWin = true;
-            this.loadLevel(1, 0, 0, true, this.title, this.gameOver, this.gameWin);
-          }
         }
-      }
+        // Check for Ganon's death and transition to the next level or phase
+        if (this.ganon2 && this.ganon2.dead && Ganon1Spawn && Ganon2Spawn) {
+          this.gameOver = false;
+          this.gameWin = true;
+          this.loadLevel(
+            1,
+            0,
+            0,
+            true,
+            this.title,
+            this.gameOver,
+            this.gameWin
+          );
+        }
+      //}
     }
 
     // Updating counters for each enemy type
