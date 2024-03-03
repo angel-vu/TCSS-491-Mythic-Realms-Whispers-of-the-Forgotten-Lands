@@ -11,11 +11,11 @@ class Ganon {
     this.radius = 50;
     this.visualRadius = 400;
 
-    this.currentHealth = 200;
-    this.maxHealth = 200;
+    this.maxHealth = 10;
+    this.currentHealth = this.maxHealth;
     this.dead = false;
 
-    //how long Link has been damagedfor in seconds.
+    //how long Ganon has been damaged for in seconds.
     this.damagedCounter = 0;
     // see if Ganon gets attacked
     this.damagedState = false;
@@ -632,8 +632,6 @@ class Ganon {
             //if (this.state == 0 || this.state == 1) {
             this.state = 2;
             this.facing = 0;
-            // this.elapsedTime += this.game.clockTick;
-            //console.log("State Changed to 2");
             if (this.elapsedTime > 3 && !ent.damagedState) {
               this.game.addEntity(
                 new Orb(this.game, this.x - 30, this.y - 100, ent)
@@ -720,19 +718,18 @@ class Ganon {
           }
         }
       }
+      if (this.damagedState && !this.dead) {
+        //When in a state of being damaged, create a window where you flicker for 1 second and you can't take damage.
+        this.damagedCounter += this.game.clockTick;
+        if (this.damagedCounter >= 1) {
+          this.damagedState = false;
+          this.state = 1;
+          this.damagedCounter = 0;
+          //stopping link from sliding when he is damaged.
+        }
+      }
     } else {
       this.state = 1;
-    }
-
-    if (this.damagedState && !this.dead) {
-      //When in a state of being damaged, create a window where you flicker for 1 second and you can't take damage.
-      this.damagedCounter += this.game.clockTick;
-      if (this.damagedCounter >= 1) {
-        this.damagedState = false;
-        this.state = 0;
-        this.damagedCounter = 0;
-        //stopping link from sliding when he is damaged.
-      }
     }
 
     this.updateHurtAndMoveBox();
@@ -743,7 +740,7 @@ class Ganon {
     // Draw the weapon and the Ganon animation if it's not dead
     if (!this.dead) {
       // Check if Ganon is in the attacking state with the weapon (phase 0, state 2)
-      if (this.phase === 0 && this.state === 2) {
+      if ((this.phase == 0 || this.phase == 1) && this.state === 2) {
         //console.log(this.phase, this.state, this.facing);
         // Draw the Ganon animation
         this.animations[this.phase][this.state][this.facing].drawFrame(
@@ -763,8 +760,15 @@ class Ganon {
           this.scale
         );
       }
-    } else {
+    } else if (this.phase == 1) {
       this.animations = this.deadAnim;
+      this.animations.drawFrame(
+        this.game.clockTick,
+        ctx,
+        this.x - this.game.camera.x,
+        this.y - this.game.camera.y,
+        this.scale
+      );
     }
 
     // Draw Ganon's health bar
@@ -775,15 +779,13 @@ class Ganon {
     // Draw other debug information if enabled
     if (PARAMS.DEBUG) {
       // Draw the Blue rectangle for Ganon's hitbox that can get hit
-      if (PARAMS.DEBUG && this.boundingBox) {
-        ctx.strokeStyle = "Blue";
-        ctx.strokeRect(
-          this.hurtBox.x - this.game.camera.x,
-          this.hurtBox.y - this.game.camera.y,
-          this.hurtBox.width,
-          this.hurtBox.height
-        );
-      }
+      ctx.strokeStyle = "Blue";
+      ctx.strokeRect(
+        this.hurtBox.x - this.game.camera.x,
+        this.hurtBox.y - this.game.camera.y,
+        this.hurtBox.width,
+        this.hurtBox.height
+      );
 
       // Inner Circle
       ctx.strokeStyle = "Yellow";
@@ -1069,6 +1071,7 @@ class Orb {
     this.game.Orb = this;
     var dist = distance(this, this.target);
     this.radius = 12;
+    this.scale = 4;
 
     this.maxSpeed = 100;
     this.velocity = {
@@ -1103,7 +1106,12 @@ class Orb {
   }
 
   updateHitBox() {
-    this.hitBox = new BoundingBox(this.x, this.y, 37 * 5, 27 * 5);
+    this.hitBox = new BoundingBox(
+      this.x,
+      this.y,
+      37 * this.scale,
+      27 * this.scale
+    );
   }
 
   update() {
@@ -1140,7 +1148,7 @@ class Orb {
       ctx,
       this.x - this.game.camera.x,
       this.y - this.game.camera.y,
-      5
+      this.scale
     );
 
     //drawing the hitbox of the attack animation

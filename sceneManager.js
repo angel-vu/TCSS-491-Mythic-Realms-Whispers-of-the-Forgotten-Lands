@@ -55,7 +55,8 @@ class SceneManager {
     this.playPauseButtonWidth = 40;
     this.playPauseButtonHeight = 40;
     // X coordinate to position the button on the right side of the screen
-    this.playPauseButtonX = PARAMS.CANVAS_WIDTH - this.playPauseButtonWidth - 20; // 20 padding from the right edge
+    this.playPauseButtonX =
+      PARAMS.CANVAS_WIDTH - this.playPauseButtonWidth - 20; // 20 padding from the right edge
     this.playPauseButtonY = 20;
     this.gamePaused = false;
     this.canvas.addEventListener("click", this.handlePlayPauseClick.bind(this));
@@ -74,7 +75,12 @@ class SceneManager {
     const mouseY = event.clientY - this.canvas.getBoundingClientRect().top;
 
     // Check if the click is within the boundaries of the play/pause button
-    if (mouseX >= this.playPauseButtonX && mouseX <= this.playPauseButtonX + this.playPauseButtonWidth && mouseY >= this.playPauseButtonY && mouseY <= this.playPauseButtonY + this.playPauseButtonHeight) {
+    if (
+      mouseX >= this.playPauseButtonX &&
+      mouseX <= this.playPauseButtonX + this.playPauseButtonWidth &&
+      mouseY >= this.playPauseButtonY &&
+      mouseY <= this.playPauseButtonY + this.playPauseButtonHeight
+    ) {
       // Toggle the gamePaused flag
       this.gamePaused = !this.gamePaused;
       console.log("pause clicked!");
@@ -86,7 +92,12 @@ class SceneManager {
     const mouseY = event.clientY - this.canvas.getBoundingClientRect().top;
 
     // Check if the click is within the boundaries of the options button
-    if (mouseX >= this.optionsButtonX && mouseX <= this.optionsButtonX + this.optionsButtonWidth && mouseY >= this.optionsButtonY && mouseY <= this.optionsButtonY + this.optionsButtonHeight) {
+    if (
+      mouseX >= this.optionsButtonX &&
+      mouseX <= this.optionsButtonX + this.optionsButtonWidth &&
+      mouseY >= this.optionsButtonY &&
+      mouseY <= this.optionsButtonY + this.optionsButtonHeight
+    ) {
       // Handle options button click action here
       console.log("Options clicked!");
     }
@@ -101,7 +112,17 @@ class SceneManager {
   loadLevel(level, x, y, transition, title, gameOver, gameWin) {
     if (level === 1) {
       if (transition) {
-        this.game.addEntity(new TransitionScreen(this.game, this.level, x, y, this.title, gameOver, gameWin));
+        this.game.addEntity(
+          new TransitionScreen(
+            this.game,
+            this.level,
+            x,
+            y,
+            this.title,
+            gameOver,
+            gameWin
+          )
+        );
       } else {
         //play music
         ASSET_MANAGER.pauseBackgroundMusic();
@@ -222,7 +243,7 @@ class SceneManager {
     //music
     if (this.game.ganon) {
       //play boss music
-    }  
+    }
     // if (this.entityCount > 0) {
     //   //ASSET_MANAGER.playAsset("./music/Undertale-Waterfall.mp3");
     // }
@@ -237,30 +258,74 @@ class SceneManager {
     if (!this.gamePaused) {
       // add in logic
       //ASSET_MANAGER.playAsset("./music/Undertale-Waterfall.mp3");
-    
     }
 
     // Count total number of enemies
-    this.totalEnemies = this.game.entities.filter((entity) => entity instanceof Banshee || entity instanceof Goblin || entity instanceof Skeleton || entity instanceof Wizard || entity instanceof Ganon).length;
+    this.totalEnemies = this.game.entities.filter(
+      (entity) =>
+        entity instanceof Banshee ||
+        entity instanceof Goblin ||
+        entity instanceof Skeleton ||
+        entity instanceof Wizard ||
+        entity instanceof Ganon
+    ).length;
+    let GanonSpawn = 0;
 
-    if (this.totalEnemies === 0) {
-      this.totalEnemies = 1;
-      if (this.level == 1) {
-        this.ganon = new Ganon(this.game, 600, 800, [{ x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: randomInt(800), y: randomInt(800) }, { x: 0, y: 0 }], 0);
-        this.game.addEntity(this.ganon);
-        if (this.ganon.dead) {
-          this.gameOver = false;
-          this.gameWin = true;
-          this.loadLevel(1, 0, 0, true, this.title, this.gameOver, this.gameWin);
+    if (this.totalEnemies == 0) {
+      if (GanonSpawn <= 2) {
+        this.game.camera.entityCount = 1;
+        GanonSpawn++;
+        if (this.level == 1 && GanonSpawn == 1) {
+          this.ganon = new Ganon(
+            this.game,
+            600,
+            800,
+            [
+              { x: randomInt(800), y: randomInt(800) },
+              { x: randomInt(800), y: randomInt(800) },
+              { x: randomInt(800), y: randomInt(800) },
+              { x: 0, y: 0 },
+            ],
+            0
+          );
+          this.game.addEntity(this.ganon);
+        } else if (this.level == 1 && GanonSpawn == 2) {
+          console.log("2nd phase Ganon appeared");
+          this.ganon2 = new Ganon(
+            this.game,
+            600,
+            800,
+            [
+              { x: randomInt(800), y: randomInt(800) },
+              { x: randomInt(800), y: randomInt(800) },
+              { x: randomInt(800), y: randomInt(800) },
+              { x: 0, y: 0 },
+            ],
+            1
+          );
+          this.game.addEntity(this.ganon2);
+          if (this.ganon2.dead) {
+            this.gameOver = false;       
+            this.gameWin = true;
+            this.loadLevel(1, 0, 0, true, this.title, this.gameOver, this.gameWin);
+          }
         }
       }
     }
 
     // Updating counters for each enemy type
-    this.bansheeCounter = this.game.entities.filter((entity) => entity instanceof Banshee).length;
-    this.goblinCounter = this.game.entities.filter((entity) => entity instanceof Goblin).length;
-    this.skeletonCounter = this.game.entities.filter((entity) => entity instanceof Skeleton).length;
-    this.wizardCounter = this.game.entities.filter((entity) => entity instanceof Wizard).length;
+    this.bansheeCounter = this.game.entities.filter(
+      (entity) => entity instanceof Banshee
+    ).length;
+    this.goblinCounter = this.game.entities.filter(
+      (entity) => entity instanceof Goblin
+    ).length;
+    this.skeletonCounter = this.game.entities.filter(
+      (entity) => entity instanceof Skeleton
+    ).length;
+    this.wizardCounter = this.game.entities.filter(
+      (entity) => entity instanceof Wizard
+    ).length;
   }
 
   draw(ctx) {
@@ -269,43 +334,79 @@ class SceneManager {
 
     // play/pause button
     ctx.fillStyle = "#ccc";
-    ctx.fillRect(this.playPauseButtonX, this.playPauseButtonY, this.playPauseButtonWidth, this.playPauseButtonHeight);
+    ctx.fillRect(
+      this.playPauseButtonX,
+      this.playPauseButtonY,
+      this.playPauseButtonWidth,
+      this.playPauseButtonHeight
+    );
     // Text for the button (using pause/play symbols)
     ctx.fillStyle = "#000";
     ctx.font = "24px Arial";
     // Calculate the position to center the symbol horizontally and vertically
     const symbol = this.gamePaused ? "\u25B6" : "\u23F8"; // Unicode for play and pause symbols
-    const textX = this.playPauseButtonX + (this.playPauseButtonWidth - ctx.measureText(symbol).width) / 2; // calculates the x-coordinate for drawing the symbol to horizontally center it within the button
+    const textX =
+      this.playPauseButtonX +
+      (this.playPauseButtonWidth - ctx.measureText(symbol).width) / 2; // calculates the x-coordinate for drawing the symbol to horizontally center it within the button
     const textY = this.playPauseButtonY + (this.playPauseButtonHeight + 20) / 2; // calculates the y-coordinate for drawing the symbol to vertically center it within the button
     ctx.fillText(symbol, textX, textY);
 
     // option button
     ctx.fillStyle = "#ccc";
-    ctx.fillRect(this.optionsButtonX, this.optionsButtonY, this.optionsButtonWidth, this.optionsButtonHeight);
+    ctx.fillRect(
+      this.optionsButtonX,
+      this.optionsButtonY,
+      this.optionsButtonWidth,
+      this.optionsButtonHeight
+    );
     ctx.fillStyle = "#000";
     ctx.font = "18px Arial";
     ctx.fillText("Options", this.optionsButtonX + 10, this.optionsButtonY + 30);
 
     // Banshee counter image
-    ctx.drawImage(this.bansheeCounterImage, 10, 10, this.bansheeCounterImageWidth, this.bansheeCounterImageHeight);
+    ctx.drawImage(
+      this.bansheeCounterImage,
+      10,
+      10,
+      this.bansheeCounterImageWidth,
+      this.bansheeCounterImageHeight
+    );
     ctx.fillStyle = "#000";
     ctx.font = "16px Arial";
     ctx.fillText(`: ${this.bansheeCounter}`, 60, 35);
 
     // Goblin counter image
-    ctx.drawImage(this.goblinCounterImage, 90, 10, this.goblinCounterImageWidth, this.goblinCounterImageHeight);
+    ctx.drawImage(
+      this.goblinCounterImage,
+      90,
+      10,
+      this.goblinCounterImageWidth,
+      this.goblinCounterImageHeight
+    );
     ctx.fillStyle = "#000";
     ctx.font = "16px Arial";
     ctx.fillText(`: ${this.goblinCounter}`, 140, 35);
 
     // Skeleton counter image
-    ctx.drawImage(this.skeletonCounterImage, 170, 10, this.skeletonCounterImageWidth, this.skeletonCounterImageHeight);
+    ctx.drawImage(
+      this.skeletonCounterImage,
+      170,
+      10,
+      this.skeletonCounterImageWidth,
+      this.skeletonCounterImageHeight
+    );
     ctx.fillStyle = "#000";
     ctx.font = "16px Arial";
     ctx.fillText(`: ${this.skeletonCounter}`, 210, 35);
 
     // Wizard counter image
-    ctx.drawImage(this.wizardCounterImage, 240, 10, this.wizardCounterImageWidth, this.wizardCounterImageHeight);
+    ctx.drawImage(
+      this.wizardCounterImage,
+      240,
+      10,
+      this.wizardCounterImageWidth,
+      this.wizardCounterImageHeight
+    );
     ctx.fillStyle = "#000";
     ctx.font = "16px Arial";
     ctx.fillText(`: ${this.wizardCounter}`, 280, 35);
