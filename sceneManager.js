@@ -2,7 +2,7 @@ class SceneManager {
   constructor(game) {
     this.game = game;
     this.game.camera = this;
-    this.entityCount = 7;
+    this.totalEnemies = 7;
     this.x = 0;
     this.y = 0;
 
@@ -218,19 +218,13 @@ class SceneManager {
       this.loadLevel(1, 0, 0, true, this.title, this.gameOver, this.gameWin);
     }
 
-    if (this.entityCount === 0) {
-      this.gameOver = false;
-      this.gameWin = true;
-      this.loadLevel(1, 0, 0, true, this.title, this.gameOver, this.gameWin);
-    }
-
     //music
     if (this.game.ganon) {
       //play boss music
     }  
-    if (this.entityCount > 0) {
-      //ASSET_MANAGER.playAsset("./music/Undertale-Waterfall.mp3");
-    }
+    // if (this.entityCount > 0) {
+    //   //ASSET_MANAGER.playAsset("./music/Undertale-Waterfall.mp3");
+    // }
 
     this.x = 0;
     this.y = 0;
@@ -242,6 +236,7 @@ class SceneManager {
     if (!this.gamePaused) {
       // add in logic
       //ASSET_MANAGER.playAsset("./music/Undertale-Waterfall.mp3");
+    
     }
 
     // Count total number of enemies

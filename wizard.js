@@ -219,6 +219,9 @@ class Wizard {
                     //stopping link from sliding when he is damaged.
                 }
             }
+            if (this.state === 1) {
+                this.state = 0;
+            }   
          } else {
             this.state = 1;
         }
