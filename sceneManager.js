@@ -58,7 +58,7 @@ class SceneManager {
     this.playPauseButtonX =
       PARAMS.CANVAS_WIDTH - this.playPauseButtonWidth - 20; // 20 padding from the right edge
     this.playPauseButtonY = 20;
-    this.gamePaused = false;
+    this.gamePaused = true;
     this.canvas.addEventListener("click", this.handlePlayPauseClick.bind(this));
 
     // Coordinates and size for the options button
