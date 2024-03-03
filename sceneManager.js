@@ -1,6 +1,7 @@
 class SceneManager {
-  constructor(game) {
+  constructor(game, canvas) {
     this.game = game;
+    this.canvas = canvas;
     this.game.camera = this;
     this.totalEnemies = 0;
     this.x = 0;
@@ -57,7 +58,7 @@ class SceneManager {
     this.playPauseButtonX = PARAMS.CANVAS_WIDTH - this.playPauseButtonWidth - 20; // 20 padding from the right edge
     this.playPauseButtonY = 20;
     this.gamePaused = false;
-    canvas.addEventListener("click", this.handlePlayPauseClick.bind(this));
+    this.canvas.addEventListener("click", this.handlePlayPauseClick.bind(this));
 
     // Coordinates and size for the options button
     this.optionsButtonWidth = 80;
@@ -65,12 +66,12 @@ class SceneManager {
     // X coordinate to position the options button to the left of the play/pause button
     this.optionsButtonX = this.playPauseButtonX - this.optionsButtonWidth - 10; // 10 pixels spacing between buttons
     this.optionsButtonY = 20;
-    canvas.addEventListener("click", this.handleOptionsClick.bind(this));
+    this.canvas.addEventListener("click", this.handleOptionsClick.bind(this));
   }
 
   handlePlayPauseClick(event) {
-    const mouseX = event.clientX - canvas.getBoundingClientRect().left;
-    const mouseY = event.clientY - canvas.getBoundingClientRect().top;
+    const mouseX = event.clientX - this.canvas.getBoundingClientRect().left;
+    const mouseY = event.clientY - this.canvas.getBoundingClientRect().top;
 
     // Check if the click is within the boundaries of the play/pause button
     if (mouseX >= this.playPauseButtonX && mouseX <= this.playPauseButtonX + this.playPauseButtonWidth && mouseY >= this.playPauseButtonY && mouseY <= this.playPauseButtonY + this.playPauseButtonHeight) {
@@ -81,8 +82,8 @@ class SceneManager {
   }
 
   handleOptionsClick(event) {
-    const mouseX = event.clientX - canvas.getBoundingClientRect().left;
-    const mouseY = event.clientY - canvas.getBoundingClientRect().top;
+    const mouseX = event.clientX - this.canvas.getBoundingClientRect().left;
+    const mouseY = event.clientY - this.canvas.getBoundingClientRect().top;
 
     // Check if the click is within the boundaries of the options button
     if (mouseX >= this.optionsButtonX && mouseX <= this.optionsButtonX + this.optionsButtonWidth && mouseY >= this.optionsButtonY && mouseY <= this.optionsButtonY + this.optionsButtonHeight) {
@@ -102,6 +103,9 @@ class SceneManager {
       if (transition) {
         this.game.addEntity(new TransitionScreen(this.game, this.level, x, y, this.title, gameOver, gameWin));
       } else {
+        //play music
+        ASSET_MANAGER.pauseBackgroundMusic();
+        ASSET_MANAGER.playAsset("./music/Undertale-Waterfall.mp3");
         this.concrete = new Concrete(this.game, 0, 0, levelOne);
         this.game.addEntity(this.concrete);
 
