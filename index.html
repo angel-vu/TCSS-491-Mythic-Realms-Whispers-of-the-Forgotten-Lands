@@ -90,6 +90,18 @@
         height: 300px;
         z-index: 0;
       }
+
+      #canvas-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh; /* Use the full viewport height */
+      }
+
+      canvas {
+        background: rgb(102, 73, 99);
+        border: 1px solid rgba(0, 0, 0, 0);
+      }
     </style>
   </head>
   <body>
@@ -106,7 +118,11 @@
         <img src="./sprites/fantasyrealm.png" alt="Popup Image" />
         <img src="./sprites/Link.png" alt="Overlay Image" class="popup-overlay-image" />
         <h2 class="popup-title">Quest</h2>
-        <p class="popup-message">Once upon a time, in the Mystic Realms Whispers of the Forgotten Lands, there lived a courageous hero named Link. One day, he received a quest was to defeat the wicked enemies threatening the peace of the Forgotten Lands: the terrifying Banshee haunting the forests and the mischievous Goblins lurking in the dark caves.</p>
+        <p class="popup-message">Once upon a time, in the Mystic Realms Whispers of the Forgotten Lands, there lived 
+          a courageous hero named Link. One day, he received a quest was to defeat the wicked enemies threatening the 
+          peace of the Forgotten Lands: the terrifying Banshee haunting the forests, the mischievous Goblins lurking 
+          in the dark caves, the sinister Wizards weaving dark spells in ancient ruins, and the skeletal warriors known 
+          as Skeletons, rising from their graves to sow chaos and despair.</p>
       </div>
     </div>
     <div class="popup-overlay" id="thirdPopup" style="display: none">
@@ -114,11 +130,14 @@
         <img src="./sprites/fantasyrealm.png" alt="Popup Image" />
         <img src="./sprites/Link.png" alt="Overlay Image" class="popup-overlay-image" />
         <h2 class="popup-title">How To Play</h2>
-        <p class="popup-message">Use W,A,S,D keys for movements up, down, left, and right. Hold shift key for Link to run. Click the mouse to attack the enemies. Defeat all enemies to win the game. Are you capable to complete this quest? Good luck!</p>
+        <p class="popup-message">Use W,A,S,D keys for movements up, down, left, and right. Hold shift key for Link to 
+          run. Click the mouse to attack the enemies. Defeat all enemies to bring back peace to the Forgotten Lands. 
+          Are you capable to complete this quest? Good luck!!</p>
       </div>
     </div>
-    <canvas id="gameWorld" width="1024" height="768" style="background: rgb(102, 73, 99); border: 1px solid rgba(0, 0, 0, 0)" tabindex="0" autofocus></canvas>
-
+    <div id="canvas-container">
+      <canvas id="gameWorld" width="1024" height="768" tabindex="0" autofocus></canvas>
+    </div>
     <script>
       // var popupOverlay = document.getElementById("popup");
       // var secondPopupOverlay = document.getElementById("secondPopup");
