@@ -507,6 +507,7 @@ class Link {
                 //so Link doesn't heal over the max health.
                 that.currentHealth = Math.min(that.currentHealth + 2, that.maxHealth);
               }
+              ASSET_MANAGER.playAsset("./music/heal.mp3");
               entity.removeFromWorld = true;
             }
           }
