@@ -51,7 +51,7 @@ function getFacing(velocity) {
 }
 
 function getRotationFacing(velocity) {
-  if (velocity.x === 0 && velocity.y === 0) return 4;
+  if (velocity.x == 0 && velocity.y == 0) return 4;
   let angle = Math.atan2(velocity.y, velocity.x) / Math.PI;
 
   if (-0.875 <= angle && angle < -0.625) return 7;
@@ -62,6 +62,8 @@ function getRotationFacing(velocity) {
   if (0.375 <= angle && angle < 0.625) return 4;
   if (0.625 <= angle && angle < 0.875) return 5;
   if (angle >= 0.875 || angle < -0.875) return 6;
+
+  return 100;
 }
 
 
