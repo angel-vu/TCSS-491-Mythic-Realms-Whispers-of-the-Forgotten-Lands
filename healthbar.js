@@ -9,12 +9,20 @@ class HealthBar {
     };
 
     draw(ctx) {
-            var ratio = this.agent.currentHealth / this.agent.maxHealth;
-            ctx.strokeStyle = "Black";
-            ctx.fillStyle = ratio < 0.2 ? "Red" : ratio < 0.5 ? "Yellow" : "Green";
-            ctx.fillRect(this.agent.x - this.agent.game.camera.x, this.agent.y - this.agent.game.camera.y, this.xOffset * ratio, 4);
-            ctx.strokeRect(this.agent.x - this.agent.game.camera.x, this.agent.y - this.agent.game.camera.y, this.xOffset, 4);
+        var ratio = this.agent.currentHealth / this.agent.maxHealth;
+        var healthBarWidth = this.xOffset * ratio;
+    
+        // Calculate the position to center the health bar above the entity
+        // Might have to make it specific to entity, or make boxes for each entity?
+        var barX = this.agent.x - this.agent.game.camera.x - (healthBarWidth / 2) + 50;
+        var barY = this.agent.y - this.agent.game.camera.y - 10;
+    
+        ctx.strokeStyle = "Black";
+        ctx.fillStyle = ratio < 0.2 ? "Red" : ratio < 0.5 ? "Yellow" : "Green";
+        ctx.fillRect(barX, barY, healthBarWidth, 4);
+        ctx.strokeRect(barX, barY, this.xOffset, 4);
     };
+    
 };
 
 class Score {

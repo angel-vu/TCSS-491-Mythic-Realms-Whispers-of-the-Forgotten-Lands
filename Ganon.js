@@ -1,6 +1,6 @@
 class Ganon {
-  constructor(game, x, y, path) {
-    Object.assign(this, { game, x, y, path });
+  constructor(game, x, y, path, phase) {
+    Object.assign(this, { game, x, y, path, phase });
     this.spritesheet = ASSET_MANAGER.getAsset("./boss_sprites/Ganondorf.png");
     this.game.ganon = this;
     this.scale = 3;
@@ -11,19 +11,23 @@ class Ganon {
     this.radius = 50;
     this.visualRadius = 400;
 
-    this.currentHealth = 200;
-    this.maxHealth = 200;
+    this.maxHealth = 10;
+    this.currentHealth = this.maxHealth;
     this.dead = false;
 
-    //how long Link has been damagedfor in seconds.
+    //how long Ganon has been damaged for in seconds.
     this.damagedCounter = 0;
+    // see if Ganon gets attacked
+    this.damagedState = false;
+    // Track if Ganon did an attack
+    this.didAttack = false;
     //Flag used to flicker when damaged.
     this.flickerFlag = true;
 
     this.healthbar = new HealthBar(this);
 
-    this.phase = 0; // 0 = first phase (no spear), 1 = second phase. 2 = teleporting 
-    this.state = 1; // 0 = idle, 1 = walking, 2 = attacking
+    // this.phase: 0 = first phase (no spear), 1 = second phase. 2 = teleporting
+    this.state = 0; // 0 = idle, 1 = walking, 2 = attacking
     this.facing = 0; // 0 = down, 1 = left, 2 = up, 3 = right
     this.dead = false;
 
@@ -32,8 +36,9 @@ class Ganon {
     this.pauseCount = 0; // Counter to track the number of ticks the animation has been paused
 
     this.targetID = 0;
-    if (this.path && this.path[this.targetID])
+    if (this.path && this.path[this.targetID]) {
       this.target = this.path[this.targetID];
+    }
 
     var dist = distance(this, this.target);
     this.maxSpeed = 150; // pixels per second
@@ -46,7 +51,8 @@ class Ganon {
     this.elapsedTime = 0;
     this.animations = [];
     this.loadAnimations();
-    this.updateHurtBox();
+    this.updateHurtAndMoveBox();
+    this.updatePathingCircle();
   }
 
   loadAnimations() {
@@ -190,7 +196,7 @@ class Ganon {
       68,
       69,
       5,
-      0.5,
+      0.4,
       0,
       false,
       true,
@@ -363,58 +369,58 @@ class Ganon {
     // attack down (only direction - spear throw)
     this.animations[1][2][0] = new Animator(
       this.spritesheet,
-      380,
+      378,
       721,
-      73,
-      74,
+      95,
+      76,
       6,
-      0.2,
+      0.8,
       0,
       false,
       true,
       false
     );
 
-      // phase 1, state 2, make remaining directions teleporting directions
-      this.animations[1][2][1] = new Animator(
-        this.spritesheet,
-        360,
-        513,
-        83,
-        49,
-        4,
-        0.2,
-        0,
-        true,
-        true,
-        false
-      );
-      this.animations[1][2][2] = new Animator(
-        this.spritesheet,
-        360,
-        513,
-        83,
-        49,
-        4,
-        0.2,
-        0,
-        true,
-        true,
-        false
-      );
-      this.animations[1][2][3] = new Animator(
-        this.spritesheet,
-        360,
-        513,
-        83,
-        49,
-        4,
-        0.2,
-        0,
-        true,
-        true,
-        false
-      );
+    // phase 1, state 2, make remaining directions teleporting directions
+    this.animations[1][2][1] = new Animator(
+      this.spritesheet,
+      360,
+      513,
+      83,
+      49,
+      4,
+      0.2,
+      0,
+      true,
+      true,
+      false
+    );
+    this.animations[1][2][2] = new Animator(
+      this.spritesheet,
+      360,
+      513,
+      83,
+      49,
+      4,
+      0.2,
+      0,
+      true,
+      true,
+      false
+    );
+    this.animations[1][2][3] = new Animator(
+      this.spritesheet,
+      360,
+      513,
+      83,
+      49,
+      4,
+      0.2,
+      0,
+      true,
+      true,
+      false
+    );
 
     // This animation when Ganon dies
     this.deadAnim = new Animator(
@@ -432,39 +438,148 @@ class Ganon {
     );
   }
 
-
   // Ganon's character bounding boxes for collisions with other entities
-  updateHurtBox() {
+  updateHurtAndMoveBox() {
     if (this.phase == 0 && this.animations[0][0][0]) {
-      this.boundingBox = new BoundingBox(this.x + 10, this.y, 50, 45);
+      this.hurtBox = new BoundingBox(
+        this.x + 10,
+        this.y,
+        50 * this.scale,
+        45 * this.scale
+      );
+      this.moveBox = new BoundingBox(
+        this.x + 50,
+        this.y + 125,
+        30 * this.scale,
+        25
+      );
     } else if (
       this.phase == 0 &&
       (this.animations[0][0][1] || this.animations[0][0][3])
     ) {
-      this.boundingBox = new BoundingBox(this.x, 0, 20, 10);
+      this.hurtBox = new BoundingBox(
+        this.x,
+        this.y,
+        20 * this.scale,
+        10 * this.scale
+      );
+      this.moveBox = new BoundingBox(
+        this.x + 50,
+        this.y + 125,
+        20 * this.scale,
+        5 * this.scale
+      );
     } else if (this.phase == 0 && this.animations[0][0][2]) {
-      this.boundingBox = new BoundingBox(this.x, this.y, 60, 40);
+      this.hurtBox = new BoundingBox(
+        this.x,
+        this.y,
+        60 * this.scale,
+        40 * this.scale
+      );
+      this.moveBox = new BoundingBox(
+        this.x + 50,
+        this.y + 125,
+        60 * this.scale,
+        20 * this.scale
+      );
     } else if (
       this.phase == 0 &&
       (this.animations[0][1][0] || this.animations[0][1][2])
     ) {
-      this.boundingBox = new BoundingBox(this.x, this.y, 60, 54);
+      this.hurtBox = new BoundingBox(
+        this.x,
+        this.y,
+        60 * this.scale,
+        54 * this.scale
+      );
+      this.moveBox = new BoundingBox(
+        this.x + 50,
+        this.y + 125,
+        60 * this.scale,
+        25
+      );
     } else if (
       this.phase == 0 &&
       (this.animations[0][1][1] || this.animations[0][1][3])
     ) {
-      this.boundingBox = new BoundingBox(this.x, this.y, 50, 49);
+      this.hurtBox = new BoundingBox(
+        this.x,
+        this.y,
+        50 * this.scale,
+        49 * this.scale
+      );
+      this.moveBox = new BoundingBox(
+        this.x + 50,
+        this.y + 125,
+        50 * this.scale,
+        23
+      );
     } else if (this.phase == 0 && this.animations[0][2][0]) {
-      this.boundingBox = new BoundingBox(this.x, this.y, 65, 67);
+      this.hurtBox = new BoundingBox(
+        this.x,
+        this.y,
+        65 * this.scale,
+        67 * this.scale
+      );
+      this.moveBox = new BoundingBox(
+        this.x + 50,
+        this.y + 125,
+        65 * this.scale,
+        32
+      );
     } else if (this.phase == 1 && this.animations[1][0][0]) {
-      this.boundingBox = new BoundingBox(this.x + 16, this.y + 20, 45, 47);
+      this.hurtBox = new BoundingBox(
+        this.x + 16,
+        this.y + 100,
+        50 * this.scale,
+        47
+      );
+      this.moveBox = new BoundingBox(
+        this.x + 50,
+        this.y + 125,
+        60 * this.scale,
+        22
+      );
     } else if (this.phase == 1 && this.animations[1][0][1]) {
-      this.boundingBox = new BoundingBox(this.x, this.y + 30, 50, 15);
+      this.hurtBox = new BoundingBox(this.x, this.y + 30, 50 * this.scale, 15);
+      this.moveBox = new BoundingBox(
+        this.x + 50,
+        this.y + 125,
+        50 * this.scale,
+        7
+      );
     } else if (this.phase == 1 && this.animations[1][0][2]) {
-      this.boundingBox = new BoundingBox(this.x, this.y, 10, 10);
+      this.hurtBox = new BoundingBox(this.x, this.y, 10 * this.scale, 10);
+      this.moveBox = new BoundingBox(
+        this.x + 50,
+        this.y + 125,
+        10 * this.scale,
+        5
+      );
     } else if (this.phase == 1 && this.animations[1][1][0]) {
-      this.boundingBox = new BoundingBox(this.x + 12, this.y + 20, 53, 47);
+      this.hurtBox = new BoundingBox(
+        this.x + 12,
+        this.y + 20,
+        53 * this.scale,
+        47
+      );
+      this.moveBox = new BoundingBox(
+        this.x + 50,
+        this.y + 125,
+        53 * this.scale,
+        22
+      );
     }
+  }
+
+  // Bounding sphere for enemy vision
+  updatePathingCircle() {
+    this.pathingCircle = new BoundingCircle(
+      this.hurtBox.x + this.hurtBox.width / 2,
+      this.hurtBox.y + this.hurtBox.height / 2,
+      this.radius,
+      this.visualRadius
+    );
   }
 
   // Ganon's weapon doing the damage
@@ -479,127 +594,154 @@ class Ganon {
     // }
   }
 
+  // Function to do damage to Ganon
+  damageEntity(damageNumber) {
+    this.currentHealth -= damageNumber;
+    this.damagedState = true;
+    this.state = 0;
+  }
+
   update() {
-    if (this.animations.frameCount == 3) {
-      this.pauseAnimation(3);
-      this.resumeAnimation();
-    }
-    if (this.currentHealth <= 0) {
-      this.dead = true;
-      this.game.camera.entityCount -= 1;
-      this.removeFromWorld = true;
-    }
-
-    this.elapsedTime += this.game.clockTick;
-    var dist = distance(this, this.target);
-    let desiredDistance = 100;
-
-    if (dist < 5) {
-      if (
-        this.targetID < this.path.length - 1 &&
-        this.target === this.path[this.targetID]
-      ) {
-        this.targetID++;
+    if (!this.game.camera.gamePaused) {
+      if (this.currentHealth <= 0) {
+        this.dead = true;
+        this.game.camera.entityCount -= 1;
+        this.removeFromWorld = true;
       }
-      this.target = this.path[this.targetID];
-    }
 
-    for (var i = 0; i < this.game.entities.length; i++) {
-      var ent = this.game.entities[i];
-      if (ent instanceof Link && canSee(this, ent)) {
-        this.target = ent;
-        if (this.state === 0) {
-          if (this.state === 0 || this.state === 1) {
-          this.state = 2;
-          this.facing = 0;
-          this.elapsedTime = 0;
-          this.game.addEntity(new Orb(this.game, this.x, this.y - 10, ent));
-  
+      this.elapsedTime += this.game.clockTick;
+      var dist = distance(this, this.target);
+      let desiredDistance = 60;
+
+      if (dist < 5) {
+        if (
+          this.targetID < this.path.length - 1 &&
+          this.target === this.path[this.targetID]
+        ) {
+          this.targetID++;
         }
-        } else if (this.phase === 1) {
-          if (this.state === 0 || this.state === 1) {
-          this.state = 2;
-          this.facing = 0;
-          this.elapsedTime = 0;
-          this.game.addEntity(new Trident(this.game, this.x, this.y - 10, ent));
-  
+        this.target = this.path[this.targetID];
+      }
+
+      for (var i = 0; i < this.game.entities.length; i++) {
+        var ent = this.game.entities[i];
+        if (ent instanceof Link && canSee(this, ent)) {
+          //console.log("Ganon see Link!");
+          this.target = ent;
+          if (this.phase == 0) {
+            //if (this.state == 0 || this.state == 1) {
+            this.state = 2;
+            this.facing = 0;
+            if (this.elapsedTime > 3 && !ent.damagedState) {
+              this.game.addEntity(
+                new Orb(this.game, this.x - 30, this.y - 100, ent)
+              );
+              this.elapsedTime = 0;
+              this.didAttack = true;
+              if (this.didAttack) {
+                // this.state = randomInt(2);
+                // console.log("state changed back " + this.state);
+                this.didAttack = false;
+              }
+            }
+            //}
+          } else if (this.phase == 1) {
+            //if (this.state == 0 || this.state == 1) {
+            this.state = 2;
+            this.facing = 0;
+            // this.elapsedTime = 0;
+            if (this.elapsedTime > 4.2 && !ent.damagedState) {
+              this.game.addEntity(
+                new Trident(this.game, this.x, this.y - 10, ent)
+              );
+              this.elapsedTime = 0;
+              if (this.didAttack) {
+                // this.state = randomInt(2);
+                this.didAttack = false;
+              }
+            }
+            //}
           }
-        } else {
-          this.deadAnim;
+        } else if (ent instanceof Link && !canSee(this, ent)) {
+          this.state = 1;
+          if (this.state !== 2) {
+            // if not attack state
+            // Calculate distance between this entity and the target (main entity)
+            let dist = distance(this, this.target);
+
+            // If the current distance is less than the desired distance, move away from the main entity
+            if (dist > desiredDistance && dist < this.visualRadius) {
+              // Calculate the normalized direction vector from this entity to the main entity
+              let dx = this.target.x - this.x;
+              let dy = this.target.y - this.y;
+              let length = Math.sqrt(dx * dx + dy * dy);
+              let nx = dx / length;
+              let ny = dy / length;
+
+              // Calculate the movement vector to maintain the desired distance
+              let moveX = nx * this.maxSpeed;
+              let moveY = ny * this.maxSpeed;
+
+              // Update the position by moving away from the main entity
+              this.speed = 20;
+              this.x -= moveX * this.game.clockTick;
+              this.y -= moveY * this.game.clockTick;
+            } else {
+              // If the current distance is greater than or equal to the desired distance, move towards the main entity
+              // Calculate the movement vector towards the main entity
+              this.velocity = {
+                x: ((this.target.x - this.x) / dist) * this.maxSpeed,
+                y: ((this.target.y - this.y) / dist) * this.maxSpeed,
+              };
+
+              // Move towards the main entity
+              this.x += this.velocity.x * this.game.clockTick;
+              this.y += this.velocity.y * this.game.clockTick;
+            }
+            // change facing if Link is above or below Ganon
+            if (Math.abs(this.velocity.y) > Math.abs(this.velocity.x)) {
+              if (this.velocity.y < 0) {
+                this.facing = 2; // facing up
+              } else {
+                this.facing = 0; // facing down
+              }
+            } else {
+              // change facing if Link is on left or right Ganon
+              if (this.velocity.x > 0) {
+                this.facing = 3; // face right
+              } else {
+                this.facing = 1; // face left
+              }
+            }
+          } else {
+            this.updateHitBox();
+          }
         }
-        
       }
-    }
-
-    if (this.state !== 2) { // if not attack state
-      // Calculate distance between this entity and the target (main entity)
-      let dist = distance(this, this.target);
-
-      // If the current distance is less than the desired distance, move away from the main entity
-      if (dist < desiredDistance) {
-        // Calculate the normalized direction vector from this entity to the main entity
-        let dx = this.target.x - this.x;
-        let dy = this.target.y - this.y;
-        let length = Math.sqrt(dx * dx + dy * dy);
-        let nx = dx / length;
-        let ny = dy / length;
-
-        // Calculate the movement vector to maintain the desired distance
-        let moveX = nx * this.maxSpeed;
-        let moveY = ny * this.maxSpeed;
-
-        // Update the position by moving away from the main entity
-        this.speed = 50;
-        this.x -= moveX * this.game.clockTick;
-        this.y -= moveY * this.game.clockTick;
-      } else {
-        // If the current distance is greater than or equal to the desired distance, move towards the main entity
-        // Calculate the movement vector towards the main entity
-        this.velocity = {
-          x: ((this.target.x - this.x) / dist) * this.maxSpeed,
-          y: ((this.target.y - this.y) / dist) * this.maxSpeed,
-        };
-
-        // Move towards the main entity
-        this.x += this.velocity.x * this.game.clockTick;
-        this.y += this.velocity.y * this.game.clockTick;
+      if (this.damagedState && !this.dead) {
+        //When in a state of being damaged, create a window where you flicker for 1 second and you can't take damage.
+        this.damagedCounter += this.game.clockTick;
+        if (this.damagedCounter >= 1) {
+          this.damagedState = false;
+          this.state = 1;
+          this.damagedCounter = 0;
+          //stopping link from sliding when he is damaged.
+        }
       }
     } else {
-      this.updateHitBox();
+      this.state = 1;
     }
 
-    // change facing if Link is above or below Ganon
-    if (this.state === 2) {
-      this.facing = 0;
-    } else if (Math.abs(this.velocity.y) > Math.abs(this.velocity.x)) {
-      if (this.velocity.y < 0) {
-        this.facing = 2; // facing up
-      } else {
-        this.facing = 0; // facing down
-      }
-    } else {
-      // change facing if Link is on left or right Ganon
-      if (this.velocity.x > 0) {
-        this.facing = 3; // face right
-      } else {
-        this.facing = 1; // face left
-      }
-    }
-
-    this.updateHurtBox();
-    //this.updateHitBox();
-    };
-
-    
-  
+    this.updateHurtAndMoveBox();
+    this.updatePathingCircle();
+  }
 
   draw(ctx) {
     // Draw the weapon and the Ganon animation if it's not dead
     if (!this.dead) {
       // Check if Ganon is in the attacking state with the weapon (phase 0, state 2)
-      if (this.phase === 0 && this.state === 2) {
-        // Draw the weapon
-        console.log(this.phase, this.state, this.facing);
+      if ((this.phase == 0 || this.phase == 1) && this.state === 2) {
+        //console.log(this.phase, this.state, this.facing);
         // Draw the Ganon animation
         this.animations[this.phase][this.state][this.facing].drawFrame(
           this.game.clockTick,
@@ -608,17 +750,6 @@ class Ganon {
           this.y - this.game.camera.y,
           this.scale
         );
-
-        // Draw the red rectangle for the hitbox of the attack animation
-        if (PARAMS.DEBUG && this.boundingBox) {
-          ctx.strokeStyle = "Blue";
-          ctx.strokeRect(
-            this.boundingBox.x - this.game.camera.x,
-            this.boundingBox.y - this.game.camera.y,
-            this.boundingBox.width,
-            this.boundingBox.height
-          );
-        }
       } else {
         // Draw the Ganon animation if it's not in the attacking state
         this.animations[this.phase][this.state][this.facing].drawFrame(
@@ -629,46 +760,83 @@ class Ganon {
           this.scale
         );
       }
+    } else if (this.phase == 1 && this.dead) {
+      this.animations = this.deadAnim;
+      this.animations.drawFrame(
+        this.game.clockTick,
+        ctx,
+        this.x - this.game.camera.x,
+        this.y - this.game.camera.y,
+        this.scale
+      );
+    }
+
+    // Draw Ganon's health bar
+    if (!this.dead) {
+      this.healthbar.draw(ctx);
     }
 
     // Draw other debug information if enabled
     if (PARAMS.DEBUG) {
-      // Draw the boundingHitBox of the attack animation
-      if (this.boundingHitBox) {
-        ctx.strokeStyle = "Red";
-        ctx.strokeRect(
-          this.boundingHitBox.x - this.game.camera.x,
-          this.boundingHitBox.y - this.game.camera.y,
-          this.boundingHitBox.width,
-          this.boundingHitBox.height
-        );
-      }
+      // Draw the Blue rectangle for Ganon's hitbox that can get hit
+      ctx.strokeStyle = "Blue";
+      ctx.strokeRect(
+        this.hurtBox.x - this.game.camera.x,
+        this.hurtBox.y - this.game.camera.y,
+        this.hurtBox.width,
+        this.hurtBox.height
+      );
 
-      // Draw other debug elements like radius and visualRadius
-      ctx.strokeStyle = "Red";
+      // Inner Circle
+      ctx.strokeStyle = "Yellow";
       ctx.beginPath();
       ctx.arc(
-        this.x - this.game.camera.x,
-        this.y - this.game.camera.y,
-        this.radius,
+        this.pathingCircle.x - this.game.camera.x,
+        this.pathingCircle.y - this.game.camera.y,
+        this.pathingCircle.radius,
         0,
         2 * Math.PI
       );
       ctx.closePath();
       ctx.stroke();
 
+      // Vision Circle
       ctx.setLineDash([5, 15]);
       ctx.beginPath();
       ctx.arc(
-        this.x - this.game.camera.x,
-        this.y - this.game.camera.y,
-        this.visualRadius,
+        this.pathingCircle.x - this.game.camera.x,
+        this.pathingCircle.y - this.game.camera.y,
+        this.pathingCircle.visualRadius,
         0,
         2 * Math.PI
       );
       ctx.closePath();
       ctx.stroke();
       ctx.setLineDash([]);
+
+      // Pathing
+      ctx.strokeStyle = "Black";
+      ctx.beginPath();
+      ctx.moveTo(
+        this.initialPoint.x - this.game.camera.x,
+        this.initialPoint.y - this.game.camera.y
+      );
+      for (var i = 0; i < this.path.length; i++) {
+        ctx.lineTo(
+          this.path[i].x - this.game.camera.x,
+          this.path[i].y - this.game.camera.y
+        );
+      }
+      ctx.stroke();
+
+      // For moveBox
+      ctx.strokeStyle = "Pink";
+      ctx.strokeRect(
+        this.moveBox.x - this.game.camera.x,
+        this.moveBox.y - this.game.camera.y,
+        this.moveBox.width,
+        this.moveBox.height
+      );
     }
   }
 
@@ -693,84 +861,227 @@ class Trident {
 
     this.initialPoint = { x, y };
     this.maxSpeed = 100;
+    this.facing = 1;
 
     this.radius = 50;
 
     this.updateHitBox();
+    this.cache = [];
     this.weapons = [];
     this.loadAnimations();
     this.elapsedTime = 0;
-  };
+
+    var dist = distance(this, this.target);
+    this.velocity = { x: (this.target.x - this.x) / dist * this.maxSpeed, y: (this.target.y - this.y) / dist * this.maxSpeed };
+  }
 
   loadAnimations() {
-    this.weapons[0].push(new Animator(this.spritesheet, 725, 95, 82, 69, 1, 1, 0, false, false, false));
-    this.weapons[1].push(new Animator(this.spritesheet, 800, 95, 67, 69, 1, 1, 0, false, false, false));
-    this.weapons[2].push(new Animator(this.spritesheet, 871, 93, 62, 71, 1, 1, 0, false, false, false));
-    this.weapons[3].push(new Animator(this.spritesheet, 721, 165, 77, 66, 1, 1, 0, false, false, false));
-    this.weapons[4].push(new Animator(this.spritesheet, 798, 63, 69, 69, 1, 1, 0, false, false, false));
-    this.weapons[5].push(new Animator(this.spritesheet, 725, 95, 82, 69, 1, 1, 0, false, false, false));
-    this.weapons[6].push(new Animator(this.spritesheet, 725, 95, 82, 69, 1, 1, 0, false, false, false));
-    this.weapons[7].push(new Animator(this.spritesheet, 725, 95, 82, 69, 1, 1, 0, false, false, false));
+    this.weapons[1] = // trident left
+      new Animator(
+        this.spritesheet,
+        725,
+        95,
+        82,
+        69,
+        1,
+        1,
+        0,
+        false,
+        true,
+        false
+      );
+    
+    this.weapons[0] = // trident top left
+      new Animator(
+        this.spritesheet,
+        800,
+        95,
+        67,
+        69,
+        1,
+        1,
+        0,
+        false,
+        true,
+        false
+      );
+    
+    this.weapons[7] = // trident top
+      new Animator(
+        this.spritesheet,
+        871,
+        93,
+        62,
+        71,
+        1,
+        1,
+        0,
+        false,
+        true,
+        false
+      );
+    
+    this.weapons[6] = // trident top right
+      new Animator(
+        this.spritesheet,
+        721,
+        165,
+        77,
+        66,
+        1,
+        1,
+        0,
+        false,
+        true,
+        false
+      );
+    
+    this.weapons[5] = // trident right
+      new Animator(
+        this.spritesheet,
+        798,
+        63,
+        69,
+        69,
+        1,
+        1,
+        0,
+        false,
+        true,
+        false
+      );
+    
+    this.weapons[4] = // trident bottom right
+      new Animator(
+        this.spritesheet,
+        725,
+        95,
+        82,
+        69,
+        1,
+        1,
+        0,
+        false,
+        true,
+        false
+      );
+    
+    this.weapons[3] = // trident bottom
+      new Animator(
+        this.spritesheet,
+        725,
+        95,
+        82,
+        69,
+        1,
+        1,
+        0,
+        false,
+        true,
+        false
+      );
+    
+    this.weapons[2] = // trident bottom left
+      new Animator(
+        this.spritesheet,
+        725,
+        95,
+        82,
+        69,
+        1,
+        1,
+        0,
+        false,
+        true,
+        false
+      );
+    
+  }
 
+  updateHitBox() {
+    // if (this.weapons[0]) {
+    //   this.hitBox = new BoundingBox(this.x, this.y, 67, 69);
+    // } else if (this.weapons[1] || this.weapons[2] || this.weapons[3] || this.weapons[4]) {
+    //   this.hitBox = new BoundingBox(this.x, this.y, 82, 69);
+    // } else if (this.weapons[5]) {
+    //   this.hitBox = new BoundingBox(this.x, this.y, 69, 69)
+    // } else if (this.weapons[6]) {
+    //   this.hitBox = new BoundingBox(this.x, this.y, 77, 66);
+    // } else if (this.weapons[7]) {
+    //   this.hitBox = new BoundingBox(this.x, this.y, 62, 71);
+    // }
   }
 
   update() {
-    this.elapsedTime += this.game.clockTick;
-    this.velocity = { X: Math.cos(this.elapsedTime), Y: Math.sin(this.elapsedTime) };
-
-    this.facing = getRotationFacing(this.velocity);
-
-  };
+    if(!this.game.camera.gamePaused) {
+      this.x += this.velocity.x * this.game.clockTick;
+      this.y += this.velocity.y * this.game.clockTick;
+      this.elapsedTime += this.game.clockTick;
+      this.facing = getRotationFacing(this.velocity);
+      this.updateHitBox();
+    }
+  }
 
   drawAngle(ctx, angle) {
     if (angle < 0 || angle > 359) return;
 
     if (!this.cache[angle]) {
-      let radians = angle / 360 * 2 * Math.PI;
-      let offscreenCanvas = document.createElement('canvas');
+      let radians = (angle / 360) * 2 * Math.PI;
+      let offscreenCanvas = document.createElement("canvas");
 
       offscreenCanvas.width = 32;
       offscreenCanvas.height = 32;
 
-      let offscreenCtx = offscreenCanvas.getContext('2d');
+      let offscreenCtx = offscreenCanvas.getContext("2d");
 
       offscreenCtx.save();
       offscreenCtx.translate(16, 16);
       offscreenCtx.rotate(radians);
       offscreenCtx.translate(-16, -16);
-      offscreenCtx.drawImage(this.spritesheet, 80, 0, 32, 32, 0, 0, 32, 32);
+      offscreenCtx.drawImage(this.spritesheet, 80, 0, 32, 32, this.x - this.game.camera.x, this.y - this.game.camera.y, 32, 32);
       offscreenCtx.restore();
       this.cache[angle] = offscreenCanvas;
     }
     var xOffset = 16;
     var yOffset = 16;
 
-    ctx.drawImage(this.cache[angle], this.x - xOffset, this.y - yOffset);
+    // ctx.drawImage(this.cache[angle], this.x - xOffset - this.game.cameraX, this.y - yOffset - this.game.camera.y);
     if (PARAMS.DEBUG) {
-      ctx.strokeStyle = 'Green';
+      ctx.strokeStyle = "Green";
       ctx.strokeRect(this.x - xOffset, this.y - yOffset, 32, 32);
     }
   }
 
-
   draw(ctx) {
-    if (this.facing < 5) {
-      this.weapons[this.facing].drawFrame(this.game.clockTick, ctx, this.x, this.y, 2);
-    } else {
-      ctx.save();
-      ctx.scale(-1, 1);
-      this.weapons[8 - this.facing].drawFrame(this.game.clockTick, ctx, -(this.x), this.y, 2);
-      ctx.restore();
-    }
 
     let angle = Math.atan2(this.velocity.y, this.velocity.x);
     if (angle < 0) angle += Math.PI * 2;
-    let degrees = Math.floor(angle / Math.PI / 2 * 360);
-
+    let degrees = Math.floor((angle / Math.PI / 2) * 360);
     this.drawAngle(ctx, degrees);
-  };
-}
 
+    if (this.facing < 8) {
+      this.weapons[this.facing].drawFrame(
+        this.game.clockTick,
+        ctx,
+        this.x - this.game.camera.x,
+        this.y - this.game.camera.y,
+        2
+      );
+    } else {
+      ctx.save();
+      ctx.scale(-1, 1);
+      console.log(8 - this.facing);
+      this.weapons[8 - this.facing].drawFrame(
+        this.game.clockTick,
+        ctx,
+        -this.x - this.game.camera.x,
+        this.y - this.game.camera.y,
+        2
+      );
+      ctx.restore();
+    }
+  }
+}
 
 class Orb {
   constructor(game, x, y, target) {
@@ -780,38 +1091,50 @@ class Orb {
     this.game.Orb = this;
     var dist = distance(this, this.target);
     this.radius = 12;
+    this.scale = 4;
 
-    this.initialPoint = { x, y };
     this.maxSpeed = 100;
-    this.velocity = { x: (this.target.x - this.x) / dist * this.maxSpeed, y: (this.target.y - this.y) / dist * this.maxSpeed };
+    this.velocity = {
+      x: ((this.target.x - this.x) / dist) * this.maxSpeed,
+      y: ((this.target.y - this.y) / dist) * this.maxSpeed,
+    };
 
     this.radius = 50;
 
     this.updateHitBox();
     this.weapons = [];
-    this.weapons.push(new Animator(this.spritesheet,
-      30,
-      523,
-      37,
-      27,
-      8,
-      0.33,
-      0,
-      false,
-      true,
-      false));
+    this.weapons.push(
+      new Animator(
+        this.spritesheet,
+        30,
+        523,
+        37,
+        27,
+        8,
+        0.33,
+        0,
+        false,
+        true,
+        false
+      )
+    );
     this.elapsedTime = 0;
-  };
+  }
 
   updateLastHitBox() {
     this.lastHitBox = this.hitBox;
-}
+  }
 
-updateHitBox() {
-    this.hitBox = new BoundingBox(this.x, this.y, 37 * 5, 27 * 5);
-}
+  updateHitBox() {
+    this.hitBox = new BoundingBox(
+      this.x,
+      this.y,
+      37 * this.scale,
+      27 * this.scale
+    );
+  }
 
-update() {
+  update() {
     this.x += this.velocity.x * this.game.clockTick;
     this.y += this.velocity.y * this.game.clockTick;
 
@@ -819,26 +1142,44 @@ update() {
     this.updateHitBox();
 
     for (var i = 0; i < this.game.entities.length; i++) {
-        var ent = this.game.entities[i];
-        if (ent instanceof Link && this.hitBox.collide(ent.hurtBox) && !ent.damagedState) {
-            console.log("ATTACK LANDED - PROJECTILE (Ganon) VS LINK");
-            ent.damageEntity(1);
-            // this.game.addEntity(new Score(this.game, ent.x, ent.y, damage));
-            this.removeFromWorld = true;
-        }
+      var ent = this.game.entities[i];
+      if (
+        ent instanceof Link &&
+        this.hitBox.collide(ent.hurtBox) &&
+        !ent.damagedState
+      ) {
+        console.log("ATTACK LANDED - PROJECTILE (Ganon) VS LINK");
+        ent.damageEntity(1);
+        // this.game.addEntity(new Score(this.game, ent.x, ent.y, damage));
+        this.removeFromWorld = true;
+      }
+      if (ent instanceof CollisionBox && this.hitBox.collide(ent.BoundingBox)) {
+        this.removeFromWorld = true;
+      }
     }
 
     // this.updateHitBox();
     // this.updateLastHitBox();
-};
+  }
 
-draw(ctx) {
-    this.weapons[0].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, 5);
+  draw(ctx) {
+    this.weapons[0].drawFrame(
+      this.game.clockTick,
+      ctx,
+      this.x - this.game.camera.x,
+      this.y - this.game.camera.y,
+      this.scale
+    );
 
-     //drawing the hitbox of the attack animation
-     if (PARAMS.DEBUG && this.hitBox) {
-        ctx.strokeStyle = 'Red';
-        ctx.strokeRect(this.hitBox.x - this.game.camera.x, this.hitBox.y - this.game.camera.y, this.hitBox.width, this.hitBox.height);
+    //drawing the hitbox of the attack animation
+    if (PARAMS.DEBUG && this.hitBox) {
+      ctx.strokeStyle = "Red";
+      ctx.strokeRect(
+        this.hitBox.x - this.game.camera.x,
+        this.hitBox.y - this.game.camera.y,
+        this.hitBox.width,
+        this.hitBox.height
+      );
     }
-};
+  }
 }

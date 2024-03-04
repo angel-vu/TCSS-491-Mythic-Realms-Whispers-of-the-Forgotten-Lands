@@ -3,8 +3,6 @@ class Scream {
         console.log("SHOOT!");
         Object.assign(this, { game, x, y, target });
 
-        this.radius = 12;
-
         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/projectile.png");
 
         var dist = distance(this, this.target);
@@ -12,7 +10,7 @@ class Scream {
 
         this.velocity = { x: (this.target.x - this.x) / dist * this.maxSpeed, y: (this.target.y - this.y) / dist * this.maxSpeed };
 
-        this.cache = [];
+        this.scale = 5;
 
         this.updateHitBox();
         this.animations = [];
@@ -25,10 +23,11 @@ class Scream {
     }
 
     updateHitBox() {
-        this.hitBox = new BoundingBox(this.x, this.y, 50, 50);
+        this.hitBox = new BoundingBox(this.x, this.y, 10 * this.scale, 10 * this.scale);
     }
 
     update() {
+    if(!this.game.camera.gamePaused) {
         this.x += this.velocity.x * this.game.clockTick;
         this.y += this.velocity.y * this.game.clockTick;
 
@@ -44,13 +43,11 @@ class Scream {
                 this.removeFromWorld = true;
             }
         }
-
-        // this.updateHitBox();
-        // this.updateLastHitBox();
+    }
     };
 
     draw(ctx) {
-        this.animations[0].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, 5);
+        this.animations[0].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, this.scale);
 
         // if (PARAMS.DEBUG) {
         //     ctx.strokeStyle = "Green";

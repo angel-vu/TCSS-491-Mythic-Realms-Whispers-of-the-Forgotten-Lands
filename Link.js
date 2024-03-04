@@ -47,6 +47,7 @@ class Link {
     this.currentHealth -= damageNumber;
     this.damagedState = true;
     this.state = 0;
+    ASSET_MANAGER.playAsset("./music/link_damage_1.mp3");
   }
   //a bounding sphere to attract enemy entities toward us.
   updatePathingCircle() {
@@ -320,247 +321,247 @@ class Link {
   }
 
   update() {
-    //Constants to use for movement physcs for Mario.
-    const MIN_WALK_VEL = 4.453125;
-    const MAX_WALK_VEL = 93.75;
-    const MAX_RUN_VEL = 200;
-    const WALK_ACC = 133.59375;
-    const RUN_ACC = 230;
+    if (!this.game.camera.gamePaused) {
+      // Check if the game is not paused
+      //Constants to use for movement physcs for Mario.
+      const MIN_WALK_VEL = 4.453125;
+      const MAX_WALK_VEL = 93.75;
+      const MAX_RUN_VEL = 200;
+      const WALK_ACC = 133.59375;
+      const RUN_ACC = 270;
 
-    //movement physics
-    if (!this.damagedState) {
-      // can't move or attack when we are being damaged.
-      //walking, idle or running.
-      if (this.state <= 2) {
-        //((Math.abs(this.velocity.x) < MIN_WALK_VEL || Math.abs(this.velocity.y) < MIN_WALK_VEL )&& this.comboCounter === 0)
-        if (Math.abs(this.velocity.y) < MIN_WALK_VEL) {
-          this.velocity.y = 0;
-          if (this.game.up) {
-            this.velocity.y -= MIN_WALK_VEL;
-          }
-          if (this.game.down) {
-            this.velocity.y += MIN_WALK_VEL;
-          }
-        } else if (Math.abs(this.velocity.y) >= MIN_WALK_VEL) {
-          //velocity and acceleration when we are moving up and down.
-          if (this.game.up && !this.game.down) {
-            if (this.game.run) {
-              this.state = 2;
-              this.velocity.y -= RUN_ACC * this.game.clockTick;
-            } else if (!this.game.run) {
-              this.state = 1;
-              this.velocity.y -= WALK_ACC * this.game.clockTick;
+      //movement physics
+      if (!this.damagedState) {
+        // can't move or attack when we are being damaged.
+        //walking, idle or running.
+        if (this.state <= 2) {
+          //((Math.abs(this.velocity.x) < MIN_WALK_VEL || Math.abs(this.velocity.y) < MIN_WALK_VEL )&& this.comboCounter === 0)
+          if (Math.abs(this.velocity.y) < MIN_WALK_VEL) {
+            this.velocity.y = 0;
+            if (this.game.up) {
+              this.velocity.y -= MIN_WALK_VEL;
             }
-          } else if (this.game.down && !this.game.up) {
-            if (this.game.run) {
-              this.state = 2;
-              this.velocity.y += RUN_ACC * this.game.clockTick;
-            } else if (!this.game.run) {
-              this.state = 1;
-              this.velocity.y += WALK_ACC * this.game.clockTick;
+            if (this.game.down) {
+              this.velocity.y += MIN_WALK_VEL;
             }
-          }
-        }
-        if (Math.abs(this.velocity.x) < MIN_WALK_VEL) {
-          // slower than a walk // starting, stopping or turning around and not in a attack state
-          this.velocity.x = 0;
-          //this.state = 0;
-          //instaneous acceleration.
-          if (this.game.left && !this.game.right) {
-            this.facing = 1;
-            this.velocity.x -= MIN_WALK_VEL;
-          }
-          if (this.game.right && !this.game.left) {
-            this.facing = 0;
-            this.velocity.x += MIN_WALK_VEL;
-          }
-
-          //((Math.abs(this.velocity.x) >= MIN_WALK_VEL || Math.abs(this.velocity.y) >= MIN_WALK_VEL ) && this.comboCounter === 0)
-        } else if (Math.abs(this.velocity.x) >= MIN_WALK_VEL) {
-          //faster  than a walk // starting, stopping or turning around and not in a attack state;
-          if (this.facing === 0) {
-            if (this.game.right && !this.game.left) {
+          } else if (Math.abs(this.velocity.y) >= MIN_WALK_VEL) {
+            //velocity and acceleration when we are moving up and down.
+            if (this.game.up && !this.game.down) {
               if (this.game.run) {
                 this.state = 2;
-                this.velocity.x += RUN_ACC * this.game.clockTick;
+                this.velocity.y -= RUN_ACC * this.game.clockTick;
               } else if (!this.game.run) {
                 this.state = 1;
-                this.velocity.x += WALK_ACC * this.game.clockTick;
+                this.velocity.y -= WALK_ACC * this.game.clockTick;
               }
-              //when we are facing left and in the middle of walking or running we switch hit right
-            } else if (this.game.left && !this.game.right) {
-              this.facing = 1;
+            } else if (this.game.down && !this.game.up) {
+              if (this.game.run) {
+                this.state = 2;
+                this.velocity.y += RUN_ACC * this.game.clockTick;
+              } else if (!this.game.run) {
+                this.state = 1;
+                this.velocity.y += WALK_ACC * this.game.clockTick;
+              }
             }
-          } else if (this.facing === 1) {
+          }
+          if (Math.abs(this.velocity.x) < MIN_WALK_VEL) {
+            // slower than a walk // starting, stopping or turning around and not in a attack state
+            this.velocity.x = 0;
+            //this.state = 0;
+            //instaneous acceleration.
             if (this.game.left && !this.game.right) {
-              if (this.game.run) {
-                this.state = 2;
-                this.velocity.x -= RUN_ACC * this.game.clockTick;
-              } else if (!this.game.run) {
-                this.state = 1;
-                this.velocity.x -= WALK_ACC * this.game.clockTick;
-              }
-              //when we are facing left and in the middle of walking or running we switch hit right
-            } else if (this.game.right && !this.game.left) {
+              this.facing = 1;
+              this.velocity.x -= MIN_WALK_VEL;
+            }
+            if (this.game.right && !this.game.left) {
               this.facing = 0;
+              this.velocity.x += MIN_WALK_VEL;
+            }
+
+            //((Math.abs(this.velocity.x) >= MIN_WALK_VEL || Math.abs(this.velocity.y) >= MIN_WALK_VEL ) && this.comboCounter === 0)
+          } else if (Math.abs(this.velocity.x) >= MIN_WALK_VEL) {
+            //faster  than a walk // starting, stopping or turning around and not in a attack state;
+            if (this.facing === 0) {
+              if (this.game.right && !this.game.left) {
+                if (this.game.run) {
+                  this.state = 2;
+                  this.velocity.x += RUN_ACC * this.game.clockTick;
+                } else if (!this.game.run) {
+                  this.state = 1;
+                  this.velocity.x += WALK_ACC * this.game.clockTick;
+                }
+                //when we are facing left and in the middle of walking or running we switch hit right
+              } else if (this.game.left && !this.game.right) {
+                this.facing = 1;
+              }
+            } else if (this.facing === 1) {
+              if (this.game.left && !this.game.right) {
+                if (this.game.run) {
+                  this.state = 2;
+                  this.velocity.x -= RUN_ACC * this.game.clockTick;
+                } else if (!this.game.run) {
+                  this.state = 1;
+                  this.velocity.x -= WALK_ACC * this.game.clockTick;
+                }
+                //when we are facing left and in the middle of walking or running we switch hit right
+              } else if (this.game.right && !this.game.left) {
+                this.facing = 0;
+              }
             }
           }
+          //if the user is not moving at all set the velocity to 0
+          if (!this.game.down && !this.game.up && !this.game.left && !this.game.right) {
+            this.velocity.x = 0;
+            this.velocity.y = 0;
+            this.accumulatedVelocity = 0;
+            this.state = 0;
+          }
         }
-        //if the user is not moving at all set the velocity to 0
-        if (!this.game.down && !this.game.up && !this.game.left && !this.game.right) {
+
+        //Attack Physics.
+        if (this.game.attack && this.state < 3 && this.itemsEquipped === 1) {
+          console.log("Attack");
           this.velocity.x = 0;
           this.velocity.y = 0;
           this.accumulatedVelocity = 0;
-          this.state = 0;
+
+          if (this.comboCounter === 0) {
+            this.state = 5;
+            ASSET_MANAGER.playAsset("./music/link_attack_1.mp3");
+            //Line needed here in the case where I interupt my attack animation and I try to enter the attack animation again afterwards.
+            // to begin in the start.
+            //this.animations[1][5][this.facing].elapsedTime = 0;
+            this.comboCounter++;
+          } else if (this.comboCounter === 1) {
+            //begin attack animation interval.
+            this.state = 6;
+            ASSET_MANAGER.playAsset("./music/link_attack_2.mp3");
+            this.comboCounter++;
+          } else if (this.comboCounter === this.maxComboCounter) {
+            this.comboCounter = 0;
+          }
+
+          //creating  time windows for our combo system.
+        } else if (this.state > 4) {
+          // after attacking at least once.
+
+          //when the elapsed time is greater than the animation state, go back to idle, and allow to continue combo
+          //After animation is done leaves a little bit of the first frame after the last frame is done.
+          if (this.animations[1][this.state][this.facing].isDoneOutsideOfAnimator(this.game.clockTick)) {
+            this.state = 0;
+            this.enterComboWindow = true;
+          }
+        } else if (this.enterComboWindow) {
+          if (!this.game.attack && this.state < 4) {
+            this.comboWindowTime += this.game.clockTick;
+          } else if (this.game.attack && this.state > 4) {
+            this.enterComboWindow = false;
+            this.comboWindowTime = 0;
+          }
+          //When combo window is too long, reset comboCounter to 0 and elapsed time back to 0.
+          if (this.comboWindowTime > 0.5) {
+            this.comboCounter = 0;
+            this.comboWindowTime = 0;
+            //this.state = 0;
+            this.enterComboWindow = false;
+          }
+        }
+        // max speed calculation
+
+        if (this.velocity.y >= MAX_RUN_VEL) this.velocity.y = MAX_RUN_VEL;
+        if (this.velocity.y <= -MAX_RUN_VEL) this.velocity.y = -MAX_RUN_VEL;
+        if (this.velocity.y >= MAX_WALK_VEL && !this.game.run) this.velocity.y = MAX_WALK_VEL;
+        if (this.velocity.y <= -MAX_WALK_VEL && !this.game.run) this.velocity.y = -MAX_WALK_VEL;
+
+        if (this.velocity.x >= MAX_RUN_VEL) this.velocity.x = MAX_RUN_VEL;
+        if (this.velocity.x <= -MAX_RUN_VEL) this.velocity.x = -MAX_RUN_VEL;
+        if (this.velocity.x >= MAX_WALK_VEL && !this.game.run) this.velocity.x = MAX_WALK_VEL;
+        if (this.velocity.x <= -MAX_WALK_VEL && !this.game.run) this.velocity.x = -MAX_WALK_VEL;
+
+        this.x += this.velocity.x * this.game.clockTick;
+        this.y += this.velocity.y * this.game.clockTick;
+        this.updateLastHurtBox();
+        this.updateLastHitBox();
+        this.updateLastMoveBox();
+        this.updateHitBox();
+        this.updateHurtBox();
+        this.updateMoveBox();
+        this.updatePathingCircle();
+        //collision logic
+        let that = this;
+
+        this.game.entities.forEach(function (entity) {
+          //if link attacks collide with another entities hitbox.
+          if (entity.hurtBox && that.hitBox && that.hitBox.collide(entity.hurtBox) && !entity.damagedState) {
+            if (entity instanceof Banshee || entity instanceof Ganon || entity instanceof Akagane || entity instanceof Goblin || entity instanceof Knight || entity instanceof Skeleton || entity instanceof Wizard) {
+              // Sword dealing 1 point of damage.
+              entity.damageEntity(1);
+              console.log(entity.currentHealth);
+            }
+          }
+          //running into health potions
+          if (entity.BB && that.hurtBox && that.hurtBox.collide(entity.BB)) {
+            if (entity instanceof HealthPotion) {
+              if (that.currentHealth < that.maxHealth) {
+                
+                //so Link doesn't heal over the max health.
+                that.currentHealth = Math.min(that.currentHealth + 2, that.maxHealth);
+              }
+              ASSET_MANAGER.playAsset("./music/heal.mp3");
+              entity.removeFromWorld = true;
+            }
+          }
+          //Boundary checking for when link walks into a wall.
+          if (that.moveBox && entity.BoundingBox && that.moveBox.collide(entity.BoundingBox)) {
+            if (entity instanceof CollisionBox) {
+              console.log(entity.row + " and " + entity.column + " tilenumber: " + entity.tileNumber);
+              if (that.lastMoveBox.left >= entity.BoundingBox.right) {
+                // collided with the right side of the CollisionBox
+                that.x = entity.BoundingBox.right;
+                //collided with the left side of the CollisionBox.
+              } else if (that.lastMoveBox.right <= entity.BoundingBox.left) {
+                that.x = entity.BoundingBox.left - that.moveBox.width;
+                //collided with the bottom of the CollisonBox.Was below the Collisionbox.
+              } else if (that.lastMoveBox.top >= entity.BoundingBox.bottom) {
+                that.y = entity.BoundingBox.bottom - 58 * 3 + that.lastMoveBox.height;
+                // collided with the top of the CollisionBox. Was above the CollisionBox.
+              } else if (that.lastMoveBox.bottom <= entity.BoundingBox.top) {
+                //based off the height of the idle height of the hurtbox of link
+                // added one pixel or else we would clip into the wall
+                that.y = entity.BoundingBox.top - 58 * 3;
+              }
+            }
+
+            that.updateMoveBox();
+          }
+        });
+      } else if (this.damagedState && !this.dead) {
+        //When in a state of being damaged, create a window where you flicker for 0.5 second and you can't take damage.
+        this.damagedCounter += this.game.clockTick;
+        if (this.damagedCounter >= 0.5) {
+          this.damagedState = false;
+          this.damagedCounter = 0;
+          //stopping link from sliding when he is damaged.
         }
       }
-
-      //Attack Physics.
-      if (this.game.attack && this.state < 3 && this.itemsEquipped === 1) {
-        console.log("Attack");
+      // If our health goes to 0 or below we set our state to 4 to draw the dead animation.
+      if (this.currentHealth <= 0) {
+        this.dead = true;
         this.velocity.x = 0;
         this.velocity.y = 0;
         this.accumulatedVelocity = 0;
-
-        if (this.comboCounter === 0) {
-          this.state = 5;
-          //Line needed here in the case where I interupt my attack animation and I try to enter the attack animation again afterwards.
-          // to begin in the start.
-          //this.animations[1][5][this.facing].elapsedTime = 0;
-          this.comboCounter++;
-        } else if (this.comboCounter === 1) {
-          //begin attack animation interval.
-          this.state = 6;
-          this.comboCounter++;
-        } else if (this.comboCounter === this.maxComboCounter) {
-          this.comboCounter = 0;
-        }
-
-        //creating  time windows for our combo system.
-      } else if (this.state > 4) {
-        // after attacking at least once.
-
-        //when the elapsed time is greater than the animation state, go back to idle, and allow to continue combo
-        //After animation is done leaves a little bit of the first frame after the last frame is done.
-        if (this.animations[1][this.state][this.facing].isDoneOutsideOfAnimator(this.game.clockTick)) {
-          this.state = 0;
-          this.enterComboWindow = true;
-        }
-      } else if (this.enterComboWindow) {
-        if (!this.game.attack && this.state < 4) {
-          this.comboWindowTime += this.game.clockTick;
-        } else if (this.game.attack && this.state > 4) {
-          this.enterComboWindow = false;
-          this.comboWindowTime = 0;
-        }
-        //When combo window is too long, reset comboCounter to 0 and elapsed time back to 0.
-        if (this.comboWindowTime > 0.5) {
-          this.comboCounter = 0;
-          this.comboWindowTime = 0;
-          //this.state = 0;
-          this.enterComboWindow = false;
-        }
-      }
-      // max speed calculation
-
-      if (this.velocity.y >= MAX_RUN_VEL) this.velocity.y = MAX_RUN_VEL;
-      if (this.velocity.y <= -MAX_RUN_VEL) this.velocity.y = -MAX_RUN_VEL;
-      if (this.velocity.y >= MAX_WALK_VEL && !this.game.run) this.velocity.y = MAX_WALK_VEL;
-      if (this.velocity.y <= -MAX_WALK_VEL && !this.game.run) this.velocity.y = -MAX_WALK_VEL;
-
-      if (this.velocity.x >= MAX_RUN_VEL) this.velocity.x = MAX_RUN_VEL;
-      if (this.velocity.x <= -MAX_RUN_VEL) this.velocity.x = -MAX_RUN_VEL;
-      if (this.velocity.x >= MAX_WALK_VEL && !this.game.run) this.velocity.x = MAX_WALK_VEL;
-      if (this.velocity.x <= -MAX_WALK_VEL && !this.game.run) this.velocity.x = -MAX_WALK_VEL;
-
-      this.x += this.velocity.x * this.game.clockTick;
-      this.y += this.velocity.y * this.game.clockTick;
-      this.updateLastHurtBox();
-      this.updateLastHitBox();
-      this.updateLastMoveBox();
-      this.updateHitBox();
-      this.updateHurtBox();
-      this.updateMoveBox();
-      this.updatePathingCircle();
-      //collision logic
-      let that = this;
-
-      this.game.entities.forEach(function (entity) {
-        //if link attacks collide with another entities hitbox.
-        if (entity.hurtBox && that.hitBox && that.hitBox.collide(entity.hurtBox) && !entity.damagedState) {
-          if (entity instanceof Banshee || entity instanceof Ganon || entity instanceof Akagane || entity instanceof Goblin || entity instanceof Knight || entity instanceof Skeleton || entity instanceof Wizard) {
-            // Sword dealing 1 point of damage.
-            entity.damageEntity(1);
-            console.log(entity.currentHealth);
-          }
-          //Boundary checking for when link walks into a wall.
-        }
-
-        if (that.moveBox && entity.BoundingBox && that.moveBox.collide(entity.BoundingBox)) {
-          if (entity instanceof CollisionBox) {
-            console.log(entity.row + " and " + entity.column + " tilenumber: " + entity.tileNumber);
-            if (that.lastMoveBox.left >= entity.BoundingBox.right) {
-              // collided with the right side of the CollisionBox
-              that.x = entity.BoundingBox.right;
-              //collided with the left side of the CollisionBox.
-            } else if (that.lastMoveBox.right <= entity.BoundingBox.left) {
-              that.x = entity.BoundingBox.left - that.moveBox.width;
-              //collided with the bottom of the CollisonBox.Was below the Collisionbox.
-            } else if (that.lastMoveBox.top >= entity.BoundingBox.bottom) {
-              that.y = entity.BoundingBox.bottom - 58 * 3 + that.lastMoveBox.height;
-              // collided with the top of the CollisionBox. Was above the CollisionBox.
-            } else if (that.lastMoveBox.bottom <= entity.BoundingBox.top) {
-              //based off the height of the idle height of the hurtbox of link
-              // added one pixel or else we would clip into the wall
-              that.y = entity.BoundingBox.top - 58 * 3;
-            }
-          }
-          that.updateMoveBox();
-        }
-        //Boundary checking for when link walks into a wall.
-        //colliding with the
-        //  if(entity instanceof wall ){
-        //if(that.hurtBox.){
-
-        //}
-        //}
-      });
-    } else if (this.damagedState && !this.dead) {
-      //When in a state of being damaged, create a window where you flicker for 1 second and you can't take damage.
-      this.damagedCounter += this.game.clockTick;
-      if (this.damagedCounter >= 2) {
         this.damagedState = false;
-        this.damagedCounter = 0;
-        //stopping link from sliding when he is damaged.
+        // DEATH ANIMATION?
+        this.state = 4;
+        console.log("LINK DEAD");
       }
-    }
-    // If our health goes to 0 or below we set our state to 4 to draw the dead animation.
-    if (this.currentHealth <= 0) {
-      this.dead = true;
-      this.velocity.x = 0;
-      this.velocity.y = 0;
-      this.accumulatedVelocity = 0;
-      this.damagedState = false;
-      // DEATH ANIMATION?
-      this.state = 4;
-      console.log("LINK DEAD");
+    } else {
+      this.state = 0;
     }
   }
 
   draw(ctx) {
-    // if(this.itemsEquipped === 1){
-    // 	if(this.facing === 0){
-    // 		if(this.state <= 1){
-    // 			this.animations[this.itemsEquipped][this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, 3);
-    // 		}else if(this.state === 2){
-    // 			this.animations[this.itemsEquipped][this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y + 20  - this.game.camera.y, 3);
-    // 		}
-    // 	} else if(this.facing === 1){
-
-    // 	}
-    // } else if (this.itemsEquipped === 0) {
-
-    // }
+ 
 
     //if we haven't been hit draw as normal
     if (!this.damagedState) {
@@ -604,7 +605,12 @@ class Link {
     } else if (this.damagedState && !this.dead) {
       if (this.flickerFlag) {
         if (this.itemsEquipped === 1) {
+
+          if(this.facing === 0){
           this.animations[this.itemsEquipped][this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, 3);
+          } else if(this.facing === 1){
+            this.animations[this.itemsEquipped][this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - 90 - this.game.camera.x, this.y - this.game.camera.y, 3);
+          }
         } else {
           this.animations[this.itemsEquipped][this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - 20 - this.game.camera.x, this.y - this.game.camera.y + 10, 3);
         }

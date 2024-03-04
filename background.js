@@ -22,17 +22,36 @@ class Grass {
   update() {
     // Update logic goes here if needed
 
+
+  }
+
+  placeOuterBoundingBoxes(){
     //place bounding boxes so nothing can leave and exit the map.
     // Loop through each row and column in the map
     for (let i = 0; i < this.map.length; i++) {
       // y's rows
       for (let j = 0; j < this.map[i].length; j++) {
         // x's columns
-        const wallX = this.x + j * this.tileWidth * this.scale;
-        const wallY = this.y + i * this.tileHeight * this.scale;
-        if( j===0){
-          //this.game.addEntity(new CollisionBox(this.game, wallX - (this.game.camera.midpointX)  , wallY - this.game.camera.midpointY, this.tileWidth, this.tileHeight, this.scale, i, j, 0));
+
+        let wallY = this.y + i * this.tileHeight * this.scale;
+        let wallX = this.x + j * this.tileWidth * this.scale;
+        //left side
+        if (j === 0) {
+          wallX = -1 * this.tileWidth * this.scale;
+          this.game.addEntity(new CollisionBox(this.game, wallX - this.game.camera.midpointX, wallY - this.game.camera.midpointY, this.tileWidth, this.tileHeight, this.scale, i, j, 0));
         }
+        //topside
+        if (i === 0 && j <= 78) {
+          wallX = this.x + j * this.tileWidth * this.scale;
+          wallY = -1 * this.tileHeight * this.scale;
+          this.game.addEntity(new CollisionBox(this.game, wallX - this.game.camera.midpointX, wallY - this.game.camera.midpointY, this.tileWidth, this.tileHeight, this.scale, i, j, 0));
+        }
+        //rightside
+      if (j === 79) {
+          wallX =  (j +1) * this.tileWidth * this.scale;
+          wallY = this.y + i * this.tileHeight * this.scale;
+         this.game.addEntity(new CollisionBox(this.game, wallX - this.game.camera.midpointX, wallY, this.tileWidth, this.tileHeight, this.scale, i, j, 0));
+      }
       }
     }
   }
