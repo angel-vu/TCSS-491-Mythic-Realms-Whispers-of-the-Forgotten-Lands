@@ -24,18 +24,19 @@ class Wizard {
         this.spritesheet = ASSET_MANAGER.getAsset("./enemies/wizard.png");
 
         this.facing = 0; // 0 = down, 1 = up, 2 = left, 3 = right 
-        this.state = 0; // 0 = walking, 1 = idle, 2 = running, 3 = attack, 4 = damaged, 5 = dead
+        this.state = 0; // 0 = walking, 1 = idle, 2 = attack, 3 = damaged, 4 = dead
 
         this.targetID = 0;
         if (this.path && this.path[this.targetID]) this.target = this.path[this.targetID];
 
         var dist = distance(this, this.target);
-        this.maxSpeed = 150; // pixels per second
+        this.maxSpeed = 100; // pixels per second
      
-        this.velocity = { x: (this.target.x - this.x) / dist * this.maxSpeed, y: (this.target.y - this.y) / dist * this.maxSpeed };
+        this.velocity = { x: this.maxSpeed, y: this.maxSpeed };
 
         // wizard's animations
         this.updateBB();
+        this.updateMoveBox();
         this.updateHurtBox();
         this.updateHitBox();
         this.updatePathingCircle();
@@ -53,19 +54,44 @@ class Wizard {
 
     // Bounding sphere for enemy vision
     updatePathingCircle() {
-        this.pathingCircle = new BoundingCircle(this.hurtBox.x + this.hurtBox.width / 2, this.hurtBox.y + this.hurtBox.height / 2, 100, 200);
+        this.pathingCircle = new BoundingCircle(this.hurtBox.x + this.hurtBox.width / 2, this.hurtBox.y + this.hurtBox.height / 2, 110, 400);
     }
 
     updateBB() {
-        this.BB = new BoundingBox(this.x, this.y, 50, 50);
+        this.BB = new BoundingBox(this.x, this.y, 50 * this.scale, 50 * this.scale);
     }
 
     updateLastBB() {
         this.lastBB = this.BB;
     }
 
+    updateMoveBox() {
+        this.moveBox = new BoundingBox(this.x + 40 * this.scale, this.y + 100 * this.scale, 45 * this.scale, 10 * this.scale);
+    }
+
+    updateLastMoveBox() {
+        this.lastMoveBox = this.moveBox;
+    }
+
     updateHurtBox() {
-        this.hurtBox = new BoundingBox(this.x, this.y, 50, 50);
+        console.log(this.facing);
+        if(this.facing === 2) {
+            if(this.state === 0) { // walk
+                this.hurtBox = new BoundingBox(this.x + 50 * this.scale, this.y, 50 * this.scale, 100 * this.scale);
+            } else if (this.state === 1) { // idle
+                this.hurtBox = new BoundingBox(this.x + 50 * this.scale, this.y, 85 * this.scale, 100 * this.scale);
+            } else if (this.state === 3) { // attack
+                this.hurtBox = new BoundingBox(this.x + 90 * this.scale, this.y, 110 * this.scale, 120 * this.scale);
+            } 
+        } else {
+            if(this.state === 0) { // walk
+                this.hurtBox = new BoundingBox(this.x + 40 * this.scale, this.y, 50 * this.scale, 100 * this.scale);
+            } else if (this.state === 1) { // idle
+                this.hurtBox = new BoundingBox(this.x + 50 * this.scale, this.y, 85 * this.scale, 100 * this.scale);
+            } else if (this.state === 3) { // attack
+                this.hurtBox = new BoundingBox(this.x + 50 * this.scale, this.y, 110 * this.scale, 120 * this.scale);
+            } 
+        }
     }
 
     updateLastHurtBox() {
@@ -73,7 +99,11 @@ class Wizard {
     }
 
     updateHitBox() {
-        this.hitBox = new BoundingBox(this.x, this.y, 50, 50);
+        if(this.facing === 2) { // left 
+            this.hitBox = new BoundingBox(this.x, this.y, 50 * this.scale, 50 * this.scale);
+        } else { // right
+            this.hitBox = new BoundingBox(this.x + 100 * this.scale, this.y, 50 * this.scale, 50 * this.scale);
+        }
     }
 
     updateLastHitBox() {
@@ -129,6 +159,7 @@ class Wizard {
 
     update() {
         if (!this.game.camera.gamePaused) {
+
             if(this.currentHealth <= 0) {
                 this.dead = true;
                 this.game.camera.entityCount -= 1;
@@ -137,35 +168,68 @@ class Wizard {
             }
 
             if (!this.damagedState) {
+
                 var dist = distance(this, this.target);
 
-                if (dist < 5) {
-                    if(this.targetID === this.path.length - 1) {
-                        this.targetID = 0;
-                    }
+                // if (dist < 5) {
+                // //     if(this.targetID === this.path.length - 1) {
+                // //         this.targetID = 0;
+                // //     }
 
-                    if (this.targetID < this.path.length - 1 && this.target === this.path[this.targetID]) {
-                        this.targetID++;
-                    }
+                // //     if (this.targetID < this.path.length - 1 && this.target === this.path[this.targetID]) {
+                // //         this.targetID++;
+                // //     }
 
-                    this.target = this.path[this.targetID];
-                }
+                //     this.target = this.path[this.targetID];
+                // } 
 
                 if (this.state === 2) {
                     this.elapsedTime += this.game.clockTick;
                 }
+
+                if (this.state !== 2) {
+                    dist = distance(this, this.target);
+                    // this.velocity = { x: (this.target.x - this.x) / dist * this.maxSpeed, y: (this.target.y - this.y) / dist * this.maxSpeed };
+                    this.x += this.velocity.x * this.game.clockTick;
+                    this.y += this.velocity.y * this.game.clockTick;
+
+                    if (this.velocity.x > 0){
+                        this.facing = 3; // right
+                    } else {
+                        this.facing = 2; // left
+                    }
+                } else {
+                    // Wizard Direction always faces Link
+                    if (this.game.camera.link.x <= this.x){
+                        this.facing = 2;
+                    } else {
+                        this.facing = 3;
+                    }
+                }
+                
+                this.updateLastBB();
+                this.updateBB();
+                this.updateLastMoveBox();
+                this.updateMoveBox();
+                this.updateLastHurtBox();
+                this.updateHurtBox();
+                this.updatePathingCircle();
+                this.updateLastHitBox();
+                this.updateHitBox();
 
                 for (var i = 0; i < this.game.entities.length; i++) {
                     var ent = this.game.entities[i];
                     if(ent instanceof Link && !ent.dead) {
                         if (ent instanceof Link && canSee(this.pathingCircle, ent.pathingCircle)) {
                             this.target = ent.pathingCircle;
+                            // move towards target when within visual radius
+                            this.velocity = { x: (this.target.x - this.x) / dist * this.maxSpeed, y: (this.target.y - this.y) / dist * this.maxSpeed };
                         } 
                         if (ent instanceof Link && collide(this.pathingCircle, ent.pathingCircle) && !ent.damagedState) {
                             if (this.state === 0 || this.state === 1) {
                                 this.state = 2;
                                 this.elapsedTime = 0;
-                            } else if (this.elapsedTime > 1.6 && !ent.damagedState) {
+                            } else if (this.elapsedTime >= this.animations[this.facing][2].totalTime && !ent.damagedState) {
                                 if (ent instanceof Link && this.hitBox.collide(ent.hurtBox)&& !ent.damagedState) {
                                     console.log("ATTACK LANDED - WIZARD VS LINK!");
                                     ent.damageEntity(1);
@@ -178,35 +242,34 @@ class Wizard {
                     if (ent instanceof Link && this.state === 2 && (!collide(this.pathingCircle, ent.pathingCircle)) || (ent instanceof Link && ent.dead)) {
                         this.state = 0;
                     }
-                }
 
-                if (this.state !== 2) {
-                    dist = distance(this, this.target);
-                    this.velocity = { x: (this.target.x - this.x) / dist * this.maxSpeed, y: (this.target.y - this.y) / dist * this.maxSpeed };
-                    this.x += this.velocity.x * this.game.clockTick;
-                    this.y += this.velocity.y * this.game.clockTick;
-
-                    if (this.velocity.x > 0){
-                        this.facing = 3; // right
-                    } else {
-                        this.facing = 2; // left
-                    }
-                } else {
-                    // Wizard Direction always faces Link
-                    if (this.game.camera.link.x < this.x){
-                        this.facing = 2;
-                    } else {
-                        this.facing = 3;
-                    }
+                    if (this.moveBox && ent.BoundingBox && this.moveBox.collide(ent.BoundingBox)) {
+                        if (ent instanceof CollisionBox) {
+                          console.log(ent.row + " and " + ent.column + " tilenumber: " + ent.tileNumber);
+                          if (this.lastMoveBox.left >= ent.BoundingBox.right) {
+                            // collided with the right side of the CollisionBox
+                            this.x = ent.BoundingBox.right - 40 * this.scale;
+                            this.velocity.x *= -1;
+                            //collided with the left side of the CollisionBox.
+                          } else if (this.lastMoveBox.right <= ent.BoundingBox.left) {
+                            this.x = ent.BoundingBox.left - this.moveBox.width - 40 * this.scale;
+                            this.velocity.x *= -1;
+                            //collided with the bottom of the CollisonBox.Was below the Collisionbox.
+                          } else if (this.lastMoveBox.top >= ent.BoundingBox.bottom) {
+                            this.y = ent.BoundingBox.bottom - 110 * this.scale + this.lastMoveBox.height;
+                            this.velocity.y *= -1;
+                            // collided with the top of the CollisionBox. Was above the CollisionBox.
+                          } else if (this.lastMoveBox.bottom <= ent.BoundingBox.top) {
+                            // based off the height of the idle height of the hurtbox of link
+                            // added one pixel or else we would clip into the wall
+                            this.y = ent.BoundingBox.top - 111 * this.scale;
+                            this.velocity.y *= -1;
+                          }
+                        }
+            
+                        this.updateMoveBox();
+                      }
                 }
-                
-                this.updateLastBB();
-                this.updateBB();
-                this.updateLastHurtBox();
-                this.updatePathingCircle();
-                this.updateHurtBox();
-                this.updateLastHitBox();
-                this.updateHitBox();
             }
 
             if (this.damagedState && !this.dead) {
@@ -236,6 +299,7 @@ class Wizard {
               } else {
                 this.animations[this.facing][this.state].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, this.scale);
               }
+
               if (!this.dead) {
                 this.healthbar.draw(ctx);
               }
@@ -249,18 +313,21 @@ class Wizard {
                     ctx.lineTo(this.path[i].x - this.game.camera.x, this.path[i].y - this.game.camera.y);
                 };
                 ctx.stroke();
-        
-                // // Hit Box (Attack)          
-                // ctx.strokeStyle = 'Red';
-                // ctx.strokeRect(this.hitBox.x - this.game.camera.x, this.hitBox.y - this.game.camera.y, this.hitBox.width, this.hitBox.height);
-        
+                
                 // // Hurt Box (Damage Taken)
                 ctx.strokeStyle = 'Blue';
                 ctx.strokeRect(this.hurtBox.x - this.game.camera.x, this.hurtBox.y - this.game.camera.y, this.hurtBox.width, this.hurtBox.height);
+
+                if (this.moveBox) {
+                    ctx.strokeStyle = "Pink";
+                    ctx.strokeRect(this.moveBox.x - this.game.camera.x, this.moveBox.y - this.game.camera.y, this.moveBox.width, this.moveBox.height);
+                }
         
-                // ctx.strokeStyle = 'Red';
-                // ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y - this.game.camera.y, this.BB.width, this.BB.height);
-        
+                if (this.hitBox) {
+                    ctx.strokeStyle = 'Red';
+                    ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y - this.game.camera.y, this.BB.width, this.BB.height);
+                }
+
                 // Inner Circle 
                 ctx.strokeStyle = "Yellow";
                 ctx.beginPath();
