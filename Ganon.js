@@ -11,7 +11,7 @@ class Ganon {
     this.radius = 50;
     this.visualRadius = 400;
 
-    this.maxHealth = 1;
+    this.maxHealth = 10;
     this.currentHealth = this.maxHealth;
     this.dead = false;
 
