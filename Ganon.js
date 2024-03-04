@@ -11,7 +11,7 @@ class Ganon {
     this.radius = 50;
     this.visualRadius = 400;
 
-    this.maxHealth = 10;
+    this.maxHealth = 1;
     this.currentHealth = this.maxHealth;
     this.dead = false;
 
@@ -650,7 +650,7 @@ class Ganon {
             this.state = 2;
             this.facing = 0;
             // this.elapsedTime = 0;
-            if (this.elapsedTime > 1.2) {
+            if (this.elapsedTime > 4.2 && !ent.damagedState) {
               this.game.addEntity(
                 new Trident(this.game, this.x, this.y - 10, ent)
               );
@@ -861,13 +861,18 @@ class Trident {
 
     this.initialPoint = { x, y };
     this.maxSpeed = 100;
+    this.facing = 1;
 
     this.radius = 50;
 
     this.updateHitBox();
+    this.cache = [];
     this.weapons = [];
     this.loadAnimations();
     this.elapsedTime = 0;
+
+    var dist = distance(this, this.target);
+    this.velocity = { x: (this.target.x - this.x) / dist * this.maxSpeed, y: (this.target.y - this.y) / dist * this.maxSpeed };
   }
 
   loadAnimations() {
@@ -882,7 +887,7 @@ class Trident {
         1,
         0,
         false,
-        false,
+        true,
         false
       );
     
@@ -897,7 +902,7 @@ class Trident {
         1,
         0,
         false,
-        false,
+        true,
         false
       );
     
@@ -912,7 +917,7 @@ class Trident {
         1,
         0,
         false,
-        false,
+        true,
         false
       );
     
@@ -927,7 +932,7 @@ class Trident {
         1,
         0,
         false,
-        false,
+        true,
         false
       );
     
@@ -942,7 +947,7 @@ class Trident {
         1,
         0,
         false,
-        false,
+        true,
         false
       );
     
@@ -957,7 +962,7 @@ class Trident {
         1,
         0,
         false,
-        false,
+        true,
         false
       );
     
@@ -972,7 +977,7 @@ class Trident {
         1,
         0,
         false,
-        false,
+        true,
         false
       );
     
@@ -987,7 +992,7 @@ class Trident {
         1,
         0,
         false,
-        false,
+        true,
         false
       );
     
@@ -1008,14 +1013,13 @@ class Trident {
   }
 
   update() {
-    this.elapsedTime += this.game.clockTick;
-    this.velocity = {
-      X: Math.cos(this.elapsedTime),
-      Y: Math.sin(this.elapsedTime),
-    };
-
-    this.facing = getRotationFacing(this.velocity);
-    this.updateHitBox();
+    if(!this.game.camera.gamePaused) {
+      this.x += this.velocity.x * this.game.clockTick;
+      this.y += this.velocity.y * this.game.clockTick;
+      this.elapsedTime += this.game.clockTick;
+      this.facing = getRotationFacing(this.velocity);
+      this.updateHitBox();
+    }
   }
 
   drawAngle(ctx, angle) {
@@ -1034,14 +1038,14 @@ class Trident {
       offscreenCtx.translate(16, 16);
       offscreenCtx.rotate(radians);
       offscreenCtx.translate(-16, -16);
-      offscreenCtx.drawImage(this.spritesheet, 80, 0, 32, 32, 0, 0, 32, 32);
+      offscreenCtx.drawImage(this.spritesheet, 80, 0, 32, 32, this.x - this.game.camera.x, this.y - this.game.camera.y, 32, 32);
       offscreenCtx.restore();
       this.cache[angle] = offscreenCanvas;
     }
     var xOffset = 16;
     var yOffset = 16;
 
-    ctx.drawImage(this.cache[angle], this.x - xOffset, this.y - yOffset);
+    // ctx.drawImage(this.cache[angle], this.x - xOffset - this.game.cameraX, this.y - yOffset - this.game.camera.y);
     if (PARAMS.DEBUG) {
       ctx.strokeStyle = "Green";
       ctx.strokeRect(this.x - xOffset, this.y - yOffset, 32, 32);
@@ -1049,32 +1053,33 @@ class Trident {
   }
 
   draw(ctx) {
-    if (this.facing < 5) {
+
+    let angle = Math.atan2(this.velocity.y, this.velocity.x);
+    if (angle < 0) angle += Math.PI * 2;
+    let degrees = Math.floor((angle / Math.PI / 2) * 360);
+    this.drawAngle(ctx, degrees);
+
+    if (this.facing < 8) {
       this.weapons[this.facing].drawFrame(
         this.game.clockTick,
         ctx,
-        this.x,
-        this.y,
+        this.x - this.game.camera.x,
+        this.y - this.game.camera.y,
         2
       );
     } else {
       ctx.save();
       ctx.scale(-1, 1);
+      console.log(8 - this.facing);
       this.weapons[8 - this.facing].drawFrame(
         this.game.clockTick,
         ctx,
-        -this.x,
-        this.y,
+        -this.x - this.game.camera.x,
+        this.y - this.game.camera.y,
         2
       );
       ctx.restore();
     }
-
-    let angle = Math.atan2(this.velocity.y, this.velocity.x);
-    if (angle < 0) angle += Math.PI * 2;
-    let degrees = Math.floor((angle / Math.PI / 2) * 360);
-
-    this.drawAngle(ctx, degrees);
   }
 }
 

@@ -170,7 +170,7 @@ class SceneManager {
         // ]);
         // this.game.addEntity(this.skeleton1);
 
-        // this.skeleton2 = new Skeleton(this.game, 2000, 2000, [
+        // this.skeleton2 = new Skeleton(this.game, 2000, 600, [
         //   { x: randomInt(800), y: randomInt(800) },
         //   { x: randomInt(800), y: randomInt(800) },
         //   { x: randomInt(800), y: randomInt(800) },
@@ -178,7 +178,7 @@ class SceneManager {
         // ]);
         // this.game.addEntity(this.skeleton2);
 
-        // this.wizard1 = new Wizard(this.game, 2500, 800, [
+        // this.wizard1 = new Wizard(this.game, 2000, 800, [
         //   { x: randomInt(800), y: randomInt(800) },
         //   { x: randomInt(800), y: randomInt(800) },
         //   { x: randomInt(800), y: randomInt(800) },
@@ -186,7 +186,7 @@ class SceneManager {
         // ]);
         // this.game.addEntity(this.wizard1);
 
-        // this.wizard2 = new Wizard(this.game, 500, 2000, [
+        // this.wizard2 = new Wizard(this.game, 500, 200, [
         //   { x: randomInt(800), y: randomInt(800) },
         //   { x: randomInt(800), y: randomInt(800) },
         //   { x: randomInt(800), y: randomInt(800) },
@@ -194,15 +194,15 @@ class SceneManager {
         // ]);
         // this.game.addEntity(this.wizard2);
 
-        this.banshee1 = new Banshee(this.game, 300, 300, [
-          { x: randomInt(800), y: randomInt(800) },
-          { x: randomInt(800), y: randomInt(800) },
-          { x: randomInt(800), y: randomInt(800) },
-          { x: 0, y: 0 },
-        ]);
-        this.game.addEntity(this.banshee1);
+        // this.banshee1 = new Banshee(this.game, 500, 300, [
+        //   { x: randomInt(800), y: randomInt(800) },
+        //   { x: randomInt(800), y: randomInt(800) },
+        //   { x: randomInt(800), y: randomInt(800) },
+        //   { x: 0, y: 0 },
+        // ]);
+        // this.game.addEntity(this.banshee1);
 
-        // this.banshee2 = new Banshee(this.game, 2800, 1500, [
+        // this.banshee2 = new Banshee(this.game, 300, 400, [
         //   { x: randomInt(800), y: randomInt(800) },
         //   { x: randomInt(800), y: randomInt(800) },
         //   { x: randomInt(800), y: randomInt(800) },
@@ -210,7 +210,7 @@ class SceneManager {
         // ]);
         // this.game.addEntity(this.banshee2);
 
-        // this.banshee3 = new Banshee(this.game, 800, 2800, [
+        // this.banshee3 = new Banshee(this.game, 800, 900, [
         //   { x: randomInt(800), y: randomInt(800) },
         //   { x: randomInt(800), y: randomInt(800) },
         //   { x: randomInt(800), y: randomInt(800) },
@@ -234,7 +234,7 @@ class SceneManager {
         // ]);
         // this.game.addEntity(this.goblin2);
 
-        // this.goblin3 = new Goblin(this.game, 2500, 2000, [
+        // this.goblin3 = new Goblin(this.game, 700, 500, [
         //   { x: randomInt(800), y: randomInt(800) },
         //   { x: randomInt(800), y: randomInt(800) },
         //   { x: randomInt(800), y: randomInt(800) },
