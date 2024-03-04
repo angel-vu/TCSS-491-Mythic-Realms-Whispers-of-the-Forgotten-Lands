@@ -27,6 +27,7 @@ class Scream {
     }
 
     update() {
+    if(!this.game.camera.gamePaused) {
         this.x += this.velocity.x * this.game.clockTick;
         this.y += this.velocity.y * this.game.clockTick;
 
@@ -42,6 +43,7 @@ class Scream {
                 this.removeFromWorld = true;
             }
         }
+    }
     };
 
     draw(ctx) {
