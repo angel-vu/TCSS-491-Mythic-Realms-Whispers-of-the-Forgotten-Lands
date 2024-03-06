@@ -98,7 +98,7 @@ class AssetManager {
         let audio = this.cache[path];
         audio.currentTime = 0;
         audio.play();
-        console.log("music is playing");
+        //console.log("music is playing");
     };
     
     muteAudio(mute) {

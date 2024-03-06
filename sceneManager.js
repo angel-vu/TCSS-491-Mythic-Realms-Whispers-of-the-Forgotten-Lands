@@ -274,14 +274,6 @@ class SceneManager {
       this.loadLevel(1, 0, 0, true, this.title, this.gameOver, this.gameWin);
     }
 
-    //music
-    if (this.game.ganon) {
-      //play boss music
-    }
-    // if (this.entityCount > 0) {
-    //   //ASSET_MANAGER.playAsset("./music/Undertale-Waterfall.mp3");
-    // }
-
     this.x = 0;
     this.y = 0;
 
@@ -307,6 +299,8 @@ class SceneManager {
     if (this.totalEnemies == 0) {
       //if (GanonSpawn <= 2) {
         if (this.level == 1 && !this.Ganon1Spawn) {
+          ASSET_MANAGER.pauseBackgroundMusic();
+          ASSET_MANAGER.playAsset("./music/Final-Boss_ExcisionxDionTimmer.mp3");
           // Spawn Ganon with phase 0
           console.log("1st phase spawn");
           this.ganon = new Ganon(
@@ -343,7 +337,7 @@ class SceneManager {
         }
         // Check for Ganon's death and transition to the next level or phase
         if (this.ganon2 && this.ganon2.dead && this.Ganon1Spawn && this.Ganon2Spawn) {
-          this.gameOver = false;
+          //ASSET_MANAGER.pauseBackgroundMusic();
           this.gameWin = true;
           this.loadLevel(
             1,
@@ -354,6 +348,8 @@ class SceneManager {
             this.gameOver,
             this.gameWin
           );
+          // ASSET_MANAGER.pauseBackgroundMusic();
+          //ASSET_MANAGER.playAsset("./music/End-Credits_Ocarina-of-Time.mp3");
         }
       //}
     }

@@ -27,6 +27,9 @@ ASSET_MANAGER.queueDownload("./sprites/props.png");
 
 //sounds
 ASSET_MANAGER.queueDownload("./music/Undertale-Waterfall.mp3");
+ASSET_MANAGER.queueDownload("./music/Final-Boss_ExcisionxDionTimmer.mp3");
+ASSET_MANAGER.queueDownload("./music/End-Credits_Ocarina-of-Time.mp3");
+
 
 
 ASSET_MANAGER.queueDownload("./music/link_attack_1.mp3");
@@ -35,7 +38,7 @@ ASSET_MANAGER.queueDownload("./music/link_damage_1.mp3");
 ASSET_MANAGER.queueDownload("./music/heal.mp3");
 
 ASSET_MANAGER.downloadAll(() => {
-  ASSET_MANAGER.autoRepeat("./music/Undertale-Waterfall.mp3");
+  //ASSET_MANAGER.autoRepeat("./music/Undertale-Waterfall.mp3");
   const popupOverlay = document.getElementById("popup");
   const secondPopupOverlay = document.getElementById("secondPopup");
   const thirdPopupOverlay = document.getElementById("thirdPopup");
