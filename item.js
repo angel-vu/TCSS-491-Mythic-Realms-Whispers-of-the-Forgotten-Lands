@@ -207,6 +207,8 @@ class ShieldBubble {
     };
 }
 
+// 3-6 update
+
 // class Potion2 {
 //     constructor(game) {
 //         Object.assign(this, { game });

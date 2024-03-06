@@ -121,3 +121,5 @@ ASSET_MANAGER.downloadAll(() => {
   fourthPopupOverlay.addEventListener("click", startGame);
   ctx.imageSmoothingEnabled = true;
 });
+
+// 3-6 update
