@@ -509,6 +509,11 @@ class Link {
               }
               ASSET_MANAGER.playAsset("./music/heal.mp3");
               entity.removeFromWorld = true;
+            } else if (entity instanceof ShieldPotion) {
+              // Activate shield bubble on Link
+              entity.activateShieldBubbleOnLink();
+              ASSET_MANAGER.playAsset("./music/yeah.mp3");
+              entity.removeFromWorld = true;
             }
           }
           //Boundary checking for when link walks into a wall.

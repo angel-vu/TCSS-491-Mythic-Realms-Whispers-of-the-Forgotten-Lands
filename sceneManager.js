@@ -10,6 +10,11 @@ class SceneManager {
     this.gameOver = false;
     this.gameWin = false;
 
+    this.timeDuration = 300;
+    this.elapsedTime = this.timeDuration;
+
+    this.startTimer();
+
     this.midpointX = PARAMS.CANVAS_WIDTH / 2 - (26 * 3) / 2; // 26 * 3 (3 is Links Scale) this is his idle hurt box width
     this.midpointY = PARAMS.CANVAS_HEIGHT / 2 - (58 * 3) / 2; // 58 * 3 (3 is Links Scale) this is his idle hurt box height
 
@@ -60,7 +65,7 @@ class SceneManager {
     this.playPauseButtonX =
       PARAMS.CANVAS_WIDTH - this.playPauseButtonWidth - 20; // 20 padding from the right edge
     this.playPauseButtonY = 20;
-    this.gamePaused = true;
+    this.gamePaused = false;
     this.canvas.addEventListener("click", this.handlePlayPauseClick.bind(this));
 
     // Coordinates and size for the options button
@@ -104,6 +109,33 @@ class SceneManager {
       console.log("Options clicked!");
     }
   }
+
+  startTimer() {
+    this.timerInterval = setInterval(() => {
+      if (!this.gamePaused) { 
+        this.elapsedTime--; 
+        if (this.elapsedTime <= 0) {
+          this.stopTimer();
+          console.log("Time's up!");
+        }
+      }
+    }, 1000);
+  }
+
+  stopTimer() {
+      clearInterval(this.timerInterval);
+  }
+
+
+    // Stop the timer
+    stopTimer() {
+      clearInterval(this.timerInterval);
+    }
+
+    // Reset the timer
+    resetTimer() {
+      this.elapsedTime = this.timerDuration;
+    }
 
   clearEntities() {
     this.game.entities.forEach(function (entity) {
@@ -159,6 +191,94 @@ class SceneManager {
         this.healthPotion = new HealthPotion(this.game, 0, 3000);
         this.game.addEntity(this.healthPotion);
 
+        this.fire = new Fire(this.game, 0, 300);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 10, 600);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 500, 400);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 2500, 100);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 2800, 300);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 2600, 800);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 2800, 2000);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 1500, 800);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 250, 1385);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 1000, 1200);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 2000, 1500);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 1000, 1500);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 1200, 1800);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 1400, 1600);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 1100, 2000);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 0, 1000);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 20, 2200);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 0, 2500);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 100, 3000);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 2000, 300);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 2500, 3000);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 2000, 2500);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 2200, 2800);
+        this.game.addEntity(this.fire);
+
+        // fire by statue
+        this.fire = new Fire(this.game, 250, 1385);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 575, 1385);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 250, 1500);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 575, 1500);
+        this.game.addEntity(this.fire);
+
+        this.shieldPotion = new ShieldPotion(this.game, 300, 300);
+        this.game.addEntity(this.shieldPotion);
+
+        // this.shieldBubble = new ShieldBubble(this.game, 300, 300);
+        // this.game.addEntity(this.shieldBubble);
+
         // this.inventory = new Inventory(this.game, 500, 500, levelOne);
         // this.game.addEntity(this.inventory);
 
@@ -186,7 +306,7 @@ class SceneManager {
         ]);
         this.game.addEntity(this.wizard1);
 
-        this.wizard2 = new Wizard(this.game, 500, 200, [
+        this.wizard2 = new Wizard(this.game, 500, 1000, [
           { x: randomInt(800), y: randomInt(800) },
           { x: randomInt(800), y: randomInt(800) },
           { x: randomInt(800), y: randomInt(800) },
@@ -202,7 +322,7 @@ class SceneManager {
         ]);
         this.game.addEntity(this.banshee1);
 
-        this.banshee2 = new Banshee(this.game, 300, 400, [
+        this.banshee2 = new Banshee(this.game, 1000, 1000, [
           { x: randomInt(800), y: randomInt(800) },
           { x: randomInt(800), y: randomInt(800) },
           { x: randomInt(800), y: randomInt(800) },
@@ -218,7 +338,7 @@ class SceneManager {
         ]);
         this.game.addEntity(this.banshee3);
 
-        this.goblin1 = new Goblin(this.game, 250, 250, [
+        this.goblin1 = new Goblin(this.game, 500, 250, [
           { x: randomInt(800), y: randomInt(800) },
           { x: randomInt(800), y: randomInt(800) },
           { x: randomInt(800), y: randomInt(800) },
@@ -251,6 +371,8 @@ class SceneManager {
         this.game.addEntity(this.goblin4);
 
         this.game.addEntity(this.link);
+        this.shieldBubble = new ShieldBubble(this.game);
+        this.game.addEntity(this.shieldBubble);
         this.ground.placeOuterBoundingBoxes();
       }
     }
@@ -367,6 +489,14 @@ class SceneManager {
     this.wizardCounter = this.game.entities.filter(
       (entity) => entity instanceof Wizard
     ).length;
+
+    // Check if the timer has reached the duration
+    if (this.elapsedTime <= 0) {
+      this.stopTimer();
+      console.log("Time's up!");
+      this.gameOver = true;
+      this.loadLevel(1, 0, 0, true, this.title, this.gameOver, this.gameWin);
+    }
   }
 
   draw(ctx) {
@@ -468,5 +598,16 @@ class SceneManager {
     ctx.fillStyle = "#000";
     ctx.font = "16px Arial";
     ctx.fillText(`: ${this.wizardCounter}`, 280, 35);
+    // Draw the timer on the screen
+    ctx.fillStyle = "#000";
+    ctx.font = "20px Arial";
+    ctx.fillText(`Timer: ${this.formatTime(this.elapsedTime)}`, 750, 50);
+  }
+
+  // Helper function to format time (convert seconds to MM:SS format)
+  formatTime(seconds) {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes < 10 ? "0" : ""}${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
   }
 }

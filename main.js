@@ -10,6 +10,8 @@ ASSET_MANAGER.queueDownload("./sprites/projectile.png");
 ASSET_MANAGER.queueDownload("./sprites/coins.png");
 ASSET_MANAGER.queueDownload("./sprites/potion.png");
 ASSET_MANAGER.queueDownload("./sprites/potions.png");
+ASSET_MANAGER.queueDownload("./sprites/bubble.png");
+ASSET_MANAGER.queueDownload("./sprites/fire.png");
 ASSET_MANAGER.queueDownload("./sprites/treasure.png");
 ASSET_MANAGER.queueDownload("./sprites/grass.png");
 ASSET_MANAGER.queueDownload("./enemies/skeleton.png");
@@ -36,12 +38,14 @@ ASSET_MANAGER.queueDownload("./music/link_attack_1.mp3");
 ASSET_MANAGER.queueDownload("./music/link_attack_2.mp3");
 ASSET_MANAGER.queueDownload("./music/link_damage_1.mp3");
 ASSET_MANAGER.queueDownload("./music/heal.mp3");
+ASSET_MANAGER.queueDownload("./music/yeah.mp3");
 
 ASSET_MANAGER.downloadAll(() => {
   //ASSET_MANAGER.autoRepeat("./music/Undertale-Waterfall.mp3");
   const popupOverlay = document.getElementById("popup");
   const secondPopupOverlay = document.getElementById("secondPopup");
   const thirdPopupOverlay = document.getElementById("thirdPopup");
+  const fourthPopupOverlay = document.getElementById("fourthPopup");
   const canvas = document.getElementById("gameWorld");
 
   const ctx = canvas.getContext("2d");
@@ -62,11 +66,19 @@ ASSET_MANAGER.downloadAll(() => {
     thirdPopupOverlay.style.display = "flex";
   }
 
+  function hideThirdPopup() {
+    // Hide the second popup
+    thirdPopupOverlay.style.display = "none";
+    // Show the third popup
+    fourthPopupOverlay.style.display = "flex";
+  }
+
   function startGame() {
     // Hide all popups
     popupOverlay.style.display = "none";
     secondPopupOverlay.style.display = "none";
     thirdPopupOverlay.style.display = "none";
+    fourthPopupOverlay.style.display = "none";
     // Show the game canvas
     canvas.style.display = "block";
     // Start the game
@@ -105,6 +117,7 @@ ASSET_MANAGER.downloadAll(() => {
 
   popupOverlay.addEventListener("click", hideFirstPopup);
   secondPopupOverlay.addEventListener("click", hideSecondPopup);
-  thirdPopupOverlay.addEventListener("click", startGame);
+  thirdPopupOverlay.addEventListener("click", hideThirdPopup);
+  fourthPopupOverlay.addEventListener("click", startGame);
   ctx.imageSmoothingEnabled = true;
 });
