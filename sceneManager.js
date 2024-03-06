@@ -162,93 +162,93 @@ class SceneManager {
         // this.inventory = new Inventory(this.game, 500, 500, levelOne);
         // this.game.addEntity(this.inventory);
 
-        // this.skeleton1 = new Skeleton(this.game, 1000, 1000, [
-        //   { x: randomInt(800), y: randomInt(800) },
-        //   { x: randomInt(800), y: randomInt(800) },
-        //   { x: randomInt(800), y: randomInt(800) },
-        //   { x: 0, y: 0 },
-        // ]);
-        // this.game.addEntity(this.skeleton1);
+        this.skeleton1 = new Skeleton(this.game, 1000, 1000, [
+          { x: randomInt(800), y: randomInt(800) },
+          { x: randomInt(800), y: randomInt(800) },
+          { x: randomInt(800), y: randomInt(800) },
+          { x: 0, y: 0 },
+        ]);
+        this.game.addEntity(this.skeleton1);
 
-        // this.skeleton2 = new Skeleton(this.game, 2000, 600, [
-        //   { x: randomInt(800), y: randomInt(800) },
-        //   { x: randomInt(800), y: randomInt(800) },
-        //   { x: randomInt(800), y: randomInt(800) },
-        //   { x: 0, y: 0 },
-        // ]);
-        // this.game.addEntity(this.skeleton2);
+        this.skeleton2 = new Skeleton(this.game, 2000, 600, [
+          { x: randomInt(800), y: randomInt(800) },
+          { x: randomInt(800), y: randomInt(800) },
+          { x: randomInt(800), y: randomInt(800) },
+          { x: 0, y: 0 },
+        ]);
+        this.game.addEntity(this.skeleton2);
 
-        // this.wizard1 = new Wizard(this.game, 2000, 800, [
-        //   { x: randomInt(800), y: randomInt(800) },
-        //   { x: randomInt(800), y: randomInt(800) },
-        //   { x: randomInt(800), y: randomInt(800) },
-        //   { x: 0, y: 0 },
-        // ]);
-        // this.game.addEntity(this.wizard1);
+        this.wizard1 = new Wizard(this.game, 2000, 800, [
+          { x: randomInt(800), y: randomInt(800) },
+          { x: randomInt(800), y: randomInt(800) },
+          { x: randomInt(800), y: randomInt(800) },
+          { x: 0, y: 0 },
+        ]);
+        this.game.addEntity(this.wizard1);
 
-        // this.wizard2 = new Wizard(this.game, 500, 200, [
-        //   { x: randomInt(800), y: randomInt(800) },
-        //   { x: randomInt(800), y: randomInt(800) },
-        //   { x: randomInt(800), y: randomInt(800) },
-        //   { x: 0, y: 0 },
-        // ]);
-        // this.game.addEntity(this.wizard2);
+        this.wizard2 = new Wizard(this.game, 500, 200, [
+          { x: randomInt(800), y: randomInt(800) },
+          { x: randomInt(800), y: randomInt(800) },
+          { x: randomInt(800), y: randomInt(800) },
+          { x: 0, y: 0 },
+        ]);
+        this.game.addEntity(this.wizard2);
 
-        // this.banshee1 = new Banshee(this.game, 500, 300, [
-        //   { x: randomInt(800), y: randomInt(800) },
-        //   { x: randomInt(800), y: randomInt(800) },
-        //   { x: randomInt(800), y: randomInt(800) },
-        //   { x: 0, y: 0 },
-        // ]);
-        // this.game.addEntity(this.banshee1);
+        this.banshee1 = new Banshee(this.game, 500, 300, [
+          { x: randomInt(800), y: randomInt(800) },
+          { x: randomInt(800), y: randomInt(800) },
+          { x: randomInt(800), y: randomInt(800) },
+          { x: 0, y: 0 },
+        ]);
+        this.game.addEntity(this.banshee1);
 
-        // this.banshee2 = new Banshee(this.game, 300, 400, [
-        //   { x: randomInt(800), y: randomInt(800) },
-        //   { x: randomInt(800), y: randomInt(800) },
-        //   { x: randomInt(800), y: randomInt(800) },
-        //   { x: 0, y: 0 },
-        // ]);
-        // this.game.addEntity(this.banshee2);
+        this.banshee2 = new Banshee(this.game, 300, 400, [
+          { x: randomInt(800), y: randomInt(800) },
+          { x: randomInt(800), y: randomInt(800) },
+          { x: randomInt(800), y: randomInt(800) },
+          { x: 0, y: 0 },
+        ]);
+        this.game.addEntity(this.banshee2);
 
-        // this.banshee3 = new Banshee(this.game, 800, 900, [
-        //   { x: randomInt(800), y: randomInt(800) },
-        //   { x: randomInt(800), y: randomInt(800) },
-        //   { x: randomInt(800), y: randomInt(800) },
-        //   { x: 0, y: 0 },
-        // ]);
-        // this.game.addEntity(this.banshee3);
+        this.banshee3 = new Banshee(this.game, 800, 900, [
+          { x: randomInt(800), y: randomInt(800) },
+          { x: randomInt(800), y: randomInt(800) },
+          { x: randomInt(800), y: randomInt(800) },
+          { x: 0, y: 0 },
+        ]);
+        this.game.addEntity(this.banshee3);
 
-        // this.goblin1 = new Goblin(this.game, 250, 250, [
-        //   { x: randomInt(800), y: randomInt(800) },
-        //   { x: randomInt(800), y: randomInt(800) },
-        //   { x: randomInt(800), y: randomInt(800) },
-        //   { x: 0, y: 0 },
-        // ]);
-        // this.game.addEntity(this.goblin1);
+        this.goblin1 = new Goblin(this.game, 250, 250, [
+          { x: randomInt(800), y: randomInt(800) },
+          { x: randomInt(800), y: randomInt(800) },
+          { x: randomInt(800), y: randomInt(800) },
+          { x: 0, y: 0 },
+        ]);
+        this.game.addEntity(this.goblin1);
 
-        // this.goblin2 = new Goblin(this.game, 700, 800, [
-        //   { x: randomInt(800), y: randomInt(800) },
-        //   { x: randomInt(800), y: randomInt(800) },
-        //   { x: randomInt(800), y: randomInt(800) },
-        //   { x: 0, y: 0 },
-        // ]);
-        // this.game.addEntity(this.goblin2);
+        this.goblin2 = new Goblin(this.game, 700, 800, [
+          { x: randomInt(800), y: randomInt(800) },
+          { x: randomInt(800), y: randomInt(800) },
+          { x: randomInt(800), y: randomInt(800) },
+          { x: 0, y: 0 },
+        ]);
+        this.game.addEntity(this.goblin2);
 
-        // this.goblin3 = new Goblin(this.game, 700, 500, [
-        //   { x: randomInt(800), y: randomInt(800) },
-        //   { x: randomInt(800), y: randomInt(800) },
-        //   { x: randomInt(800), y: randomInt(800) },
-        //   { x: 0, y: 0 },
-        // ]);
-        // this.game.addEntity(this.goblin3);
+        this.goblin3 = new Goblin(this.game, 700, 500, [
+          { x: randomInt(800), y: randomInt(800) },
+          { x: randomInt(800), y: randomInt(800) },
+          { x: randomInt(800), y: randomInt(800) },
+          { x: 0, y: 0 },
+        ]);
+        this.game.addEntity(this.goblin3);
 
-        // this.goblin4 = new Goblin(this.game, 800, 1000, [
-        //   { x: randomInt(800), y: randomInt(800) },
-        //   { x: randomInt(800), y: randomInt(800) },
-        //   { x: randomInt(800), y: randomInt(800) },
-        //   { x: 0, y: 0 },
-        // ]);
-        // this.game.addEntity(this.goblin4);
+        this.goblin4 = new Goblin(this.game, 800, 1000, [
+          { x: randomInt(800), y: randomInt(800) },
+          { x: randomInt(800), y: randomInt(800) },
+          { x: randomInt(800), y: randomInt(800) },
+          { x: 0, y: 0 },
+        ]);
+        this.game.addEntity(this.goblin4);
 
         this.game.addEntity(this.link);
         this.ground.placeOuterBoundingBoxes();
@@ -273,14 +273,6 @@ class SceneManager {
       this.gameWin = false;
       this.loadLevel(1, 0, 0, true, this.title, this.gameOver, this.gameWin);
     }
-
-    //music
-    if (this.game.ganon) {
-      //play boss music
-    }
-    // if (this.entityCount > 0) {
-    //   //ASSET_MANAGER.playAsset("./music/Undertale-Waterfall.mp3");
-    // }
 
     this.x = 0;
     this.y = 0;
@@ -307,6 +299,8 @@ class SceneManager {
     if (this.totalEnemies == 0) {
       //if (GanonSpawn <= 2) {
         if (this.level == 1 && !this.Ganon1Spawn) {
+          ASSET_MANAGER.pauseBackgroundMusic();
+          ASSET_MANAGER.playAsset("./music/Final-Boss_ExcisionxDionTimmer.mp3");
           // Spawn Ganon with phase 0
           console.log("1st phase spawn");
           this.ganon = new Ganon(
@@ -343,7 +337,7 @@ class SceneManager {
         }
         // Check for Ganon's death and transition to the next level or phase
         if (this.ganon2 && this.ganon2.dead && this.Ganon1Spawn && this.Ganon2Spawn) {
-          this.gameOver = false;
+          //ASSET_MANAGER.pauseBackgroundMusic();
           this.gameWin = true;
           this.loadLevel(
             1,
@@ -354,6 +348,8 @@ class SceneManager {
             this.gameOver,
             this.gameWin
           );
+          // ASSET_MANAGER.pauseBackgroundMusic();
+          //ASSET_MANAGER.playAsset("./music/End-Credits_Ocarina-of-Time.mp3");
         }
       //}
     }

@@ -2,6 +2,8 @@ class Ganon {
   constructor(game, x, y, path, phase) {
     Object.assign(this, { game, x, y, path, phase });
     this.spritesheet = ASSET_MANAGER.getAsset("./boss_sprites/Ganondorf.png");
+    // ASSET_MANAGER.pauseBackgroundMusic()
+    // ASSET_MANAGER.playAsset("./music/Final-Boss_ExcisionxDionTimmer.mp3");
     this.game.ganon = this;
     this.scale = 3;
 
@@ -644,6 +646,7 @@ class Ganon {
                 this.didAttack = false;
               }
             }
+
             //}
           } else if (this.phase == 1) {
             //if (this.state == 0 || this.state == 1) {
@@ -661,6 +664,21 @@ class Ganon {
               }
             }
             //}
+          }
+          if (collide(this, ent.hurtBox)) {
+            let randomTeleport = randomInt(1);
+            if (this.phase == 0) {
+              this.facing = 1;
+              if (randomTeleport == 0) {
+                this.x = ent.lastMoveBox.x - randomInt(20);
+                this.y = ent.lastMoveBox.y - randomInt(40);
+              } else {
+                this.x = ent.lastMoveBox.x + randomInt(20);
+                this.y = ent.lastMoveBox.y + randomInt(40);
+              }
+            }
+            this.state = 1;
+            this.facing = 0;
           }
         } else if (ent instanceof Link && !canSee(this, ent)) {
           this.state = 1;
