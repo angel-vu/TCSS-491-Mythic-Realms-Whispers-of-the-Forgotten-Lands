@@ -107,6 +107,7 @@ class SceneManager {
     ) {
       // Handle options button click action here
       console.log("Options clicked!");
+      this.showDropdownMenu = !this.showDropdownMenu;
     }
   }
 
@@ -275,9 +276,6 @@ class SceneManager {
 
         this.shieldPotion = new ShieldPotion(this.game, 300, 300);
         this.game.addEntity(this.shieldPotion);
-
-        // this.shieldBubble = new ShieldBubble(this.game, 300, 300);
-        // this.game.addEntity(this.shieldBubble);
 
         // this.inventory = new Inventory(this.game, 500, 500, levelOne);
         // this.game.addEntity(this.inventory);
@@ -551,6 +549,82 @@ class SceneManager {
     ctx.font = "18px Arial";
     ctx.fillText("Options", this.optionsButtonX + 10, this.optionsButtonY + 30);
 
+
+    if (this.showDropdownMenu) {
+      // Set styles for dropdown menu items
+      ctx.font = "12px Arial";
+  
+      // Define the position and size of the dropdown menu
+      const menuX = this.optionsButtonX;
+      const menuY = this.optionsButtonY + this.optionsButtonHeight + 10;
+      const menuItemHeight = 30;
+      const menuItemWidth = 80;
+      const menuItemSpacing = 0;
+  
+      // Define the menu items
+      const menuItems = ["Play Again", "Instructions", "Credits"];
+  
+      // Loop through menu items and draw them in a table-like format
+      for (let i = 0; i < menuItems.length; i++) {
+          const menuItemX = menuX;
+          const menuItemY = menuY + (menuItemHeight + menuItemSpacing) * i;
+  
+          // Draw menu item border
+          ctx.strokeStyle = "#000";
+          ctx.lineWidth = 1;
+          ctx.strokeRect(menuItemX, menuItemY, menuItemWidth, menuItemHeight);
+  
+          // Draw menu item background
+          ctx.fillStyle = "#ccc";
+          ctx.fillRect(menuItemX, menuItemY, menuItemWidth, menuItemHeight);
+  
+          // Measure text width to center it
+          const textWidth = ctx.measureText(menuItems[i]).width;
+  
+          // Draw menu item text
+          ctx.fillStyle = "#000";
+          ctx.fillText(menuItems[i], menuItemX + (menuItemWidth - textWidth) / 2, menuItemY + menuItemHeight / 2 + 5);
+  
+          // Add event listener for click event to each menu item
+          this.canvas.addEventListener("click", (event) => {
+              const mouseX = event.clientX - this.canvas.getBoundingClientRect().left;
+              const mouseY = event.clientY - this.canvas.getBoundingClientRect().top;
+  
+              // Check if the click occurred within the boundaries of the current menu item
+              if (
+                  mouseX >= menuItemX &&
+                  mouseX <= menuItemX + menuItemWidth &&
+                  mouseY >= menuItemY &&
+                  mouseY <= menuItemY + menuItemHeight
+              ) {
+                  console.log("Clicked on menu item:", menuItems[i]);
+                  switch (menuItems[i]) {
+                      case "Play Again":  
+                          console.log("play again clicked!");
+                          window.location.reload();
+                          break;
+                      case "Instructions":
+                          console.log("instructions clicked!");
+                          const instructionsWindow = window.open("", "", "width=500,height=400");
+                          instructionsWindow.document.write("<h1>Game Instructions</h1>");
+                          instructionsWindow.document.write("<p>Link must kill all enemies to reach his way to the boss enemy, Ganon where his presence threatens the Myystic Realms. To complete the quest, kill all enemies before the timer or before they kill you! <br> Keyboard Movements: <br> Up = W, <br> Down = S, <br> Left = A, <br> Right = D <br> Run = Hold Shift <br> Attack = Mouse left click <br> Hint: Pick up potions long the way to restore health!</p>");
+                          break;
+                      case "Credits":
+                          console.log("credits clicked!");
+                          const creditsWindow = window.open("", "_blank", "width=500,height=400");
+                          creditsWindow.document.write("<h1>Credits</h1>");
+                          creditsWindow.document.write("<p>TCSS 491: Game Simulation and Design (Winter 2024) <br> Team: Black 1 <br> Members: David Hoang, Avreen Kaur, Jay Phommakot, Angel Vu</p>");
+                          break;
+                      default:
+                          break;
+                  }
+                  // Close the dropdown menu after clicking a menu item
+                  this.showDropdownMenu = false;
+              }
+          });
+      }
+  }
+  
     // Banshee counter image
     ctx.drawImage(
       this.bansheeCounterImage,
