@@ -618,7 +618,6 @@ class SceneManager {
                       default:
                           break;
                   }
-                  // Close the dropdown menu after clicking a menu item
                   this.showDropdownMenu = false;
               }
           });
