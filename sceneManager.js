@@ -10,6 +10,11 @@ class SceneManager {
     this.gameOver = false;
     this.gameWin = false;
 
+    this.timeDuration = 300;
+    this.elapsedTime = this.timeDuration;
+
+    this.startTimer();
+
     this.midpointX = PARAMS.CANVAS_WIDTH / 2 - (26 * 3) / 2; // 26 * 3 (3 is Links Scale) this is his idle hurt box width
     this.midpointY = PARAMS.CANVAS_HEIGHT / 2 - (58 * 3) / 2; // 58 * 3 (3 is Links Scale) this is his idle hurt box height
 
@@ -60,7 +65,7 @@ class SceneManager {
     this.playPauseButtonX =
       PARAMS.CANVAS_WIDTH - this.playPauseButtonWidth - 20; // 20 padding from the right edge
     this.playPauseButtonY = 20;
-    this.gamePaused = true;
+    this.gamePaused = false;
     this.canvas.addEventListener("click", this.handlePlayPauseClick.bind(this));
 
     // Coordinates and size for the options button
@@ -102,8 +107,36 @@ class SceneManager {
     ) {
       // Handle options button click action here
       console.log("Options clicked!");
+      this.showDropdownMenu = !this.showDropdownMenu;
     }
   }
+
+  startTimer() {
+    this.timerInterval = setInterval(() => {
+      if (!this.gamePaused) { 
+        this.elapsedTime--; 
+        if (this.elapsedTime <= 0) {
+          this.stopTimer();
+          console.log("Time's up!");
+        }
+      }
+    }, 1000);
+  }
+
+  stopTimer() {
+      clearInterval(this.timerInterval);
+  }
+
+
+    // Stop the timer
+    stopTimer() {
+      clearInterval(this.timerInterval);
+    }
+
+    // Reset the timer
+    resetTimer() {
+      this.elapsedTime = this.timerDuration;
+    }
 
   clearEntities() {
     this.game.entities.forEach(function (entity) {
@@ -158,6 +191,91 @@ class SceneManager {
 
         this.healthPotion = new HealthPotion(this.game, 0, 3000);
         this.game.addEntity(this.healthPotion);
+
+        this.fire = new Fire(this.game, 0, 300);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 10, 600);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 500, 400);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 2500, 100);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 2800, 300);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 2600, 800);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 2800, 2000);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 1500, 800);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 250, 1385);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 1000, 1200);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 2000, 1500);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 1000, 1500);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 1200, 1800);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 1400, 1600);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 1100, 2000);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 0, 1000);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 20, 2200);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 0, 2500);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 100, 3000);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 2000, 300);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 2500, 3000);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 2000, 2500);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 2200, 2800);
+        this.game.addEntity(this.fire);
+
+        // fire by statue
+        this.fire = new Fire(this.game, 250, 1385);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 575, 1385);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 250, 1500);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 575, 1500);
+        this.game.addEntity(this.fire);
+
+        this.shieldPotion = new ShieldPotion(this.game, 300, 300);
+        this.game.addEntity(this.shieldPotion);
 
         // this.inventory = new Inventory(this.game, 500, 500, levelOne);
         // this.game.addEntity(this.inventory);
@@ -251,6 +369,8 @@ class SceneManager {
         // this.game.addEntity(this.goblin4);
 
         this.game.addEntity(this.link);
+        this.shieldBubble = new ShieldBubble(this.game);
+        this.game.addEntity(this.shieldBubble);
         this.ground.placeOuterBoundingBoxes();
       }
     }
@@ -367,6 +487,14 @@ class SceneManager {
     this.wizardCounter = this.game.entities.filter(
       (entity) => entity instanceof Wizard
     ).length;
+
+    // Check if the timer has reached the duration
+    if (this.elapsedTime <= 0) {
+      this.stopTimer();
+      console.log("Time's up!");
+      this.gameOver = true;
+      this.loadLevel(1, 0, 0, true, this.title, this.gameOver, this.gameWin);
+    }
   }
 
   draw(ctx) {
@@ -421,6 +549,81 @@ class SceneManager {
     ctx.font = "18px Arial";
     ctx.fillText("Options", this.optionsButtonX + 10, this.optionsButtonY + 30);
 
+
+    if (this.showDropdownMenu) {
+      // Set styles for dropdown menu items
+      ctx.font = "12px Arial";
+  
+      // Define the position and size of the dropdown menu
+      const menuX = this.optionsButtonX;
+      const menuY = this.optionsButtonY + this.optionsButtonHeight + 10;
+      const menuItemHeight = 30;
+      const menuItemWidth = 80;
+      const menuItemSpacing = 0;
+  
+      // Define the menu items
+      const menuItems = ["Play Again", "Instructions", "Credits"];
+  
+      // Loop through menu items and draw them in a table-like format
+      for (let i = 0; i < menuItems.length; i++) {
+          const menuItemX = menuX;
+          const menuItemY = menuY + (menuItemHeight + menuItemSpacing) * i;
+  
+          // Draw menu item border
+          ctx.strokeStyle = "#000";
+          ctx.lineWidth = 1;
+          ctx.strokeRect(menuItemX, menuItemY, menuItemWidth, menuItemHeight);
+  
+          // Draw menu item background
+          ctx.fillStyle = "#ccc";
+          ctx.fillRect(menuItemX, menuItemY, menuItemWidth, menuItemHeight);
+  
+          // Measure text width to center it
+          const textWidth = ctx.measureText(menuItems[i]).width;
+  
+          // Draw menu item text
+          ctx.fillStyle = "#000";
+          ctx.fillText(menuItems[i], menuItemX + (menuItemWidth - textWidth) / 2, menuItemY + menuItemHeight / 2 + 5);
+  
+          // Add event listener for click event to each menu item
+          this.canvas.addEventListener("click", (event) => {
+              const mouseX = event.clientX - this.canvas.getBoundingClientRect().left;
+              const mouseY = event.clientY - this.canvas.getBoundingClientRect().top;
+  
+              // Check if the click occurred within the boundaries of the current menu item
+              if (
+                  mouseX >= menuItemX &&
+                  mouseX <= menuItemX + menuItemWidth &&
+                  mouseY >= menuItemY &&
+                  mouseY <= menuItemY + menuItemHeight
+              ) {
+                  console.log("Clicked on menu item:", menuItems[i]);
+                  switch (menuItems[i]) {
+                      case "Play Again":  
+                          console.log("play again clicked!");
+                          window.location.reload();
+                          break;
+                      case "Instructions":
+                          console.log("instructions clicked!");
+                          const instructionsWindow = window.open("", "", "width=500,height=400");
+                          instructionsWindow.document.write("<h1>Game Instructions</h1>");
+                          instructionsWindow.document.write("<p>Link must kill all enemies to reach his way to the boss enemy, Ganon where his presence threatens the Myystic Realms. To complete the quest, kill all enemies before the timer or before they kill you! <br> Keyboard Movements: <br> Up = W, <br> Down = S, <br> Left = A, <br> Right = D <br> Run = Hold Shift <br> Attack = Mouse left click <br> Hint: Pick up potions long the way to restore health!</p>");
+                          break;
+                      case "Credits":
+                          console.log("credits clicked!");
+                          const creditsWindow = window.open("", "_blank", "width=500,height=400");
+                          creditsWindow.document.write("<h1>Credits</h1>");
+                          creditsWindow.document.write("<p>TCSS 491: Game Simulation and Design (Winter 2024) <br> Team: Black 1 <br> Members: David Hoang, Avreen Kaur, Jay Phommakot, Angel Vu</p>");
+                          break;
+                      default:
+                          break;
+                  }
+                  this.showDropdownMenu = false;
+              }
+          });
+      }
+  }
+  
     // Banshee counter image
     ctx.drawImage(
       this.bansheeCounterImage,
@@ -468,5 +671,18 @@ class SceneManager {
     ctx.fillStyle = "#000";
     ctx.font = "16px Arial";
     ctx.fillText(`: ${this.wizardCounter}`, 280, 35);
+    // Draw the timer on the screen
+    ctx.fillStyle = "#000";
+    ctx.font = "20px Arial";
+    ctx.fillText(`Timer: ${this.formatTime(this.elapsedTime)}`, 750, 50);
+  }
+
+  // Helper function to format time (convert seconds to MM:SS format)
+  formatTime(seconds) {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes < 10 ? "0" : ""}${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
   }
 }
+
+// 3-6 update 
