@@ -213,7 +213,7 @@ class Ganon {
       76,
       49,
       4,
-      0.5,
+      0.2,
       0,
       true,
       true,
@@ -600,7 +600,7 @@ class Ganon {
   damageEntity(damageNumber) {
     this.currentHealth -= damageNumber;
     this.damagedState = true;
-    this.state = 0;
+    this.facing = 1;
   }
 
   update() {
@@ -627,123 +627,143 @@ class Ganon {
 
       for (var i = 0; i < this.game.entities.length; i++) {
         var ent = this.game.entities[i];
-        if (ent instanceof Link && canSee(this, ent)) {
-          //console.log("Ganon see Link!");
-          this.target = ent;
-          if (this.phase == 0) {
-            //if (this.state == 0 || this.state == 1) {
-            this.state = 2;
-            this.facing = 0;
-            if (this.elapsedTime > 3 && !ent.damagedState) {
-              this.game.addEntity(
-                new Orb(this.game, this.x - 30, this.y - 100, ent)
-              );
-              this.elapsedTime = 0;
-              this.didAttack = true;
-              if (this.didAttack) {
-                // this.state = randomInt(2);
-                // console.log("state changed back " + this.state);
-                this.didAttack = false;
-              }
-            }
 
-            //}
-          } else if (this.phase == 1) {
-            //if (this.state == 0 || this.state == 1) {
-            this.state = 2;
-            this.facing = 0;
-            // this.elapsedTime = 0;
-            if (this.elapsedTime > 4.2 && !ent.damagedState) {
-              this.game.addEntity(
-                new Trident(this.game, this.x, this.y - 10, ent)
-              );
-              this.elapsedTime = 0;
-              if (this.didAttack) {
-                // this.state = randomInt(2);
-                this.didAttack = false;
+        if (this.damagedState && !this.dead) {
+          //When in a state of being damaged, create a window where you flicker for 1 second and you can't take damage.
+          this.damagedCounter += this.game.clockTick;
+          if (this.damagedCounter >= 4) {
+            // this.damagedState = false;
+            //this.facing = 1;
+            this.damagedCounter = 0;
+            if (ent instanceof Link) {
+              let randomTeleport = randomInt(1);
+              let randomTelNum = randomInt(150);
+              if (this.phase == 0) {
+                this.facing = 1;
+                if (randomTeleport == 0 && randomTelNum > 90) {
+                  this.x = ent.lastMoveBox.x - randomTelNum;
+                  this.y = ent.lastMoveBox.y - randomTelNum;
+                  //this.damagedState = false;
+                } else if (randomTeleport == 1 && randomTelNum > 90) {
+                  this.x = ent.lastMoveBox.x + randomTelNum;
+                  this.y = ent.lastMoveBox.y + randomTelNum;
+                  //this.damagedState = false;
+                }
+                this.damagedState = false;
+              } else if (this.phase == 1) {
+                this.facing = 1;
+                if (randomTeleport == 0 && randomTelNum > 90) {
+                  this.x = ent.lastMoveBox.x - randomTelNum;
+                  this.y = ent.lastMoveBox.y - randomTelNum;
+                  //this.damagedState = false;
+                } else if (randomTeleport == 1 && randomTelNum > 90) {
+                  this.x = ent.lastMoveBox.x + randomTelNum;
+                  this.y = ent.lastMoveBox.y + randomTelNum;
+                  //this.damagedState = false;
+                }
+                this.damagedState = false;
               }
+              this.updateHurtAndMoveBox();
             }
-            //}
-          }
-          if (collide(this, ent.hurtBox)) {
-            let randomTeleport = randomInt(1);
-            if (this.phase == 0) {
-              this.facing = 1;
-              if (randomTeleport == 0) {
-                this.x = ent.lastMoveBox.x - randomInt(20);
-                this.y = ent.lastMoveBox.y - randomInt(40);
-              } else {
-                this.x = ent.lastMoveBox.x + randomInt(20);
-                this.y = ent.lastMoveBox.y + randomInt(40);
-              }
-            }
-            this.state = 1;
-            this.facing = 0;
-          }
-        } else if (ent instanceof Link && !canSee(this, ent)) {
-          this.state = 1;
-          if (this.state !== 2) {
-            // if not attack state
-            // Calculate distance between this entity and the target (main entity)
-            let dist = distance(this, this.target);
-
-            // If the current distance is less than the desired distance, move away from the main entity
-            if (dist > desiredDistance && dist < this.visualRadius) {
-              // Calculate the normalized direction vector from this entity to the main entity
-              let dx = this.target.x - this.x;
-              let dy = this.target.y - this.y;
-              let length = Math.sqrt(dx * dx + dy * dy);
-              let nx = dx / length;
-              let ny = dy / length;
-
-              // Calculate the movement vector to maintain the desired distance
-              let moveX = nx * this.maxSpeed;
-              let moveY = ny * this.maxSpeed;
-
-              // Update the position by moving away from the main entity
-              this.speed = 20;
-              this.x -= moveX * this.game.clockTick;
-              this.y -= moveY * this.game.clockTick;
-            } else {
-              // If the current distance is greater than or equal to the desired distance, move towards the main entity
-              // Calculate the movement vector towards the main entity
-              this.velocity = {
-                x: ((this.target.x - this.x) / dist) * this.maxSpeed,
-                y: ((this.target.y - this.y) / dist) * this.maxSpeed,
-              };
-
-              // Move towards the main entity
-              this.x += this.velocity.x * this.game.clockTick;
-              this.y += this.velocity.y * this.game.clockTick;
-            }
-            // change facing if Link is above or below Ganon
-            if (Math.abs(this.velocity.y) > Math.abs(this.velocity.x)) {
-              if (this.velocity.y < 0) {
-                this.facing = 2; // facing up
-              } else {
-                this.facing = 0; // facing down
-              }
-            } else {
-              // change facing if Link is on left or right Ganon
-              if (this.velocity.x > 0) {
-                this.facing = 3; // face right
-              } else {
-                this.facing = 1; // face left
-              }
-            }
-          } else {
-            this.updateHitBox();
+            //stopping link from sliding when he is damaged.
           }
         }
-      }
-      if (this.damagedState && !this.dead) {
-        //When in a state of being damaged, create a window where you flicker for 1 second and you can't take damage.
-        this.damagedCounter += this.game.clockTick;
-        if (this.damagedCounter >= 1) {
-          this.damagedState = false;
-          this.state = 1;
-          this.damagedCounter = 0;
-          //stopping link from sliding when he is damaged.
+
+        if (!this.damagedState) {
+          if (ent instanceof Link && canSee(this, ent)) {
+            //console.log("Ganon see Link!");
+            this.target = ent;
+            if (this.phase == 0) {
+              //if (this.state == 0 || this.state == 1) {
+              this.state = 2;
+              this.facing = 0;
+              if (this.elapsedTime > 3 && !ent.damagedState) {
+                this.game.addEntity(
+                  new Orb(this.game, this.x - 30, this.y - 100, ent)
+                );
+                this.elapsedTime = 0;
+                this.didAttack = true;
+                if (this.didAttack) {
+                  // this.state = randomInt(2);
+                  // console.log("state changed back " + this.state);
+                  this.didAttack = false;
+                }
+              }
+
+              //}
+            } else if (this.phase == 1) {
+              //if (this.state == 0 || this.state == 1) {
+              this.state = 2;
+              this.facing = 0;
+              // this.elapsedTime = 0;
+              if (this.elapsedTime > 4.2 && !ent.damagedState) {
+                this.game.addEntity(
+                  new Trident(this.game, this.x, this.y - 10, ent)
+                );
+                this.elapsedTime = 0;
+                if (this.didAttack) {
+                  // this.state = randomInt(2);
+                  this.didAttack = false;
+                }
+              }
+              //}
+            }
+            this.updateHurtAndMoveBox();
+          } else if (ent instanceof Link && !canSee(this, ent)) {
+            this.state = 1;
+            if (this.state !== 2) {
+              // if not attack state
+              // Calculate distance between this entity and the target (main entity)
+              let dist = distance(this, this.target);
+
+              // If the current distance is less than the desired distance, move away from the main entity
+              if (dist > desiredDistance && dist < this.visualRadius) {
+                // Calculate the normalized direction vector from this entity to the main entity
+                let dx = this.target.x - this.x;
+                let dy = this.target.y - this.y;
+                let length = Math.sqrt(dx * dx + dy * dy);
+                let nx = dx / length;
+                let ny = dy / length;
+
+                // Calculate the movement vector to maintain the desired distance
+                let moveX = nx * this.maxSpeed;
+                let moveY = ny * this.maxSpeed;
+
+                // Update the position by moving away from the main entity
+                this.speed = 20;
+                this.x -= moveX * this.game.clockTick;
+                this.y -= moveY * this.game.clockTick;
+              } else {
+                // If the current distance is greater than or equal to the desired distance, move towards the main entity
+                // Calculate the movement vector towards the main entity
+                this.velocity = {
+                  x: ((this.target.x - this.x) / dist) * this.maxSpeed,
+                  y: ((this.target.y - this.y) / dist) * this.maxSpeed,
+                };
+
+                // Move towards the main entity
+                this.x += this.velocity.x * this.game.clockTick;
+                this.y += this.velocity.y * this.game.clockTick;
+              }
+              // change facing if Link is above or below Ganon
+              if (Math.abs(this.velocity.y) > Math.abs(this.velocity.x)) {
+                if (this.velocity.y < 0) {
+                  this.facing = 2; // facing up
+                } else {
+                  this.facing = 0; // facing down
+                }
+              } else {
+                // change facing if Link is on left or right Ganon
+                if (this.velocity.x > 0) {
+                  this.facing = 3; // face right
+                } else {
+                  this.facing = 1; // face left
+                }
+              }
+            } else {
+              this.updateHurtAndMoveBox();
+            }
+          }
         }
       }
     } else {
@@ -890,7 +910,10 @@ class Trident {
     this.elapsedTime = 0;
 
     var dist = distance(this, this.target);
-    this.velocity = { x: (this.target.x - this.x) / dist * this.maxSpeed, y: (this.target.y - this.y) / dist * this.maxSpeed };
+    this.velocity = {
+      x: ((this.target.x - this.x) / dist) * this.maxSpeed,
+      y: ((this.target.y - this.y) / dist) * this.maxSpeed,
+    };
   }
 
   loadAnimations() {
@@ -908,135 +931,124 @@ class Trident {
         true,
         false
       );
-    
-    this.weapons[0] = // trident top left
-      new Animator(
-        this.spritesheet,
-        800,
-        95,
-        67,
-        69,
-        1,
-        1,
-        0,
-        false,
-        true,
-        false
-      );
-    
-    this.weapons[7] = // trident top
-      new Animator(
-        this.spritesheet,
-        871,
-        93,
-        62,
-        71,
-        1,
-        1,
-        0,
-        false,
-        true,
-        false
-      );
-    
-    this.weapons[6] = // trident top right
-      new Animator(
-        this.spritesheet,
-        721,
-        165,
-        77,
-        66,
-        1,
-        1,
-        0,
-        false,
-        true,
-        false
-      );
-    
-    this.weapons[5] = // trident right
-      new Animator(
-        this.spritesheet,
-        798,
-        63,
-        69,
-        69,
-        1,
-        1,
-        0,
-        false,
-        true,
-        false
-      );
-    
-    this.weapons[4] = // trident bottom right
-      new Animator(
-        this.spritesheet,
-        725,
-        95,
-        82,
-        69,
-        1,
-        1,
-        0,
-        false,
-        true,
-        false
-      );
-    
-    this.weapons[3] = // trident bottom
-      new Animator(
-        this.spritesheet,
-        725,
-        95,
-        82,
-        69,
-        1,
-        1,
-        0,
-        false,
-        true,
-        false
-      );
-    
-    this.weapons[2] = // trident bottom left
-      new Animator(
-        this.spritesheet,
-        725,
-        95,
-        82,
-        69,
-        1,
-        1,
-        0,
-        false,
-        true,
-        false
-      );
-    
+
+    // this.weapons[0] = // trident top left
+    //   new Animator(
+    //     this.spritesheet,
+    //     800,
+    //     95,
+    //     67,
+    //     69,
+    //     1,
+    //     1,
+    //     0,
+    //     false,
+    //     true,
+    //     false
+    //   );
+
+    // this.weapons[7] = // trident top
+    //   new Animator(
+    //     this.spritesheet,
+    //     871,
+    //     93,
+    //     62,
+    //     71,
+    //     1,
+    //     1,
+    //     0,
+    //     false,
+    //     true,
+    //     false
+    //   );
+
+    // this.weapons[6] = // trident top right
+    //   new Animator(
+    //     this.spritesheet,
+    //     721,
+    //     165,
+    //     77,
+    //     66,
+    //     1,
+    //     1,
+    //     0,
+    //     false,
+    //     true,
+    //     false
+    //   );
+
+    // this.weapons[5] = // trident right
+    //   new Animator(
+    //     this.spritesheet,
+    //     798,
+    //     63,
+    //     69,
+    //     69,
+    //     1,
+    //     1,
+    //     0,
+    //     false,
+    //     true,
+    //     false
+    //   );
+
+    // this.weapons[4] = // trident bottom right
+    //   new Animator(
+    //     this.spritesheet,
+    //     725,
+    //     95,
+    //     82,
+    //     69,
+    //     1,
+    //     1,
+    //     0,
+    //     false,
+    //     true,
+    //     false
+    //   );
+
+    // this.weapons[3] = // trident bottom
+    //   new Animator(
+    //     this.spritesheet,
+    //     725,
+    //     95,
+    //     82,
+    //     69,
+    //     1,
+    //     1,
+    //     0,
+    //     false,
+    //     true,
+    //     false
+    //   );
+
+    // this.weapons[2] = // trident bottom left
+    //   new Animator(
+    //     this.spritesheet,
+    //     725,
+    //     95,
+    //     82,
+    //     69,
+    //     1,
+    //     1,
+    //     0,
+    //     false,
+    //     true,
+    //     false
+    //   );
   }
 
   updateHitBox() {
-    // if (this.weapons[0]) {
-    //   this.hitBox = new BoundingBox(this.x, this.y, 67, 69);
-    // } else if (this.weapons[1] || this.weapons[2] || this.weapons[3] || this.weapons[4]) {
-    //   this.hitBox = new BoundingBox(this.x, this.y, 82, 69);
-    // } else if (this.weapons[5]) {
-    //   this.hitBox = new BoundingBox(this.x, this.y, 69, 69)
-    // } else if (this.weapons[6]) {
-    //   this.hitBox = new BoundingBox(this.x, this.y, 77, 66);
-    // } else if (this.weapons[7]) {
-    //   this.hitBox = new BoundingBox(this.x, this.y, 62, 71);
-    // }
+    this.hitBox = new BoundingBox();
   }
 
   update() {
-    if(!this.game.camera.gamePaused) {
+    if (!this.game.camera.gamePaused) {
       this.x += this.velocity.x * this.game.clockTick;
       this.y += this.velocity.y * this.game.clockTick;
       this.elapsedTime += this.game.clockTick;
       this.facing = getRotationFacing(this.velocity);
-      this.updateHitBox();
+      this.updateHitBox(this.x, this.y, 82 * 3, 82 * 3);
     }
   }
 
@@ -1047,8 +1059,8 @@ class Trident {
       let radians = (angle / 360) * 2 * Math.PI;
       let offscreenCanvas = document.createElement("canvas");
 
-      offscreenCanvas.width = 32;
-      offscreenCanvas.height = 32;
+      offscreenCanvas.width = 82;
+      offscreenCanvas.height = 82;
 
       let offscreenCtx = offscreenCanvas.getContext("2d");
 
@@ -1056,14 +1068,28 @@ class Trident {
       offscreenCtx.translate(16, 16);
       offscreenCtx.rotate(radians);
       offscreenCtx.translate(-16, -16);
-      offscreenCtx.drawImage(this.spritesheet, 80, 0, 32, 32, this.x - this.game.camera.x, this.y - this.game.camera.y, 32, 32);
+      offscreenCtx.drawImage(
+        this.spritesheet,
+        763,
+        131,
+        82,
+        82,
+        this.x - this.game.camera.x,
+        this.y - this.game.camera.y,
+        82,
+        82
+      );
       offscreenCtx.restore();
       this.cache[angle] = offscreenCanvas;
     }
-    var xOffset = 16;
-    var yOffset = 16;
+    var xOffset = 41;
+    var yOffset = 41;
 
-    // ctx.drawImage(this.cache[angle], this.x - xOffset - this.game.cameraX, this.y - yOffset - this.game.camera.y);
+    ctx.drawImage(
+      this.cache[angle],
+      this.x - xOffset - this.game.cameraX,
+      this.y - yOffset - this.game.camera.y
+    );
     if (PARAMS.DEBUG) {
       ctx.strokeStyle = "Green";
       ctx.strokeRect(this.x - xOffset, this.y - yOffset, 32, 32);
@@ -1071,33 +1097,32 @@ class Trident {
   }
 
   draw(ctx) {
-
     let angle = Math.atan2(this.velocity.y, this.velocity.x);
     if (angle < 0) angle += Math.PI * 2;
     let degrees = Math.floor((angle / Math.PI / 2) * 360);
     this.drawAngle(ctx, degrees);
 
-    if (this.facing < 8) {
-      this.weapons[this.facing].drawFrame(
-        this.game.clockTick,
-        ctx,
-        this.x - this.game.camera.x,
-        this.y - this.game.camera.y,
-        2
-      );
-    } else {
-      ctx.save();
-      ctx.scale(-1, 1);
-      console.log(8 - this.facing);
-      this.weapons[8 - this.facing].drawFrame(
-        this.game.clockTick,
-        ctx,
-        -this.x - this.game.camera.x,
-        this.y - this.game.camera.y,
-        2
-      );
-      ctx.restore();
-    }
+    // if (this.facing < 8) {
+    //   this.weapons[this.facing].drawFrame(
+    //     this.game.clockTick,
+    //     ctx,
+    //     this.x - this.game.camera.x,
+    //     this.y - this.game.camera.y,
+    //     2
+    //   );
+    // } else {
+    //   ctx.save();
+    //   ctx.scale(-1, 1);
+    //   console.log(8 - this.facing);
+    //   this.weapons[8 - this.facing].drawFrame(
+    //     this.game.clockTick,
+    //     ctx,
+    //     -this.x - this.game.camera.x,
+    //     this.y - this.game.camera.y,
+    //     2
+    //   );
+    //   ctx.restore();
+    // }
   }
 }
 

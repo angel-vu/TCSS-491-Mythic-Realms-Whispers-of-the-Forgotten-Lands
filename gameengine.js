@@ -148,31 +148,31 @@ class GameEngine {
             switch (e.code) {
                 case "KeyA":
                     this.left = true;
-                    console.log("left");
+                    //console.log("left");
                     break;
                 case "KeyD":
                     this.right = true;
-                    console.log("right");
+                    //console.log("right");
                     break;
                 case "KeyW":
                     this.up = true;
-                    console.log("up");
+                    //console.log("up");
                     break;
                 case "KeyS":
                     this.down = true;
-                    console.log("down");
+                    //console.log("down");
                     break;
                 case "KeyE":
                     this.e = true;
-                    console.log("e");
+                    //console.log("e");
                     break;
                 case "KeyQ":
                     this.q = true;
-                    console.log("q");
+                    //console.log("q");
                     break;
                 case"Space":
                     this.spacebar = true;
-                    console.log("space");
+                    //console.log("space");
                     break;
                 case"KeyP":
                     this.attack = true;
@@ -188,7 +188,7 @@ class GameEngine {
                     break;
                 case "ShiftLeft":
                     this.run = true;
-                    console.log("pressing shift");
+                    //console.log("pressing shift");
                     break;
             }
         }, false);
@@ -235,7 +235,7 @@ class GameEngine {
                     break;
                 case "ShiftLeft":
                     this.run = false;
-                    console.log("let go of shift");
+                    //console.log("let go of shift");
                     break;
             }
         }, false);
