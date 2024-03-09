@@ -698,7 +698,7 @@ class Ganon {
               // this.elapsedTime = 0;
               if (this.elapsedTime > 4.2 && !ent.damagedState) {
                 this.game.addEntity(
-                  new Trident(this.game, this.x, this.y - 10, ent)
+                  new Trident(this.game, this.x, this.y, ent)
                 );
                 this.elapsedTime = 0;
                 if (this.didAttack) {
@@ -931,111 +931,6 @@ class Trident {
         true,
         false
       );
-
-    // this.weapons[0] = // trident top left
-    //   new Animator(
-    //     this.spritesheet,
-    //     800,
-    //     95,
-    //     67,
-    //     69,
-    //     1,
-    //     1,
-    //     0,
-    //     false,
-    //     true,
-    //     false
-    //   );
-
-    // this.weapons[7] = // trident top
-    //   new Animator(
-    //     this.spritesheet,
-    //     871,
-    //     93,
-    //     62,
-    //     71,
-    //     1,
-    //     1,
-    //     0,
-    //     false,
-    //     true,
-    //     false
-    //   );
-
-    // this.weapons[6] = // trident top right
-    //   new Animator(
-    //     this.spritesheet,
-    //     721,
-    //     165,
-    //     77,
-    //     66,
-    //     1,
-    //     1,
-    //     0,
-    //     false,
-    //     true,
-    //     false
-    //   );
-
-    // this.weapons[5] = // trident right
-    //   new Animator(
-    //     this.spritesheet,
-    //     798,
-    //     63,
-    //     69,
-    //     69,
-    //     1,
-    //     1,
-    //     0,
-    //     false,
-    //     true,
-    //     false
-    //   );
-
-    // this.weapons[4] = // trident bottom right
-    //   new Animator(
-    //     this.spritesheet,
-    //     725,
-    //     95,
-    //     82,
-    //     69,
-    //     1,
-    //     1,
-    //     0,
-    //     false,
-    //     true,
-    //     false
-    //   );
-
-    // this.weapons[3] = // trident bottom
-    //   new Animator(
-    //     this.spritesheet,
-    //     725,
-    //     95,
-    //     82,
-    //     69,
-    //     1,
-    //     1,
-    //     0,
-    //     false,
-    //     true,
-    //     false
-    //   );
-
-    // this.weapons[2] = // trident bottom left
-    //   new Animator(
-    //     this.spritesheet,
-    //     725,
-    //     95,
-    //     82,
-    //     69,
-    //     1,
-    //     1,
-    //     0,
-    //     false,
-    //     true,
-    //     false
-    //   );
   }
 
   updateHitBox() {
@@ -1055,74 +950,54 @@ class Trident {
   drawAngle(ctx, angle) {
     if (angle < 0 || angle > 359) return;
 
-    if (!this.cache[angle]) {
+    while (!this.cache[angle]) {
       let radians = (angle / 360) * 2 * Math.PI;
       let offscreenCanvas = document.createElement("canvas");
 
-      offscreenCanvas.width = 82;
-      offscreenCanvas.height = 82;
+      offscreenCanvas.width = 82 * 2;
+      offscreenCanvas.height = 82 * 2;
 
       let offscreenCtx = offscreenCanvas.getContext("2d");
 
       offscreenCtx.save();
-      offscreenCtx.translate(16, 16);
+      offscreenCtx.translate(41 * 2, 41 * 2);
       offscreenCtx.rotate(radians);
-      offscreenCtx.translate(-16, -16);
+      offscreenCtx.translate(-41 * 2, -41 * 2);
       offscreenCtx.drawImage(
         this.spritesheet,
-        763,
-        131,
+        723,
+        167,
         82,
-        82,
-        this.x - this.game.camera.x,
-        this.y - this.game.camera.y,
-        82,
-        82
+        53,
+        0,
+        0,
+        82 * 2,
+        82 * 2
       );
       offscreenCtx.restore();
       this.cache[angle] = offscreenCanvas;
     }
-    var xOffset = 41;
-    var yOffset = 41;
+    var xOffset = 41 * 2;
+    var yOffset = 41 * 2;
 
     ctx.drawImage(
       this.cache[angle],
-      this.x - xOffset - this.game.cameraX,
-      this.y - yOffset - this.game.camera.y
+      this.x - xOffset - this.game.camera.x,
+      this.y - yOffset - this.game.camera.y,
     );
     if (PARAMS.DEBUG) {
       ctx.strokeStyle = "Green";
-      ctx.strokeRect(this.x - xOffset, this.y - yOffset, 32, 32);
+      ctx.strokeRect(this.x - xOffset - this.game.camera.x, this.y - yOffset - this.game.camera.y, 82 * 2, 82 * 2);
     }
   }
 
   draw(ctx) {
     let angle = Math.atan2(this.velocity.y, this.velocity.x);
+    console.log(angle);
     if (angle < 0) angle += Math.PI * 2;
     let degrees = Math.floor((angle / Math.PI / 2) * 360);
     this.drawAngle(ctx, degrees);
 
-    // if (this.facing < 8) {
-    //   this.weapons[this.facing].drawFrame(
-    //     this.game.clockTick,
-    //     ctx,
-    //     this.x - this.game.camera.x,
-    //     this.y - this.game.camera.y,
-    //     2
-    //   );
-    // } else {
-    //   ctx.save();
-    //   ctx.scale(-1, 1);
-    //   console.log(8 - this.facing);
-    //   this.weapons[8 - this.facing].drawFrame(
-    //     this.game.clockTick,
-    //     ctx,
-    //     -this.x - this.game.camera.x,
-    //     this.y - this.game.camera.y,
-    //     2
-    //   );
-    //   ctx.restore();
-    // }
   }
 }
 
