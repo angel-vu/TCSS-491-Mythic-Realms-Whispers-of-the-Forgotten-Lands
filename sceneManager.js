@@ -201,6 +201,12 @@ class SceneManager {
         this.fire = new Fire(this.game, 500, 400);
         this.game.addEntity(this.fire);
 
+        this.fire = new Fire(this.game, 800, 600);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 950, 300);
+        this.game.addEntity(this.fire);
+
         this.fire = new Fire(this.game, 2500, 100);
         this.game.addEntity(this.fire);
 
@@ -274,8 +280,11 @@ class SceneManager {
         this.fire = new Fire(this.game, 575, 1500);
         this.game.addEntity(this.fire);
 
-        this.shieldPotion = new ShieldPotion(this.game, 300, 300);
-        this.game.addEntity(this.shieldPotion);
+        this.lightning = new Lightning(this.game, 300, 300);
+        this.game.addEntity(this.lightning);
+        
+        // this.shieldPotion = new ShieldPotion(this.game, 300, 300);
+        // this.game.addEntity(this.shieldPotion);
 
         // this.inventory = new Inventory(this.game, 500, 500, levelOne);
         // this.game.addEntity(this.inventory);
@@ -369,8 +378,8 @@ class SceneManager {
         // this.game.addEntity(this.goblin4);
 
         this.game.addEntity(this.link);
-        this.shieldBubble = new ShieldBubble(this.game);
-        this.game.addEntity(this.shieldBubble);
+        // this.shieldBubble = new ShieldBubble(this.game);
+        // this.game.addEntity(this.shieldBubble);
         this.ground.placeOuterBoundingBoxes();
       }
     }
@@ -675,6 +684,37 @@ class SceneManager {
     ctx.fillStyle = "#000";
     ctx.font = "20px Arial";
     ctx.fillText(`Timer: ${this.formatTime(this.elapsedTime)}`, 750, 50);
+
+    if (this.gameOver || this.gameWin) {
+      ctx.fillStyle = "#ccc";
+      ctx.fillRect(PARAMS.CANVAS_WIDTH / 2 - 100, PARAMS.CANVAS_HEIGHT / 2 + 50, 200, 50);
+      // Add border around the button
+      ctx.strokeStyle = "#000";
+      ctx.lineWidth = 2;
+      ctx.strokeRect(PARAMS.CANVAS_WIDTH / 2 - 100, PARAMS.CANVAS_HEIGHT / 2 + 50, 200, 50);
+      ctx.fillStyle = "#000";
+      ctx.font = "24px Arial";
+      ctx.fillText("Play Again", PARAMS.CANVAS_WIDTH / 2 - 60, PARAMS.CANVAS_HEIGHT / 2 + 85);
+
+      this.canvas.addEventListener("click", (event) => {
+        const mouseX = event.clientX - this.canvas.getBoundingClientRect().left;
+        const mouseY = event.clientY - this.canvas.getBoundingClientRect().top;
+
+        const buttonX = PARAMS.CANVAS_WIDTH / 2 - 100; 
+        const buttonY = PARAMS.CANVAS_HEIGHT / 2 + 50; 
+        const buttonWidth = 200; 
+        const buttonHeight = 50; 
+        if (
+            mouseX >= buttonX &&
+            mouseX <= buttonX + buttonWidth &&
+            mouseY >= buttonY &&
+            mouseY <= buttonY + buttonHeight
+        ) {
+            console.log("play again clicked");
+            window.location.reload();
+        }
+    });
+  }
   }
 
   // Helper function to format time (convert seconds to MM:SS format)
