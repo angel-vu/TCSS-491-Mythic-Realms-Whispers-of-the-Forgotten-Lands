@@ -280,8 +280,11 @@ class SceneManager {
         this.fire = new Fire(this.game, 575, 1500);
         this.game.addEntity(this.fire);
 
-        this.shieldPotion = new ShieldPotion(this.game, 300, 300);
-        this.game.addEntity(this.shieldPotion);
+        this.lightning = new Lightning(this.game, 300, 300);
+        this.game.addEntity(this.lightning);
+        
+        // this.shieldPotion = new ShieldPotion(this.game, 300, 300);
+        // this.game.addEntity(this.shieldPotion);
 
         // this.inventory = new Inventory(this.game, 500, 500, levelOne);
         // this.game.addEntity(this.inventory);
@@ -375,8 +378,8 @@ class SceneManager {
         // this.game.addEntity(this.goblin4);
 
         this.game.addEntity(this.link);
-        this.shieldBubble = new ShieldBubble(this.game);
-        this.game.addEntity(this.shieldBubble);
+        // this.shieldBubble = new ShieldBubble(this.game);
+        // this.game.addEntity(this.shieldBubble);
         this.ground.placeOuterBoundingBoxes();
       }
     }

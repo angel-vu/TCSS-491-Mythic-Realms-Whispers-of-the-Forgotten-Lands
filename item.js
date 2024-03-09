@@ -25,32 +25,34 @@
 //     };
 // }
 
-// class HealthPotion {
-//     constructor(game) {
-//         Object.assign(this, { game });
+class Lightning {
+    constructor(game) {
+        Object.assign(this, { game });
         
-//         this.game.healthPotion = this;
+        this.game.lightning = this;
 
-//         this.x = Math.random() * 1024; // randoom initial x position
-//         this.y = Math.random() * 768; // random initial y position
+        this.x = Math.random() * 1024; // randoom initial x position
+        this.y = Math.random() * 768; // random initial y position
 
-//         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/potions.png")
-//         this.animation = new Animator(this.spritesheet, 20, 620, 240, 260, 4, 1, 0, false, true);
-//     };
+        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/lightning.png")
+        this.animation = new Animator(this.spritesheet, 0, 965, 125, 355, 2, 0.5, 0, false, true);
+    };
 
-//     update() {
-//         // reappear in random locations
-//         if (Math.random() < 0.05) {
-//             this.x = Math.random() * 1024;
-//             this.y = Math.random() * 768;
-//         }
-//     };
+    update() {
+        // reappear in random locations
+        if (Math.random() < 0.05) {
+            this.x = Math.random() * 1024;
+            this.y = Math.random() * 768;
+        }
+    };
 
-//     draw(ctx) {
-//         // Draw the potion at its current position
-//         this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 0.5);
-//     };
-// }
+    draw(ctx) {
+        // ctx.save();
+        // ctx.globalAlpha = 0.6;
+        // Draw the potion at its current position
+        this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 0.5);
+    };
+}
 
 class Fire {
     constructor(game, x, y) {
@@ -67,9 +69,9 @@ class Fire {
     }
 
     // Function to check collision with another entity (e.g., Link)
-    // collidesWith(entity) {
-    //     return this.BB.collide(entity.BB);
-    // }
+    collidesWith(entity) {
+        return this.BB.collide(entity.BB);
+    }
 
     update() {
         

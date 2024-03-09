@@ -11,6 +11,7 @@ ASSET_MANAGER.queueDownload("./sprites/coins.png");
 ASSET_MANAGER.queueDownload("./sprites/potion.png");
 ASSET_MANAGER.queueDownload("./sprites/potions.png");
 ASSET_MANAGER.queueDownload("./sprites/bubble.png");
+ASSET_MANAGER.queueDownload("./sprites/lightning.png");
 ASSET_MANAGER.queueDownload("./sprites/fire.png");
 ASSET_MANAGER.queueDownload("./sprites/treasure.png");
 ASSET_MANAGER.queueDownload("./sprites/grass.png");
