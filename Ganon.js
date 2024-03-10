@@ -71,517 +71,113 @@ class Ganon {
       }
     }
     // phase 0 (no spear) idle down
-    this.animations[0][0][0] = new Animator(
-      this.spritesheet,
-      27,
-      66,
-      75,
-      46,
-      4,
-      0.9,
-      0,
-      false,
-      true,
-      false
-    );
+    this.animations[0][0][0] = new Animator(this.spritesheet, 27, 66, 75, 46, 4, 0.9, 0, false, true, false);
 
     // phase 0, idle left
-    this.animations[0][0][1] = new Animator(
-      this.spritesheet,
-      24,
-      225,
-      55,
-      50,
-      1,
-      0.33,
-      0,
-      false,
-      true,
-      false
-    );
+    this.animations[0][0][1] = new Animator(this.spritesheet, 24, 225, 55, 50, 1, 0.33, 0, false, true, false);
 
     // phase 0, idle up
-    this.animations[0][0][2] = new Animator(
-      this.spritesheet,
-      20,
-      170,
-      64,
-      48,
-      1,
-      0.33,
-      0,
-      false,
-      true,
-      false
-    );
+    this.animations[0][0][2] = new Animator(this.spritesheet, 20, 170, 64, 48, 1, 0.33, 0, false, true, false);
 
     // phase 0, idle right
-    this.animations[0][0][3] = new Animator(
-      this.spritesheet,
-      21,
-      278,
-      67,
-      47,
-      1,
-      0.33,
-      0,
-      false,
-      true,
-      false
-    );
+    this.animations[0][0][3] = new Animator(this.spritesheet, 21, 278, 67, 47, 1, 0.33, 0, false, true, false);
 
     // phase 0, state = 1 walking down
-    this.animations[0][1][0] = new Animator(
-      this.spritesheet,
-      21,
-      115,
-      63,
-      50,
-      5,
-      0.33,
-      0,
-      false,
-      true,
-      false
-    );
+    this.animations[0][1][0] = new Animator(this.spritesheet, 21, 115, 63, 50, 5, 0.33, 0, false, true, false);
 
     // phase 0, walking left
-    this.animations[0][1][1] = new Animator(
-      this.spritesheet,
-      15,
-      224,
-      63,
-      49,
-      5,
-      0.33,
-      0,
-      false,
-      true,
-      false
-    );
+    this.animations[0][1][1] = new Animator(this.spritesheet, 15, 224, 63, 49, 5, 0.33, 0, false, true, false);
 
     // phase 0, walking up
-    this.animations[0][1][2] = new Animator(
-      this.spritesheet,
-      23,
-      170,
-      62,
-      51,
-      5,
-      0.33,
-      0,
-      false,
-      true,
-      false
-    );
+    this.animations[0][1][2] = new Animator(this.spritesheet, 23, 170, 62, 51, 5, 0.33, 0, false, true, false);
 
     //phase 0, walking right
-    this.animations[0][1][3] = new Animator(
-      this.spritesheet,
-      23,
-      272,
-      61,
-      54,
-      5,
-      0.33,
-      0,
-      false,
-      true,
-      false
-    );
+    this.animations[0][1][3] = new Animator(this.spritesheet, 23, 272, 61, 54, 5, 0.33, 0, false, true, false);
 
     // phase 0, state = 2 attack, facing down
-    this.animations[0][2][0] = new Animator(
-      this.spritesheet,
-      16,
-      555,
-      68,
-      69,
-      5,
-      0.4,
-      0,
-      false,
-      true,
-      false
-    );
+    this.animations[0][2][0] = new Animator(this.spritesheet, 16, 555, 68, 69, 5, 0.4, 0, false, true, false);
 
     // phase 0, state 2, make every other direction a teleport
-    this.animations[0][2][1] = new Animator(
-      this.spritesheet,
-      25,
-      376,
-      76,
-      49,
-      4,
-      0.2,
-      0,
-      true,
-      true,
-      false
-    );
-    this.animations[0][2][2] = new Animator(
-      this.spritesheet,
-      25,
-      376,
-      76,
-      49,
-      4,
-      0.5,
-      0,
-      true,
-      true,
-      false
-    );
-    this.animations[0][2][3] = new Animator(
-      this.spritesheet,
-      25,
-      376,
-      76,
-      49,
-      4,
-      0.5,
-      0,
-      true,
-      true,
-      false
-    );
+    this.animations[0][2][1] = new Animator(this.spritesheet, 25, 376, 76, 49, 4, 0.2, 0, true, true, false);
+    this.animations[0][2][2] = new Animator(this.spritesheet, 25, 376, 76, 49, 4, 0.5, 0, true, true, false);
+    this.animations[0][2][3] = new Animator(this.spritesheet, 25, 376, 76, 49, 4, 0.5, 0, true, true, false);
 
     // phase = 1
     // idle animation for state = 0
     // facing down = 0
-    this.animations[1][0][0] = new Animator(
-      this.spritesheet,
-      375,
-      83,
-      76,
-      68,
-      4,
-      0.33,
-      0,
-      false,
-      true,
-      false
-    );
+    this.animations[1][0][0] = new Animator(this.spritesheet, 375, 83, 76, 68, 4, 0.33, 0, false, true, false);
 
     // idle animation for facing left
-    this.animations[1][0][1] = new Animator(
-      this.spritesheet,
-      378,
-      307,
-      62,
-      73,
-      1,
-      0.33,
-      0,
-      false,
-      true,
-      false
-    );
+    this.animations[1][0][1] = new Animator(this.spritesheet, 378, 307, 62, 73, 1, 0.33, 0, false, true, false);
 
     // idle animation for facing upskee
-    this.animations[1][0][2] = new Animator(
-      this.spritesheet,
-      361,
-      230,
-      66,
-      73,
-      1,
-      0.33,
-      0,
-      false,
-      true,
-      false
-    );
+    this.animations[1][0][2] = new Animator(this.spritesheet, 361, 230, 66, 73, 1, 0.33, 0, false, true, false);
 
     // idle animation for facing right
-    this.animations[1][0][3] = new Animator(
-      this.spritesheet,
-      378,
-      383,
-      58,
-      73,
-      1,
-      0.33,
-      0,
-      false,
-      true,
-      false
-    );
+    this.animations[1][0][3] = new Animator(this.spritesheet, 378, 383, 58, 73, 1, 0.33, 0, false, true, false);
 
     // walking animation for walking down
-    this.animations[1][1][0] = new Animator(
-      this.spritesheet,
-      361,
-      157,
-      67,
-      71,
-      5,
-      0.22,
-      0,
-      false,
-      true,
-      false
-    );
+    this.animations[1][1][0] = new Animator(this.spritesheet, 361, 157, 67, 71, 5, 0.22, 0, false, true, false);
 
     // walking animation walking left
-    this.animations[1][1][1] = new Animator(
-      this.spritesheet,
-      378,
-      307,
-      62,
-      73,
-      5,
-      0.2,
-      0,
-      false,
-      true,
-      false
-    );
+    this.animations[1][1][1] = new Animator(this.spritesheet, 378, 307, 62, 73, 5, 0.2, 0, false, true, false);
 
     // walk up
-    this.animations[1][1][2] = new Animator(
-      this.spritesheet,
-      361,
-      230,
-      66,
-      73,
-      5,
-      0.2,
-      0,
-      false,
-      true,
-      false
-    );
+    this.animations[1][1][2] = new Animator(this.spritesheet, 361, 230, 66, 73, 5, 0.2, 0, false, true, false);
 
     // walk right
-    this.animations[1][1][3] = new Animator(
-      this.spritesheet,
-      378,
-      383,
-      56,
-      73,
-      5,
-      0.2,
-      0,
-      false,
-      true,
-      false
-    );
+    this.animations[1][1][3] = new Animator(this.spritesheet, 378, 383, 56, 73, 5, 0.2, 0, false, true, false);
 
     // attack down (only direction - spear throw)
-    this.animations[1][2][0] = new Animator(
-      this.spritesheet,
-      378,
-      721,
-      95,
-      76,
-      6,
-      0.8,
-      0,
-      false,
-      true,
-      false
-    );
+    this.animations[1][2][0] = new Animator(this.spritesheet, 378, 721, 95, 76, 6, 0.8, 0, false, true, false);
 
     // phase 1, state 2, make remaining directions teleporting directions
-    this.animations[1][2][1] = new Animator(
-      this.spritesheet,
-      360,
-      513,
-      83,
-      49,
-      4,
-      0.2,
-      0,
-      true,
-      true,
-      false
-    );
-    this.animations[1][2][2] = new Animator(
-      this.spritesheet,
-      360,
-      513,
-      83,
-      49,
-      4,
-      0.2,
-      0,
-      true,
-      true,
-      false
-    );
-    this.animations[1][2][3] = new Animator(
-      this.spritesheet,
-      360,
-      513,
-      83,
-      49,
-      4,
-      0.2,
-      0,
-      true,
-      true,
-      false
-    );
+    this.animations[1][2][1] = new Animator(this.spritesheet, 360, 513, 83, 49, 4, 0.2, 0, true, true, false);
+    this.animations[1][2][2] = new Animator(this.spritesheet, 360, 513, 83, 49, 4, 0.2, 0, true, true, false);
+    this.animations[1][2][3] = new Animator(this.spritesheet, 360, 513, 83, 49, 4, 0.2, 0, true, true, false);
 
     // This animation when Ganon dies
-    this.deadAnim = new Animator(
-      this.spritesheet,
-      17,
-      689,
-      77,
-      44,
-      4,
-      0.33,
-      0,
-      false,
-      false,
-      false
-    );
+    this.deadAnim = new Animator(this.spritesheet, 17, 689, 77, 44, 4, 0.33, 0, false, false, false);
   }
 
   // Ganon's character bounding boxes for collisions with other entities
   updateHurtAndMoveBox() {
     if (this.phase == 0 && this.animations[0][0][0]) {
-      this.hurtBox = new BoundingBox(
-        this.x + 10,
-        this.y,
-        50 * this.scale,
-        45 * this.scale
-      );
-      this.moveBox = new BoundingBox(
-        this.x + 50,
-        this.y + 125,
-        30 * this.scale,
-        25
-      );
-    } else if (
-      this.phase == 0 &&
-      (this.animations[0][0][1] || this.animations[0][0][3])
-    ) {
-      this.hurtBox = new BoundingBox(
-        this.x,
-        this.y,
-        20 * this.scale,
-        10 * this.scale
-      );
-      this.moveBox = new BoundingBox(
-        this.x + 50,
-        this.y + 125,
-        20 * this.scale,
-        5 * this.scale
-      );
+      this.hurtBox = new BoundingBox(this.x + 10, this.y, 50 * this.scale, 45 * this.scale);
+      this.moveBox = new BoundingBox(this.x + 50, this.y + 125, 30 * this.scale, 25);
+    } else if (this.phase == 0 && (this.animations[0][0][1] || this.animations[0][0][3])) {
+      this.hurtBox = new BoundingBox(this.x, this.y, 20 * this.scale, 10 * this.scale);
+      this.moveBox = new BoundingBox(this.x + 50, this.y + 125, 20 * this.scale, 5 * this.scale);
     } else if (this.phase == 0 && this.animations[0][0][2]) {
-      this.hurtBox = new BoundingBox(
-        this.x,
-        this.y,
-        60 * this.scale,
-        40 * this.scale
-      );
-      this.moveBox = new BoundingBox(
-        this.x + 50,
-        this.y + 125,
-        60 * this.scale,
-        20 * this.scale
-      );
-    } else if (
-      this.phase == 0 &&
-      (this.animations[0][1][0] || this.animations[0][1][2])
-    ) {
-      this.hurtBox = new BoundingBox(
-        this.x,
-        this.y,
-        60 * this.scale,
-        54 * this.scale
-      );
-      this.moveBox = new BoundingBox(
-        this.x + 50,
-        this.y + 125,
-        60 * this.scale,
-        25
-      );
-    } else if (
-      this.phase == 0 &&
-      (this.animations[0][1][1] || this.animations[0][1][3])
-    ) {
-      this.hurtBox = new BoundingBox(
-        this.x,
-        this.y,
-        50 * this.scale,
-        49 * this.scale
-      );
-      this.moveBox = new BoundingBox(
-        this.x + 50,
-        this.y + 125,
-        50 * this.scale,
-        23
-      );
+      this.hurtBox = new BoundingBox(this.x, this.y, 60 * this.scale, 40 * this.scale);
+      this.moveBox = new BoundingBox(this.x + 50, this.y + 125, 60 * this.scale, 20 * this.scale);
+    } else if (this.phase == 0 && (this.animations[0][1][0] || this.animations[0][1][2])) {
+      this.hurtBox = new BoundingBox(this.x, this.y, 60 * this.scale, 54 * this.scale);
+      this.moveBox = new BoundingBox(this.x + 50, this.y + 125, 60 * this.scale, 25);
+    } else if (this.phase == 0 && (this.animations[0][1][1] || this.animations[0][1][3])) {
+      this.hurtBox = new BoundingBox(this.x, this.y, 50 * this.scale, 49 * this.scale);
+      this.moveBox = new BoundingBox(this.x + 50, this.y + 125, 50 * this.scale, 23);
     } else if (this.phase == 0 && this.animations[0][2][0]) {
-      this.hurtBox = new BoundingBox(
-        this.x,
-        this.y,
-        65 * this.scale,
-        67 * this.scale
-      );
-      this.moveBox = new BoundingBox(
-        this.x + 50,
-        this.y + 125,
-        65 * this.scale,
-        32
-      );
+      this.hurtBox = new BoundingBox(this.x, this.y, 65 * this.scale, 67 * this.scale);
+      this.moveBox = new BoundingBox(this.x + 50, this.y + 125, 65 * this.scale, 32);
     } else if (this.phase == 1 && this.animations[1][0][0]) {
-      this.hurtBox = new BoundingBox(
-        this.x + 16,
-        this.y + 100,
-        50 * this.scale,
-        47
-      );
-      this.moveBox = new BoundingBox(
-        this.x + 50,
-        this.y + 125,
-        60 * this.scale,
-        22
-      );
+      this.hurtBox = new BoundingBox(this.x + 16, this.y + 100, 50 * this.scale, 47);
+      this.moveBox = new BoundingBox(this.x + 50, this.y + 125, 60 * this.scale, 22);
     } else if (this.phase == 1 && this.animations[1][0][1]) {
       this.hurtBox = new BoundingBox(this.x, this.y + 30, 50 * this.scale, 15);
-      this.moveBox = new BoundingBox(
-        this.x + 50,
-        this.y + 125,
-        50 * this.scale,
-        7
-      );
+      this.moveBox = new BoundingBox(this.x + 50, this.y + 125, 50 * this.scale, 7);
     } else if (this.phase == 1 && this.animations[1][0][2]) {
       this.hurtBox = new BoundingBox(this.x, this.y, 10 * this.scale, 10);
-      this.moveBox = new BoundingBox(
-        this.x + 50,
-        this.y + 125,
-        10 * this.scale,
-        5
-      );
+      this.moveBox = new BoundingBox(this.x + 50, this.y + 125, 10 * this.scale, 5);
     } else if (this.phase == 1 && this.animations[1][1][0]) {
-      this.hurtBox = new BoundingBox(
-        this.x + 12,
-        this.y + 20,
-        53 * this.scale,
-        47
-      );
-      this.moveBox = new BoundingBox(
-        this.x + 50,
-        this.y + 125,
-        53 * this.scale,
-        22
-      );
+      this.hurtBox = new BoundingBox(this.x + 12, this.y + 20, 53 * this.scale, 47);
+      this.moveBox = new BoundingBox(this.x + 50, this.y + 125, 53 * this.scale, 22);
     }
   }
 
   // Bounding sphere for enemy vision
   updatePathingCircle() {
-    this.pathingCircle = new BoundingCircle(
-      this.hurtBox.x + this.hurtBox.width / 2,
-      this.hurtBox.y + this.hurtBox.height / 2,
-      this.radius,
-      this.visualRadius
-    );
+    this.pathingCircle = new BoundingCircle(this.hurtBox.x + this.hurtBox.width / 2, this.hurtBox.y + this.hurtBox.height / 2, this.radius, this.visualRadius);
   }
 
   // Ganon's weapon doing the damage
@@ -616,10 +212,7 @@ class Ganon {
       let desiredDistance = 60;
 
       if (dist < 5) {
-        if (
-          this.targetID < this.path.length - 1 &&
-          this.target === this.path[this.targetID]
-        ) {
+        if (this.targetID < this.path.length - 1 && this.target === this.path[this.targetID]) {
           this.targetID++;
         }
         this.target = this.path[this.targetID];
@@ -661,8 +254,24 @@ class Ganon {
                   this.y = ent.lastMoveBox.y + randomTelNum;
                   //this.damagedState = false;
                 }
+
                 this.damagedState = false;
               }
+
+              this.game.addEntity(
+                new Goblin(
+                  this.game,
+                  this.x +200,
+                  this.y +200,
+                  [
+                    { x: randomInt(800), y: randomInt(800) },
+                    { x: randomInt(800), y: randomInt(800) },
+                    { x: randomInt(800), y: randomInt(800) },
+                    { x: 0, y: 0 },
+                  ],
+                  1
+                )
+              );
               this.updateHurtAndMoveBox();
             }
             //stopping link from sliding when he is damaged.
@@ -678,9 +287,7 @@ class Ganon {
               this.state = 2;
               this.facing = 0;
               if (this.elapsedTime > 3 && !ent.damagedState) {
-                this.game.addEntity(
-                  new Orb(this.game, this.x - 30, this.y - 100, ent)
-                );
+                this.game.addEntity(new Orb(this.game, this.x - 30, this.y - 100, ent));
                 this.elapsedTime = 0;
                 this.didAttack = true;
                 if (this.didAttack) {
@@ -697,9 +304,7 @@ class Ganon {
               this.facing = 0;
               // this.elapsedTime = 0;
               if (this.elapsedTime > 4.2 && !ent.damagedState) {
-                this.game.addEntity(
-                  new Trident(this.game, this.x, this.y, ent)
-                );
+                this.game.addEntity(new Trident(this.game, this.x, this.y, ent));
                 this.elapsedTime = 0;
                 if (this.didAttack) {
                   // this.state = randomInt(2);
@@ -781,32 +386,14 @@ class Ganon {
       if ((this.phase == 0 || this.phase == 1) && this.state === 2) {
         //console.log(this.phase, this.state, this.facing);
         // Draw the Ganon animation
-        this.animations[this.phase][this.state][this.facing].drawFrame(
-          this.game.clockTick,
-          ctx,
-          this.x - this.game.camera.x,
-          this.y - this.game.camera.y,
-          this.scale
-        );
+        this.animations[this.phase][this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, this.scale);
       } else {
         // Draw the Ganon animation if it's not in the attacking state
-        this.animations[this.phase][this.state][this.facing].drawFrame(
-          this.game.clockTick,
-          ctx,
-          this.x - this.game.camera.x,
-          this.y - this.game.camera.y,
-          this.scale
-        );
+        this.animations[this.phase][this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, this.scale);
       }
     } else if (this.phase == 1 && this.dead) {
       this.animations = this.deadAnim;
-      this.animations.drawFrame(
-        this.game.clockTick,
-        ctx,
-        this.x - this.game.camera.x,
-        this.y - this.game.camera.y,
-        this.scale
-      );
+      this.animations.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, this.scale);
     }
 
     // Draw Ganon's health bar
@@ -818,36 +405,19 @@ class Ganon {
     if (PARAMS.DEBUG) {
       // Draw the Blue rectangle for Ganon's hitbox that can get hit
       ctx.strokeStyle = "Blue";
-      ctx.strokeRect(
-        this.hurtBox.x - this.game.camera.x,
-        this.hurtBox.y - this.game.camera.y,
-        this.hurtBox.width,
-        this.hurtBox.height
-      );
+      ctx.strokeRect(this.hurtBox.x - this.game.camera.x, this.hurtBox.y - this.game.camera.y, this.hurtBox.width, this.hurtBox.height);
 
       // Inner Circle
       ctx.strokeStyle = "Yellow";
       ctx.beginPath();
-      ctx.arc(
-        this.pathingCircle.x - this.game.camera.x,
-        this.pathingCircle.y - this.game.camera.y,
-        this.pathingCircle.radius,
-        0,
-        2 * Math.PI
-      );
+      ctx.arc(this.pathingCircle.x - this.game.camera.x, this.pathingCircle.y - this.game.camera.y, this.pathingCircle.radius, 0, 2 * Math.PI);
       ctx.closePath();
       ctx.stroke();
 
       // Vision Circle
       ctx.setLineDash([5, 15]);
       ctx.beginPath();
-      ctx.arc(
-        this.pathingCircle.x - this.game.camera.x,
-        this.pathingCircle.y - this.game.camera.y,
-        this.pathingCircle.visualRadius,
-        0,
-        2 * Math.PI
-      );
+      ctx.arc(this.pathingCircle.x - this.game.camera.x, this.pathingCircle.y - this.game.camera.y, this.pathingCircle.visualRadius, 0, 2 * Math.PI);
       ctx.closePath();
       ctx.stroke();
       ctx.setLineDash([]);
@@ -855,26 +425,15 @@ class Ganon {
       // Pathing
       ctx.strokeStyle = "Black";
       ctx.beginPath();
-      ctx.moveTo(
-        this.initialPoint.x - this.game.camera.x,
-        this.initialPoint.y - this.game.camera.y
-      );
+      ctx.moveTo(this.initialPoint.x - this.game.camera.x, this.initialPoint.y - this.game.camera.y);
       for (var i = 0; i < this.path.length; i++) {
-        ctx.lineTo(
-          this.path[i].x - this.game.camera.x,
-          this.path[i].y - this.game.camera.y
-        );
+        ctx.lineTo(this.path[i].x - this.game.camera.x, this.path[i].y - this.game.camera.y);
       }
       ctx.stroke();
 
       // For moveBox
       ctx.strokeStyle = "Pink";
-      ctx.strokeRect(
-        this.moveBox.x - this.game.camera.x,
-        this.moveBox.y - this.game.camera.y,
-        this.moveBox.width,
-        this.moveBox.height
-      );
+      ctx.strokeRect(this.moveBox.x - this.game.camera.x, this.moveBox.y - this.game.camera.y, this.moveBox.width, this.moveBox.height);
     }
   }
 
@@ -921,19 +480,7 @@ class Trident {
 
   loadAnimations() {
     this.weapons[1] = // trident left
-      new Animator(
-        this.spritesheet,
-        725,
-        95,
-        82,
-        69,
-        1,
-        1,
-        0,
-        false,
-        true,
-        false
-      );
+      new Animator(this.spritesheet, 725, 95, 82, 69, 1, 1, 0, false, true, false);
   }
 
   updateHitBox() {
@@ -942,12 +489,7 @@ class Trident {
 
   // Bounding sphere for enemy vision
   updatePathingCircle() {
-    this.pathingCircle = new BoundingCircle(
-      (this.hitBox.x + this.hitBox.width / 2) - 15,
-      (this.hitBox.y + this.hitBox.height / 2) - 10,
-      this.radius,
-      this.visualRadius
-    );
+    this.pathingCircle = new BoundingCircle(this.hitBox.x + this.hitBox.width / 2 - 15, this.hitBox.y + this.hitBox.height / 2 - 10, this.radius, this.visualRadius);
   }
 
   update() {
@@ -958,11 +500,7 @@ class Trident {
 
       for (var i = 0; i < this.game.entities.length; i++) {
         var ent = this.game.entities[i];
-        if (
-          ent instanceof Link &&
-          this.pathingCircle.collide(this.pathingCircle, ent.pathingCircle) &&
-          !ent.damagedState
-        ) {
+        if (ent instanceof Link && this.pathingCircle.collide(this.pathingCircle, ent.pathingCircle) && !ent.damagedState) {
           console.log("ATTACK LANDED - PROJECTILE (Ganon) VS LINK");
           ent.damageEntity(1);
           // this.game.addEntity(new Score(this.game, ent.x, ent.y, damage));
@@ -994,36 +532,17 @@ class Trident {
       offscreenCtx.translate(41 * 2, 41 * 2);
       offscreenCtx.rotate(radians);
       offscreenCtx.translate(-41 * 2, -41 * 2);
-      offscreenCtx.drawImage(
-        this.spritesheet,
-        723,
-        167,
-        82,
-        53,
-        10,
-        25,
-        82 * 2,
-        53 * 2
-      );
+      offscreenCtx.drawImage(this.spritesheet, 723, 167, 82, 53, 10, 25, 82 * 2, 53 * 2);
       offscreenCtx.restore();
       this.cache[angle] = offscreenCanvas;
     }
     var xOffset = 41 * 2;
     var yOffset = 41 * 2;
 
-    ctx.drawImage(
-      this.cache[angle],
-      this.x  - xOffset - this.game.camera.x,
-      this.y - yOffset - this.game.camera.y
-    );
+    ctx.drawImage(this.cache[angle], this.x - xOffset - this.game.camera.x, this.y - yOffset - this.game.camera.y);
     if (PARAMS.DEBUG) {
       ctx.strokeStyle = "Green";
-      ctx.strokeRect(
-        this.x - xOffset - this.game.camera.x,
-        this.y - yOffset - this.game.camera.y,
-        82 * 2,
-        82 * 2
-      );
+      ctx.strokeRect(this.x - xOffset - this.game.camera.x, this.y - yOffset - this.game.camera.y, 82 * 2, 82 * 2);
     }
   }
 
@@ -1046,26 +565,14 @@ class Trident {
       // Inner Circle
       ctx.strokeStyle = "Yellow";
       ctx.beginPath();
-      ctx.arc(
-        this.pathingCircle.x - this.game.camera.x,
-        this.pathingCircle.y - this.game.camera.y,
-        this.pathingCircle.radius,
-        0,
-        2 * Math.PI
-      );
+      ctx.arc(this.pathingCircle.x - this.game.camera.x, this.pathingCircle.y - this.game.camera.y, this.pathingCircle.radius, 0, 2 * Math.PI);
       ctx.closePath();
       ctx.stroke();
 
       // Vision Circle
       ctx.setLineDash([5, 15]);
       ctx.beginPath();
-      ctx.arc(
-        this.pathingCircle.x - this.game.camera.x,
-        this.pathingCircle.y - this.game.camera.y,
-        this.pathingCircle.visualRadius,
-        0,
-        2 * Math.PI
-      );
+      ctx.arc(this.pathingCircle.x - this.game.camera.x, this.pathingCircle.y - this.game.camera.y, this.pathingCircle.visualRadius, 0, 2 * Math.PI);
       ctx.closePath();
       ctx.stroke();
       ctx.setLineDash([]);
@@ -1093,21 +600,7 @@ class Orb {
 
     this.updateHitBox();
     this.weapons = [];
-    this.weapons.push(
-      new Animator(
-        this.spritesheet,
-        30,
-        523,
-        37,
-        27,
-        8,
-        0.33,
-        0,
-        false,
-        true,
-        false
-      )
-    );
+    this.weapons.push(new Animator(this.spritesheet, 30, 523, 37, 27, 8, 0.33, 0, false, true, false));
     this.elapsedTime = 0;
   }
 
@@ -1116,12 +609,7 @@ class Orb {
   }
 
   updateHitBox() {
-    this.hitBox = new BoundingBox(
-      this.x,
-      this.y,
-      37 * this.scale,
-      27 * this.scale
-    );
+    this.hitBox = new BoundingBox(this.x, this.y, 37 * this.scale, 27 * this.scale);
   }
 
   update() {
@@ -1133,11 +621,7 @@ class Orb {
 
     for (var i = 0; i < this.game.entities.length; i++) {
       var ent = this.game.entities[i];
-      if (
-        ent instanceof Link &&
-        this.hitBox.collide(ent.hurtBox) &&
-        !ent.damagedState
-      ) {
+      if (ent instanceof Link && this.hitBox.collide(ent.hurtBox) && !ent.damagedState) {
         console.log("ATTACK LANDED - PROJECTILE (Ganon) VS LINK");
         ent.damageEntity(1);
         // this.game.addEntity(new Score(this.game, ent.x, ent.y, damage));
@@ -1153,23 +637,12 @@ class Orb {
   }
 
   draw(ctx) {
-    this.weapons[0].drawFrame(
-      this.game.clockTick,
-      ctx,
-      this.x - this.game.camera.x,
-      this.y - this.game.camera.y,
-      this.scale
-    );
+    this.weapons[0].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, this.scale);
 
     //drawing the hitbox of the attack animation
     if (PARAMS.DEBUG && this.hitBox) {
       ctx.strokeStyle = "Red";
-      ctx.strokeRect(
-        this.hitBox.x - this.game.camera.x,
-        this.hitBox.y - this.game.camera.y,
-        this.hitBox.width,
-        this.hitBox.height
-      );
+      ctx.strokeRect(this.hitBox.x - this.game.camera.x, this.hitBox.y - this.game.camera.y, this.hitBox.width, this.hitBox.height);
     }
   }
 }
