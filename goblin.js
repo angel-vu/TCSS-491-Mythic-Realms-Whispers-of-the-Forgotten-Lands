@@ -1,13 +1,13 @@
 class Goblin {
-    constructor(game, x, y, path) {
-        Object.assign(this, { game, x, y, path });
+    constructor(game, x, y, path,startingHealth) {
+        Object.assign(this, { game, x, y, path, startingHealth });
 
         this.game.goblin = this;
 
         this.initialPoint = { x, y };
-
-        this.currentHealth = 3;
-        this.maxHealth = 3;
+        
+        this.currentHealth = startingHealth;
+        this.maxHealth = startingHealth;
         this.dead = false;
         this.damagedState = false;
         this.scale = 2;
