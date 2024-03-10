@@ -337,7 +337,7 @@ class SceneManager {
         ]);
         this.game.addEntity(this.banshee2);
 
-        this.banshee3 = new Banshee(this.game, 800, 900, [
+        this.banshee3 = new Banshee(this.game, 1500, 1500, [
           { x: randomInt(800), y: randomInt(800) },
           { x: randomInt(800), y: randomInt(800) },
           { x: randomInt(800), y: randomInt(800) },
@@ -349,33 +349,41 @@ class SceneManager {
           { x: randomInt(800), y: randomInt(800) },
           { x: randomInt(800), y: randomInt(800) },
           { x: randomInt(800), y: randomInt(800) },
-          { x: 0, y: 0 },3
-        ]);
+          { x: 0, y: 0 }],
+          3);
         this.game.addEntity(this.goblin1);
 
         this.goblin2 = new Goblin(this.game, 700, 800, [
           { x: randomInt(800), y: randomInt(800) },
           { x: randomInt(800), y: randomInt(800) },
           { x: randomInt(800), y: randomInt(800) },
-          { x: 0, y: 0 },3
-        ]);
+          { x: 0, y: 0 }],
+          3);
         this.game.addEntity(this.goblin2);
 
         this.goblin3 = new Goblin(this.game, 700, 500, [
           { x: randomInt(800), y: randomInt(800) },
           { x: randomInt(800), y: randomInt(800) },
           { x: randomInt(800), y: randomInt(800) },
-          { x: 0, y: 0 },3
-        ]);
+          { x: 0, y: 0 }],
+         3);
         this.game.addEntity(this.goblin3);
 
         this.goblin4 = new Goblin(this.game, 800, 1000, [
           { x: randomInt(800), y: randomInt(800) },
           { x: randomInt(800), y: randomInt(800) },
           { x: randomInt(800), y: randomInt(800) },
-          { x: 0, y: 0 },3
-        ]);
+          { x: 0, y: 0 }],
+          3);
         this.game.addEntity(this.goblin4);
+
+        this.goblin5 = new Goblin(this.game, 300, 0, [
+          { x: randomInt(800), y: randomInt(800) },
+          { x: randomInt(800), y: randomInt(800) },
+          { x: randomInt(800), y: randomInt(800) },
+          { x: 0, y: 0 }],
+          3);
+        this.game.addEntity(this.goblin5);
 
         this.game.addEntity(this.link);
         // this.shieldBubble = new ShieldBubble(this.game);

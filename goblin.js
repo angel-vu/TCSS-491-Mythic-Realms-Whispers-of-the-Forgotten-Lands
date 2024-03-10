@@ -6,8 +6,8 @@ class Goblin {
 
         this.initialPoint = { x, y };
         
-        this.currentHealth = startingHealth;
-        this.maxHealth = startingHealth;
+        this.currentHealth = this.startingHealth;
+        this.maxHealth = this.startingHealth;
         this.dead = false;
         this.damagedState = false;
         this.scale = 2;
