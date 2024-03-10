@@ -901,12 +901,15 @@ class Trident {
     this.maxSpeed = 100;
     this.facing = 1;
 
-    this.radius = 50;
+    this.radius = 40;
+    this.visualRadius = 75;
 
-    this.updateHitBox();
+    //this.updateHitBox();
     this.cache = [];
     this.weapons = [];
     this.loadAnimations();
+    this.updateHitBox();
+    this.updatePathingCircle();
     this.elapsedTime = 0;
 
     var dist = distance(this, this.target);
@@ -934,7 +937,17 @@ class Trident {
   }
 
   updateHitBox() {
-    this.hitBox = new BoundingBox();
+    this.hitBox = new BoundingBox(this.x - 10, this.y - 5, 26.5 * 2, 26.5 * 2);
+  }
+
+  // Bounding sphere for enemy vision
+  updatePathingCircle() {
+    this.pathingCircle = new BoundingCircle(
+      (this.hitBox.x + this.hitBox.width / 2) - 15,
+      (this.hitBox.y + this.hitBox.height / 2) - 10,
+      this.radius,
+      this.visualRadius
+    );
   }
 
   update() {
@@ -942,8 +955,26 @@ class Trident {
       this.x += this.velocity.x * this.game.clockTick;
       this.y += this.velocity.y * this.game.clockTick;
       this.elapsedTime += this.game.clockTick;
-      this.facing = getRotationFacing(this.velocity);
-      this.updateHitBox(this.x, this.y, 82 * 3, 82 * 3);
+
+      for (var i = 0; i < this.game.entities.length; i++) {
+        var ent = this.game.entities[i];
+        if (
+          ent instanceof Link &&
+          this.pathingCircle.collide(this.pathingCircle, ent.pathingCircle) &&
+          !ent.damagedState
+        ) {
+          console.log("ATTACK LANDED - PROJECTILE (Ganon) VS LINK");
+          ent.damageEntity(1);
+          // this.game.addEntity(new Score(this.game, ent.x, ent.y, damage));
+          this.removeFromWorld = true;
+        }
+        // if (ent instanceof CollisionBox && this.pathingCircle.collide(ent.BoundingBox)) {
+        //   this.removeFromWorld = true;
+        // }
+      }
+
+      this.updateHitBox();
+      this.updatePathingCircle();
     }
   }
 
@@ -969,10 +1000,10 @@ class Trident {
         167,
         82,
         53,
-        0,
-        0,
+        10,
+        25,
         82 * 2,
-        82 * 2
+        53 * 2
       );
       offscreenCtx.restore();
       this.cache[angle] = offscreenCanvas;
@@ -982,22 +1013,63 @@ class Trident {
 
     ctx.drawImage(
       this.cache[angle],
-      this.x - xOffset - this.game.camera.x,
-      this.y - yOffset - this.game.camera.y,
+      this.x  - xOffset - this.game.camera.x,
+      this.y - yOffset - this.game.camera.y
     );
     if (PARAMS.DEBUG) {
       ctx.strokeStyle = "Green";
-      ctx.strokeRect(this.x - xOffset - this.game.camera.x, this.y - yOffset - this.game.camera.y, 82 * 2, 82 * 2);
+      ctx.strokeRect(
+        this.x - xOffset - this.game.camera.x,
+        this.y - yOffset - this.game.camera.y,
+        82 * 2,
+        82 * 2
+      );
     }
   }
 
   draw(ctx) {
     let angle = Math.atan2(this.velocity.y, this.velocity.x);
-    console.log(angle);
     if (angle < 0) angle += Math.PI * 2;
     let degrees = Math.floor((angle / Math.PI / 2) * 360);
+    console.log(degrees);
     this.drawAngle(ctx, degrees);
 
+    if (PARAMS.DEBUG) {
+      // ctx.strokeStyle = "Red";
+      // ctx.strokeRect(
+      //   this.hitBox.x - this.game.camera.x,
+      //   this.hitBox.y - this.game.camera.y,
+      //   this.hitBox.width,
+      //   this.hitBox.height
+      // );
+
+      // Inner Circle
+      ctx.strokeStyle = "Yellow";
+      ctx.beginPath();
+      ctx.arc(
+        this.pathingCircle.x - this.game.camera.x,
+        this.pathingCircle.y - this.game.camera.y,
+        this.pathingCircle.radius,
+        0,
+        2 * Math.PI
+      );
+      ctx.closePath();
+      ctx.stroke();
+
+      // Vision Circle
+      ctx.setLineDash([5, 15]);
+      ctx.beginPath();
+      ctx.arc(
+        this.pathingCircle.x - this.game.camera.x,
+        this.pathingCircle.y - this.game.camera.y,
+        this.pathingCircle.visualRadius,
+        0,
+        2 * Math.PI
+      );
+      ctx.closePath();
+      ctx.stroke();
+      ctx.setLineDash([]);
+    }
   }
 }
 
@@ -1071,9 +1143,9 @@ class Orb {
         // this.game.addEntity(new Score(this.game, ent.x, ent.y, damage));
         this.removeFromWorld = true;
       }
-      if (ent instanceof CollisionBox && this.hitBox.collide(ent.BoundingBox)) {
-        this.removeFromWorld = true;
-      }
+      // if (ent instanceof CollisionBox && this.hitBox.collide(ent.BoundingBox)) {
+      //   this.removeFromWorld = true;
+      // }
     }
 
     // this.updateHitBox();
