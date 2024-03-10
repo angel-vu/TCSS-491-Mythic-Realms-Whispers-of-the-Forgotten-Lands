@@ -345,13 +345,13 @@ class SceneManager {
         // ]);
         // this.game.addEntity(this.banshee3);
 
-        // this.goblin1 = new Goblin(this.game, 250, 250, [
-        //   { x: randomInt(800), y: randomInt(800) },
-        //   { x: randomInt(800), y: randomInt(800) },
-        //   { x: randomInt(800), y: randomInt(800) },
-        //   { x: 0, y: 0 }],
-        //   3);
-        // this.game.addEntity(this.goblin1);
+        this.goblin1 = new Goblin(this.game, 250, 250, [
+          { x: randomInt(800), y: randomInt(800) },
+          { x: randomInt(800), y: randomInt(800) },
+          { x: randomInt(800), y: randomInt(800) },
+          { x: 0, y: 0 }],
+          3);
+        this.game.addEntity(this.goblin1);
 
         // this.goblin2 = new Goblin(this.game, 700, 800, [
         //   { x: randomInt(800), y: randomInt(800) },
@@ -440,10 +440,10 @@ class SceneManager {
           ASSET_MANAGER.playAsset("./music/Final-Boss_ExcisionxDionTimmer.mp3");
           // Spawn Ganon with phase 0
           console.log("1st phase spawn");
-          this.ganon = new Ganon(
-            this.game,
-            600,
-            800,
+          this.ganon1 = new Ganon(
+            this.game, 
+            2000,
+            2500,
             [
               { x: randomInt(800), y: randomInt(800) },
               { x: randomInt(800), y: randomInt(800) },
@@ -452,15 +452,19 @@ class SceneManager {
             ],
             0
           );
-          this.game.addEntity(this.ganon);
+          this.game.addEntity(this.ganon1);
           this.Ganon1Spawn = true;
+          console.log("Link transitioned to the 1st phase of Ganon's spawn location");
+          this.link.x = this.ganon1.x - 300; 
+          this.link.y = this.ganon1.y;
+          
         } else if (this.level == 1 && !this.Ganon2Spawn && this.Ganon1Spawn) {
           // Spawn Ganon with phase 1
           console.log("2nd phase Ganon appeared");
           this.ganon2 = new Ganon(
             this.game,
-            600,
-            800,
+            550,
+            1375,
             [
               { x: randomInt(800), y: randomInt(800) },
               { x: randomInt(800), y: randomInt(800) },
@@ -471,6 +475,9 @@ class SceneManager {
           );
           this.game.addEntity(this.ganon2);
           this.Ganon2Spawn = true;
+          console.log("Link transitioned to the 2nd phase of Ganon's spawn location");
+          this.link.x = this.ganon2.x - 300; 
+          this.link.y = this.ganon2.y;
         }
         // Check for Ganon's death and transition to the next level or phase
         if (this.ganon2 && this.ganon2.dead && this.Ganon1Spawn && this.Ganon2Spawn) {
