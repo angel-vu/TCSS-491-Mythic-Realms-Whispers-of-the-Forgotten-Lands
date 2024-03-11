@@ -232,7 +232,7 @@ class Link {
       // 215 by x coordinate(85) + the other x before this.
       // 85 by the start of where animation frame is being drawn
       this.hitBox = new BoundingBox(this.x - 85, this.y + 5, 215, 60 * 3);
-      console.log("Hitbox created on 2nd frame");
+      //console.log("Hitbox created on 2nd frame");
     } else if (this.state === 5 && this.animations[1][5][1].advanceAndGetCurrentFrame(this.game.clockTick) === 1) {
       //got x coordinate from draw method of where the frame is being drawn
       this.hitBox = new BoundingBox(this.x - 122, this.y + 5, 30.2 * 3, 60 * 3);
@@ -420,7 +420,7 @@ class Link {
 
         //Attack Physics.
         if (this.game.attack && this.state < 3 && this.itemsEquipped === 1) {
-          console.log("Attack");
+         // console.log("Attack");
           this.velocity.x = 0;
           this.velocity.y = 0;
           this.accumulatedVelocity = 0;
@@ -519,7 +519,7 @@ class Link {
           //Boundary checking for when link walks into a wall.
           if (that.moveBox && entity.BoundingBox && that.moveBox.collide(entity.BoundingBox)) {
             if (entity instanceof CollisionBox) {
-              console.log(entity.row + " and " + entity.column + " tilenumber: " + entity.tileNumber);
+              //console.log(entity.row + " and " + entity.column + " tilenumber: " + entity.tileNumber);
               if (that.lastMoveBox.left >= entity.BoundingBox.right) {
                 // collided with the right side of the CollisionBox
                 that.x = entity.BoundingBox.right;
@@ -558,7 +558,7 @@ class Link {
         this.damagedState = false;
         // DEATH ANIMATION?
         this.state = 4;
-        console.log("LINK DEAD");
+        //console.log("LINK DEAD");
       }
     } else {
       this.state = 0;

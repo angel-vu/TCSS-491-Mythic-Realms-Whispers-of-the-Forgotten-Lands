@@ -62,21 +62,21 @@ class GameEngine {
         
         this.ctx.canvas.addEventListener("mousemove", e => {
             if (this.options.debugging) {
-                console.log("MOUSE_MOVE", getXandY(e));
+               // console.log("MOUSE_MOVE", getXandY(e));
             }
             this.mouse = getXandY(e);
         });
 
         this.ctx.canvas.addEventListener("click", e => {
             if (this.options.debugging) {
-                console.log("CLICK", getXandY(e));
+                //console.log("CLICK", getXandY(e));
                 
             }
             this.click = getXandY(e);
         });
         this.ctx.canvas.addEventListener("mousedown", e => {
             if (this.options.debugging) {
-                console.log("MOUSE_MOVE", getXandY(e));
+              //  console.log("MOUSE_MOVE", getXandY(e));
             }
             this.mouse = getXandY(e);
             switch (e.which) {
@@ -93,7 +93,7 @@ class GameEngine {
                      break;
         
                 }
-            console.log("left click", getXandY(e));
+           // console.log("left click", getXandY(e));
           
         });
 
@@ -102,11 +102,11 @@ class GameEngine {
         //release mouse click
         this.ctx.canvas.addEventListener("mouseup", e => {
             if (this.options.debugging) {
-                console.log("CLICK", getXandY(e));
+                //console.log("CLICK", getXandY(e));
             }
         
             this.click = getXandY(e);
-            console.log("CLICK Release", getXandY(e));
+           // console.log("CLICK Release", getXandY(e));
         
             switch (e.which) {
                 case 1:
@@ -127,7 +127,7 @@ class GameEngine {
 
         this.ctx.canvas.addEventListener("wheel", e => {
             if (this.options.debugging) {
-                console.log("WHEEL", getXandY(e), e.wheelDelta);
+                //console.log("WHEEL", getXandY(e), e.wheelDelta);
             }
             e.preventDefault(); // Prevent Scrolling
             this.wheel = e;
@@ -135,7 +135,7 @@ class GameEngine {
 
         this.ctx.canvas.addEventListener("contextmenu", e => {
             if (this.options.debugging) {
-                console.log("RIGHT_CLICK", getXandY(e));
+                //console.log("RIGHT_CLICK", getXandY(e));
             }
             e.preventDefault(); // Prevent Context Menu
             this.rightclick = getXandY(e);
