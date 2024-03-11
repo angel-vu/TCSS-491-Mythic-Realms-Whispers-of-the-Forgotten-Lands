@@ -234,7 +234,7 @@ class LevelOneWalls {
   updateBoundingBox(tileMappings) {
     // Clear the existing array of collision boxes
     this.collisionBoxes = [];
-    console.log(this.game.camera.midpointX);
+    //console.log(this.game.camera.midpointX);
 
     // Iterate through the map to find positions of walls and create corresponding bounding boxes
     for (let i = 0; i < this.map.length; i++) {

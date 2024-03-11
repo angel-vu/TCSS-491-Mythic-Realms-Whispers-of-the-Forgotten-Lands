@@ -494,7 +494,7 @@ class Ganon {
 
 class Trident {
   constructor(game, x, y, target) {
-    console.log("Ganon Trident");
+   // console.log("Ganon Trident");
     Object.assign(this, { game, x, y, target });
     this.spritesheet = ASSET_MANAGER.getAsset("./boss_sprites/Ganondorf.png");
     this.game.Trident = this;
@@ -544,7 +544,7 @@ class Trident {
       for (var i = 0; i < this.game.entities.length; i++) {
         var ent = this.game.entities[i];
         if (ent instanceof Link && this.pathingCircle.collide(this.pathingCircle, ent.pathingCircle) && !ent.damagedState) {
-          console.log("ATTACK LANDED - PROJECTILE (Ganon) VS LINK");
+          //console.log("ATTACK LANDED - PROJECTILE (Ganon) VS LINK");
           ent.damageEntity(1);
           // this.game.addEntity(new Score(this.game, ent.x, ent.y, damage));
           this.removeFromWorld = true;
@@ -625,7 +625,7 @@ class Trident {
 
 class Orb {
   constructor(game, x, y, target) {
-    console.log("Ganon Orb");
+    //console.log("Ganon Orb");
     Object.assign(this, { game, x, y, target });
     this.spritesheet = ASSET_MANAGER.getAsset("./boss_sprites/Ganondorf.png");
     this.game.Orb = this;
@@ -665,7 +665,7 @@ class Orb {
     for (var i = 0; i < this.game.entities.length; i++) {
       var ent = this.game.entities[i];
       if (ent instanceof Link && this.hitBox.collide(ent.hurtBox) && !ent.damagedState) {
-        console.log("ATTACK LANDED - PROJECTILE (Ganon) VS LINK");
+        //console.log("ATTACK LANDED - PROJECTILE (Ganon) VS LINK");
         ent.damageEntity(1);
         // this.game.addEntity(new Score(this.game, ent.x, ent.y, damage));
         this.removeFromWorld = true;

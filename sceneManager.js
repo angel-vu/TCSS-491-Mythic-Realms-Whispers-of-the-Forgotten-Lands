@@ -439,7 +439,7 @@ class SceneManager {
           ASSET_MANAGER.pauseBackgroundMusic();
           ASSET_MANAGER.playAsset("./music/Final-Boss_ExcisionxDionTimmer.mp3");
           // Spawn Ganon with phase 0
-          console.log("1st phase spawn");
+          //console.log("1st phase spawn");
           this.ganon1 = new Ganon(
             this.game, 
             2000,
@@ -454,13 +454,13 @@ class SceneManager {
           );
           this.game.addEntity(this.ganon1);
           this.Ganon1Spawn = true;
-          console.log("Link transitioned to the 1st phase of Ganon's spawn location");
+          //console.log("Link transitioned to the 1st phase of Ganon's spawn location");
           this.link.x = this.ganon1.x - 300; 
           this.link.y = this.ganon1.y;
           
         } else if (this.level == 1 && !this.Ganon2Spawn && this.Ganon1Spawn) {
           // Spawn Ganon with phase 1
-          console.log("2nd phase Ganon appeared");
+         //console.log("2nd phase Ganon appeared");
           this.ganon2 = new Ganon(
             this.game,
             550,
@@ -475,7 +475,7 @@ class SceneManager {
           );
           this.game.addEntity(this.ganon2);
           this.Ganon2Spawn = true;
-          console.log("Link transitioned to the 2nd phase of Ganon's spawn location");
+          //console.log("Link transitioned to the 2nd phase of Ganon's spawn location");
           this.link.x = this.ganon2.x - 300; 
           this.link.y = this.ganon2.y;
         }
@@ -517,7 +517,7 @@ class SceneManager {
     // Check if the timer has reached the duration
     if (this.elapsedTime <= 0) {
       this.stopTimer();
-      console.log("Time's up!");
+     // console.log("Time's up!");
       this.gameOver = true;
       this.loadLevel(1, 0, 0, true, this.title, this.gameOver, this.gameWin);
     }
@@ -623,20 +623,20 @@ class SceneManager {
                   mouseY >= menuItemY &&
                   mouseY <= menuItemY + menuItemHeight
               ) {
-                  console.log("Clicked on menu item:", menuItems[i]);
+                  //console.log("Clicked on menu item:", menuItems[i]);
                   switch (menuItems[i]) {
                       case "Play Again":  
-                          console.log("play again clicked!");
+                          //console.log("play again clicked!");
                           window.location.reload();
                           break;
                       case "Instructions":
-                          console.log("instructions clicked!");
+                         // console.log("instructions clicked!");
                           const instructionsWindow = window.open("", "", "width=500,height=400");
                           instructionsWindow.document.write("<h1>Game Instructions</h1>");
-                          instructionsWindow.document.write("<p>Link must kill all enemies to reach his way to the boss enemy, Ganon where his presence threatens the Myystic Realms. To complete the quest, kill all enemies before the timer or before they kill you! <br> Keyboard Movements: <br> Up = W, <br> Down = S, <br> Left = A, <br> Right = D <br> Run = Hold Shift <br> Attack = Mouse left click <br> Hint: Pick up potions long the way to restore health!</p>");
+                          instructionsWindow.document.write("<p>Link must kill all enemies to reach his way to the boss enemy, Ganon where his presence threatens the Mystic Realms. To complete the quest, kill all enemies before the timer or before they kill you! <br> Keyboard Movements: <br> Up = W, <br> Down = S, <br> Left = A, <br> Right = D <br> Run = Hold Shift <br> Attack = Mouse left click <br> Hint: Pick up potions long the way to restore health!</p>");
                           break;
                       case "Credits":
-                          console.log("credits clicked!");
+                          //console.log("credits clicked!");
                           const creditsWindow = window.open("", "_blank", "width=500,height=400");
                           creditsWindow.document.write("<h1>Credits</h1>");
                           creditsWindow.document.write("<p>TCSS 491: Game Simulation and Design (Winter 2024) <br> Team: Black 1 <br> Members: David Hoang, Avreen Kaur, Jay Phommakot, Angel Vu</p>");

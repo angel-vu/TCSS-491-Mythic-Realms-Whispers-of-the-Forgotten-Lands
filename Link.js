@@ -496,7 +496,7 @@ class Link {
             if (entity instanceof Banshee || entity instanceof Ganon || entity instanceof Akagane || entity instanceof Goblin || entity instanceof Knight || entity instanceof Skeleton || entity instanceof Wizard) {
               // Sword dealing 1 point of damage.
               entity.damageEntity(1);
-              console.log(entity.currentHealth);
+              //console.log(entity.currentHealth);
             }
           }
           //running into health potions

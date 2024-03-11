@@ -37,7 +37,7 @@ class Scream {
         for (var i = 0; i < this.game.entities.length; i++) {
             var ent = this.game.entities[i];
             if (ent instanceof Link && this.hitBox.collide(ent.hurtBox) && !ent.damagedState) {
-                console.log("ATTACK LANDED - PROJECTILE (BANSHEE) VS LINK");
+                //console.log("ATTACK LANDED - PROJECTILE (BANSHEE) VS LINK");
                 ent.damageEntity(1);
                 // this.game.addEntity(new Score(this.game, ent.x, ent.y, damage));
                 this.removeFromWorld = true;

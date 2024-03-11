@@ -164,7 +164,7 @@ class ShieldPotion {
         const bubbleX = Link.x - (this.animation.width * this.scale) / 2; // Center horizontally
         const bubbleY = Link.y - (this.animation.height * this.scale) / 2; // Center vertically
 
-        console.log("Bubble X:", bubbleX, "Bubble Y:", bubbleY); // Debugging statement
+       // console.log("Bubble X:", bubbleX, "Bubble Y:", bubbleY); // Debugging statement
 
         // Create a new ShieldBubble instance at the calculated position
         const shieldBubble = new ShieldBubble(this.game, bubbleX, bubbleY);
