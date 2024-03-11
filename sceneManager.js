@@ -481,6 +481,8 @@ class SceneManager {
         }
         // Check for Ganon's death and transition to the next level or phase
         if (this.ganon2 && this.ganon2.dead && this.Ganon1Spawn && this.Ganon2Spawn) {
+
+          this.stopTimer();
           //ASSET_MANAGER.pauseBackgroundMusic();
           this.gameWin = true;
           this.loadLevel(
