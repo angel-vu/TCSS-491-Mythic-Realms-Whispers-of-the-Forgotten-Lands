@@ -10,6 +10,11 @@ class SceneManager {
     this.gameOver = false;
     this.gameWin = false;
 
+    this.timeDuration = 300;
+    this.elapsedTime = this.timeDuration;
+
+    this.startTimer();
+
     this.midpointX = PARAMS.CANVAS_WIDTH / 2 - (26 * 3) / 2; // 26 * 3 (3 is Links Scale) this is his idle hurt box width
     this.midpointY = PARAMS.CANVAS_HEIGHT / 2 - (58 * 3) / 2; // 58 * 3 (3 is Links Scale) this is his idle hurt box height
 
@@ -102,8 +107,36 @@ class SceneManager {
     ) {
       // Handle options button click action here
       console.log("Options clicked!");
+      this.showDropdownMenu = !this.showDropdownMenu;
     }
   }
+
+  startTimer() {
+    this.timerInterval = setInterval(() => {
+      if (!this.gamePaused) { 
+        this.elapsedTime--; 
+        if (this.elapsedTime <= 0) {
+          this.stopTimer();
+          console.log("Time's up!");
+        }
+      }
+    }, 1000);
+  }
+
+  stopTimer() {
+      clearInterval(this.timerInterval);
+  }
+
+
+    // Stop the timer
+    stopTimer() {
+      clearInterval(this.timerInterval);
+    }
+
+    // Reset the timer
+    resetTimer() {
+      this.elapsedTime = this.timerDuration;
+    }
 
   clearEntities() {
     this.game.entities.forEach(function (entity) {
@@ -159,6 +192,100 @@ class SceneManager {
         this.healthPotion = new HealthPotion(this.game, 0, 3000);
         this.game.addEntity(this.healthPotion);
 
+        this.fire = new Fire(this.game, 0, 300);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 10, 600);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 500, 400);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 800, 600);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 950, 300);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 2500, 100);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 2800, 300);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 2600, 800);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 2800, 2000);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 1500, 800);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 250, 1385);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 1000, 1200);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 2000, 1500);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 1000, 1500);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 1200, 1800);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 1400, 1600);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 1100, 2000);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 0, 1000);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 20, 2200);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 0, 2500);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 100, 3000);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 2000, 300);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 2500, 3000);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 2000, 2500);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 2200, 2800);
+        this.game.addEntity(this.fire);
+
+        // fire by statue
+        this.fire = new Fire(this.game, 250, 1385);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 575, 1385);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 250, 1500);
+        this.game.addEntity(this.fire);
+
+        this.fire = new Fire(this.game, 575, 1500);
+        this.game.addEntity(this.fire);
+
+        this.lightning = new Lightning(this.game, 300, 300);
+        this.game.addEntity(this.lightning);
+        
+        // this.shieldPotion = new ShieldPotion(this.game, 300, 300);
+        // this.game.addEntity(this.shieldPotion);
+
         // this.inventory = new Inventory(this.game, 500, 500, levelOne);
         // this.game.addEntity(this.inventory);
 
@@ -210,7 +337,7 @@ class SceneManager {
         ]);
         this.game.addEntity(this.banshee2);
 
-        this.banshee3 = new Banshee(this.game, 800, 900, [
+        this.banshee3 = new Banshee(this.game, 1500, 1500, [
           { x: randomInt(800), y: randomInt(800) },
           { x: randomInt(800), y: randomInt(800) },
           { x: randomInt(800), y: randomInt(800) },
@@ -222,35 +349,45 @@ class SceneManager {
           { x: randomInt(800), y: randomInt(800) },
           { x: randomInt(800), y: randomInt(800) },
           { x: randomInt(800), y: randomInt(800) },
-          { x: 0, y: 0 },
-        ]);
+          { x: 0, y: 0 }],
+          3);
         this.game.addEntity(this.goblin1);
 
         this.goblin2 = new Goblin(this.game, 700, 800, [
           { x: randomInt(800), y: randomInt(800) },
           { x: randomInt(800), y: randomInt(800) },
           { x: randomInt(800), y: randomInt(800) },
-          { x: 0, y: 0 },
-        ]);
+          { x: 0, y: 0 }],
+          3);
         this.game.addEntity(this.goblin2);
 
         this.goblin3 = new Goblin(this.game, 700, 500, [
           { x: randomInt(800), y: randomInt(800) },
           { x: randomInt(800), y: randomInt(800) },
           { x: randomInt(800), y: randomInt(800) },
-          { x: 0, y: 0 },
-        ]);
+          { x: 0, y: 0 }],
+         3);
         this.game.addEntity(this.goblin3);
 
         this.goblin4 = new Goblin(this.game, 800, 1000, [
           { x: randomInt(800), y: randomInt(800) },
           { x: randomInt(800), y: randomInt(800) },
           { x: randomInt(800), y: randomInt(800) },
-          { x: 0, y: 0 },
-        ]);
+          { x: 0, y: 0 }],
+          3);
         this.game.addEntity(this.goblin4);
 
+        this.goblin5 = new Goblin(this.game, 300, 0, [
+          { x: randomInt(800), y: randomInt(800) },
+          { x: randomInt(800), y: randomInt(800) },
+          { x: randomInt(800), y: randomInt(800) },
+          { x: 0, y: 0 }],
+          3);
+        this.game.addEntity(this.goblin5);
+
         this.game.addEntity(this.link);
+        // this.shieldBubble = new ShieldBubble(this.game);
+        // this.game.addEntity(this.shieldBubble);
         this.ground.placeOuterBoundingBoxes();
       }
     }
@@ -273,14 +410,6 @@ class SceneManager {
       this.gameWin = false;
       this.loadLevel(1, 0, 0, true, this.title, this.gameOver, this.gameWin);
     }
-
-    //music
-    if (this.game.ganon) {
-      //play boss music
-    }
-    // if (this.entityCount > 0) {
-    //   //ASSET_MANAGER.playAsset("./music/Undertale-Waterfall.mp3");
-    // }
 
     this.x = 0;
     this.y = 0;
@@ -307,12 +436,14 @@ class SceneManager {
     if (this.totalEnemies == 0) {
       //if (GanonSpawn <= 2) {
         if (this.level == 1 && !this.Ganon1Spawn) {
+          ASSET_MANAGER.pauseBackgroundMusic();
+          ASSET_MANAGER.playAsset("./music/Final-Boss_ExcisionxDionTimmer.mp3");
           // Spawn Ganon with phase 0
-          console.log("1st phase spawn");
-          this.ganon = new Ganon(
-            this.game,
-            600,
-            800,
+          //console.log("1st phase spawn");
+          this.ganon1 = new Ganon(
+            this.game, 
+            2000,
+            2500,
             [
               { x: randomInt(800), y: randomInt(800) },
               { x: randomInt(800), y: randomInt(800) },
@@ -321,15 +452,19 @@ class SceneManager {
             ],
             0
           );
-          this.game.addEntity(this.ganon);
+          this.game.addEntity(this.ganon1);
           this.Ganon1Spawn = true;
+          //console.log("Link transitioned to the 1st phase of Ganon's spawn location");
+          this.link.x = this.ganon1.x - 300; 
+          this.link.y = this.ganon1.y;
+          
         } else if (this.level == 1 && !this.Ganon2Spawn && this.Ganon1Spawn) {
           // Spawn Ganon with phase 1
-          console.log("2nd phase Ganon appeared");
+         //console.log("2nd phase Ganon appeared");
           this.ganon2 = new Ganon(
             this.game,
-            600,
-            800,
+            550,
+            1375,
             [
               { x: randomInt(800), y: randomInt(800) },
               { x: randomInt(800), y: randomInt(800) },
@@ -340,10 +475,15 @@ class SceneManager {
           );
           this.game.addEntity(this.ganon2);
           this.Ganon2Spawn = true;
+          //console.log("Link transitioned to the 2nd phase of Ganon's spawn location");
+          this.link.x = this.ganon2.x - 300; 
+          this.link.y = this.ganon2.y;
         }
         // Check for Ganon's death and transition to the next level or phase
         if (this.ganon2 && this.ganon2.dead && this.Ganon1Spawn && this.Ganon2Spawn) {
-          this.gameOver = false;
+
+          this.stopTimer();
+          //ASSET_MANAGER.pauseBackgroundMusic();
           this.gameWin = true;
           this.loadLevel(
             1,
@@ -354,6 +494,8 @@ class SceneManager {
             this.gameOver,
             this.gameWin
           );
+          // ASSET_MANAGER.pauseBackgroundMusic();
+          //ASSET_MANAGER.playAsset("./music/End-Credits_Ocarina-of-Time.mp3");
         }
       //}
     }
@@ -371,6 +513,14 @@ class SceneManager {
     this.wizardCounter = this.game.entities.filter(
       (entity) => entity instanceof Wizard
     ).length;
+
+    // Check if the timer has reached the duration
+    if (this.elapsedTime <= 0) {
+      this.stopTimer();
+     // console.log("Time's up!");
+      this.gameOver = true;
+      this.loadLevel(1, 0, 0, true, this.title, this.gameOver, this.gameWin);
+    }
   }
 
   draw(ctx) {
@@ -425,6 +575,81 @@ class SceneManager {
     ctx.font = "18px Arial";
     ctx.fillText("Options", this.optionsButtonX + 10, this.optionsButtonY + 30);
 
+
+    if (this.showDropdownMenu) {
+      // Set styles for dropdown menu items
+      ctx.font = "12px Arial";
+  
+      // Define the position and size of the dropdown menu
+      const menuX = this.optionsButtonX;
+      const menuY = this.optionsButtonY + this.optionsButtonHeight + 10;
+      const menuItemHeight = 30;
+      const menuItemWidth = 80;
+      const menuItemSpacing = 0;
+  
+      // Define the menu items
+      const menuItems = ["Play Again", "Instructions", "Credits"];
+  
+      // Loop through menu items and draw them in a table-like format
+      for (let i = 0; i < menuItems.length; i++) {
+          const menuItemX = menuX;
+          const menuItemY = menuY + (menuItemHeight + menuItemSpacing) * i;
+  
+          // Draw menu item border
+          ctx.strokeStyle = "#000";
+          ctx.lineWidth = 1;
+          ctx.strokeRect(menuItemX, menuItemY, menuItemWidth, menuItemHeight);
+  
+          // Draw menu item background
+          ctx.fillStyle = "#ccc";
+          ctx.fillRect(menuItemX, menuItemY, menuItemWidth, menuItemHeight);
+  
+          // Measure text width to center it
+          const textWidth = ctx.measureText(menuItems[i]).width;
+  
+          // Draw menu item text
+          ctx.fillStyle = "#000";
+          ctx.fillText(menuItems[i], menuItemX + (menuItemWidth - textWidth) / 2, menuItemY + menuItemHeight / 2 + 5);
+  
+          // Add event listener for click event to each menu item
+          this.canvas.addEventListener("click", (event) => {
+              const mouseX = event.clientX - this.canvas.getBoundingClientRect().left;
+              const mouseY = event.clientY - this.canvas.getBoundingClientRect().top;
+  
+              // Check if the click occurred within the boundaries of the current menu item
+              if (
+                  mouseX >= menuItemX &&
+                  mouseX <= menuItemX + menuItemWidth &&
+                  mouseY >= menuItemY &&
+                  mouseY <= menuItemY + menuItemHeight
+              ) {
+                  //console.log("Clicked on menu item:", menuItems[i]);
+                  switch (menuItems[i]) {
+                      case "Play Again":  
+                          //console.log("play again clicked!");
+                          window.location.reload();
+                          break;
+                      case "Instructions":
+                         // console.log("instructions clicked!");
+                          const instructionsWindow = window.open("", "", "width=500,height=400");
+                          instructionsWindow.document.write("<h1>Game Instructions</h1>");
+                          instructionsWindow.document.write("<p>Link must kill all enemies to reach his way to the boss enemy, Ganon where his presence threatens the Mystic Realms. To complete the quest, kill all enemies before the timer or before they kill you! <br> Keyboard Movements: <br> Up = W, <br> Down = S, <br> Left = A, <br> Right = D <br> Run = Hold Shift <br> Attack = Mouse left click <br> Hint: Pick up potions long the way to restore health!</p>");
+                          break;
+                      case "Credits":
+                          //console.log("credits clicked!");
+                          const creditsWindow = window.open("", "_blank", "width=500,height=400");
+                          creditsWindow.document.write("<h1>Credits</h1>");
+                          creditsWindow.document.write("<p>TCSS 491: Game Simulation and Design (Winter 2024) <br> Team: Black 1 <br> Members: David Hoang, Avreen Kaur, Jay Phommakot, Angel Vu</p>");
+                          break;
+                      default:
+                          break;
+                  }
+                  this.showDropdownMenu = false;
+              }
+          });
+      }
+  }
+  
     // Banshee counter image
     ctx.drawImage(
       this.bansheeCounterImage,
@@ -472,5 +697,49 @@ class SceneManager {
     ctx.fillStyle = "#000";
     ctx.font = "16px Arial";
     ctx.fillText(`: ${this.wizardCounter}`, 280, 35);
+    // Draw the timer on the screen
+    ctx.fillStyle = "#000";
+    ctx.font = "20px Arial";
+    ctx.fillText(`Timer: ${this.formatTime(this.elapsedTime)}`, 750, 50);
+
+    if (this.gameOver || this.gameWin) {
+      ctx.fillStyle = "#ccc";
+      ctx.fillRect(PARAMS.CANVAS_WIDTH / 2 - 100, PARAMS.CANVAS_HEIGHT / 2 + 50, 200, 50);
+      // Add border around the button
+      ctx.strokeStyle = "#000";
+      ctx.lineWidth = 2;
+      ctx.strokeRect(PARAMS.CANVAS_WIDTH / 2 - 100, PARAMS.CANVAS_HEIGHT / 2 + 50, 200, 50);
+      ctx.fillStyle = "#000";
+      ctx.font = "24px Arial";
+      ctx.fillText("Play Again", PARAMS.CANVAS_WIDTH / 2 - 60, PARAMS.CANVAS_HEIGHT / 2 + 85);
+
+      this.canvas.addEventListener("click", (event) => {
+        const mouseX = event.clientX - this.canvas.getBoundingClientRect().left;
+        const mouseY = event.clientY - this.canvas.getBoundingClientRect().top;
+
+        const buttonX = PARAMS.CANVAS_WIDTH / 2 - 100; 
+        const buttonY = PARAMS.CANVAS_HEIGHT / 2 + 50; 
+        const buttonWidth = 200; 
+        const buttonHeight = 50; 
+        if (
+            mouseX >= buttonX &&
+            mouseX <= buttonX + buttonWidth &&
+            mouseY >= buttonY &&
+            mouseY <= buttonY + buttonHeight
+        ) {
+            console.log("play again clicked");
+            window.location.reload();
+        }
+    });
+  }
+  }
+
+  // Helper function to format time (convert seconds to MM:SS format)
+  formatTime(seconds) {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes < 10 ? "0" : ""}${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
   }
 }
+
+// 3-6 update 

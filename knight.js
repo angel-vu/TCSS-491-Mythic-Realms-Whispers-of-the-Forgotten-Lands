@@ -75,26 +75,26 @@ class Knight {
         this.state = 1; 
 
         if (this.game.down && !this.game.up) {
-            console.log("DOWN");
+            //console.log("DOWN");
             this.state = 0;
             this.y = this.y + this.speed * this.game.clockTick;
         }
 
         else if (this.game.up && !this.game.down) {
-            console.log("UP");
+            //console.log("UP");
             this.state = 0;
             this.y = this.y - this.speed * this.game.clockTick;
         }
 
         else if (this.game.left && !this.game.right) {
-            console.log("LEFT");
+           // console.log("LEFT");
             this.facing = 2;
             this.state = 0;
             this.x = this.x - this.speed * this.game.clockTick;
         }
 
         else if (this.game.right && !this.game.left) {
-            console.log("RIGHT");
+          //  console.log("RIGHT");
             this.facing = 3;
             this.state = 0;
             this.x = this.x + this.speed * this.game.clockTick;

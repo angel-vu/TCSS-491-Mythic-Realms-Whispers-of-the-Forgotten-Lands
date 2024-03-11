@@ -1,13 +1,13 @@
 class Goblin {
-    constructor(game, x, y, path) {
-        Object.assign(this, { game, x, y, path });
+    constructor(game, x, y, path,startingHealth) {
+        Object.assign(this, { game, x, y, path, startingHealth });
 
         this.game.goblin = this;
 
         this.initialPoint = { x, y };
-
-        this.currentHealth = 3;
-        this.maxHealth = 3;
+        
+        this.currentHealth = this.startingHealth;
+        this.maxHealth = this.startingHealth;
         this.dead = false;
         this.damagedState = false;
         this.scale = 2;
@@ -242,7 +242,7 @@ class Goblin {
                                 this.elapsedTime = 0;
                             } else if (this.elapsedTime >= this.animations[this.facing][2].totalTime && !ent.damagedState) {
                                 if (ent instanceof Link && this.hitBox.collide(ent.hurtBox)&& !ent.damagedState) {
-                                    console.log("ATTACK LANDED - WIZARD VS LINK!");
+                                   // console.log("ATTACK LANDED - WIZARD VS LINK!");
                                     ent.damageEntity(1);
                                     this.elapsedTime = 0;
                                 }
@@ -256,7 +256,7 @@ class Goblin {
 
                     if (this.moveBox && ent.BoundingBox && this.moveBox.collide(ent.BoundingBox)) {
                         if (ent instanceof CollisionBox) {
-                          console.log(ent.row + " and " + ent.column + " tilenumber: " + ent.tileNumber);
+                         // console.log(ent.row + " and " + ent.column + " tilenumber: " + ent.tileNumber);
                           if (this.lastMoveBox.left >= ent.BoundingBox.right) {
                             // collided with the right side of the CollisionBox
                             this.x = ent.BoundingBox.right;

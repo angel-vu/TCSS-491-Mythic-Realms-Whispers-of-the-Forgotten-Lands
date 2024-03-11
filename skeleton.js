@@ -222,7 +222,7 @@ class Skeleton {
                                 this.elapsedTime = 0;
                             } else if (this.elapsedTime >= this.animations[this.facing][2].totalTime && !ent.damagedState) {
                                 if (ent instanceof Link && this.hitBox.collide(ent.hurtBox)&& !ent.damagedState) {
-                                    console.log("ATTACK LANDED - WIZARD VS LINK!");
+                                  //  console.log("ATTACK LANDED - WIZARD VS LINK!");
                                     ent.damageEntity(1);
                                     this.elapsedTime = 0;
                                 }
@@ -236,7 +236,7 @@ class Skeleton {
 
                     if (this.moveBox && ent.BoundingBox && this.moveBox.collide(ent.BoundingBox)) {
                         if (ent instanceof CollisionBox) {
-                          console.log(ent.row + " and " + ent.column + " tilenumber: " + ent.tileNumber);
+                        //  console.log(ent.row + " and " + ent.column + " tilenumber: " + ent.tileNumber);
                           if (this.lastMoveBox.left >= ent.BoundingBox.right) {
                             // collided with the right side of the CollisionBox
                             this.x = ent.BoundingBox.right - 15 * this.scale;
