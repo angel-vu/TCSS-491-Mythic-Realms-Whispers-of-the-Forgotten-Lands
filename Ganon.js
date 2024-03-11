@@ -172,6 +172,9 @@ class Ganon {
     } else if (this.phase == 1 && this.animations[1][1][0]) {
       this.hurtBox = new BoundingBox(this.x + 12, this.y + 20, 53 * this.scale, 47);
       this.moveBox = new BoundingBox(this.x + 50, this.y + 125, 53 * this.scale, 22);
+    }  
+     if (this.phase == 1 && this.animations[1][2][0]) {
+      this.hurtBox = new BoundingBox(this.x + 12, this.y + 20, 80 * this.scale, 47 * this.scale);
     }
   }
 
