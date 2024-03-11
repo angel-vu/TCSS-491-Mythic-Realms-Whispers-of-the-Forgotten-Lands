@@ -388,12 +388,12 @@ class Ganon {
       this.spritesheet,
       360,
       513,
-      83,
+      81,
       49,
       4,
-      0.2,
+      0.5,
       0,
-      true,
+      false,
       true,
       false
     );
@@ -401,12 +401,12 @@ class Ganon {
       this.spritesheet,
       360,
       513,
-      83,
+      81,
       49,
       4,
       0.2,
       0,
-      true,
+      false,
       true,
       false
     );
@@ -414,12 +414,12 @@ class Ganon {
       this.spritesheet,
       360,
       513,
-      83,
+      81,
       49,
       4,
       0.2,
       0,
-      true,
+      false,
       true,
       false
     );
@@ -570,6 +570,13 @@ class Ganon {
         this.y + 125,
         53 * this.scale,
         22
+      );
+    } else if (this.phase == 1 && this.animations[1][2][0]) {
+      this.hurtBox = new BoundingBox(
+        this.x + 50,
+        this.y + 120,
+        53 * this.scale,
+        47 * this.scale
       );
     }
   }
