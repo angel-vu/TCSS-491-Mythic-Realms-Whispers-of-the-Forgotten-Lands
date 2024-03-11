@@ -139,7 +139,7 @@ class Ganon {
       81,
       49,
       4,
-      0.5,
+      0.2,
       0,
       false,
       true,
@@ -263,9 +263,10 @@ class Ganon {
         if (this.damagedState && !this.dead) {
           //When in a state of being damaged, create a window where you flicker for 1 second and you can't take damage.
           this.damagedCounter += this.game.clockTick;
-          if (this.damagedCounter >= 4) {
-            // this.damagedState = false;
-            //this.facing = 1;
+          
+          if (this.damagedCounter >= 3) {
+            //this.damagedState = false;
+            //this.facing = 0;
             this.damagedCounter = 0;
             if (ent instanceof Link) {
               let randomTeleport = randomInt(1);
@@ -281,7 +282,7 @@ class Ganon {
                   this.y = ent.lastMoveBox.y + randomTelNum;
                   //this.damagedState = false;
                 }
-                this.damagedState = false;
+                //this.damagedState = false;
               } else if (this.phase == 1) {
                 this.facing = 1;
                 if (randomTeleport == 0 && randomTelNum > 90) {
@@ -294,8 +295,11 @@ class Ganon {
                   //this.damagedState = false;
                 }
 
-                this.damagedState = false;
+                //this.damagedState = false;
               }
+
+              this.facing = 0;
+              this.damagedState = false;
 
               this.game.addEntity(
                 new Goblin(
@@ -589,7 +593,7 @@ class Trident {
     let angle = Math.atan2(this.velocity.y, this.velocity.x);
     if (angle < 0) angle += Math.PI * 2;
     let degrees = Math.floor((angle / Math.PI / 2) * 360);
-    console.log(degrees);
+    //console.log(degrees);
     this.drawAngle(ctx, degrees);
 
     if (PARAMS.DEBUG) {
